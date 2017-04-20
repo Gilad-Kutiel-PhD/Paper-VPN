@@ -8,6 +8,7 @@
 	positioning,
 	shapes,
 	decorations.pathmorphing,
+	decorations.markings,
 }
 
 %DEFAULT STYLE
@@ -29,6 +30,12 @@
 	black!70,
 }}
 
+\tikzset{clear node/.style={
+	draw=none, 
+	inner sep=0mm,
+	minimum size=0mm,
+}}
+
 % LABELS
 \tikzset{label/.style={
 	draw=none,
@@ -38,11 +45,11 @@
 \tikzset{label above/.style={
 	label,
 	midway,
-	above=-1mm,
+	above=-.2mm,
 }}
 
 \tikzset{label below/.style={
 	label,
 	midway,
-	below=-1mm,
+	below=-.2mm,
 }}

@@ -1,0 +1,38 @@
+We are given a virtual DAG $D_v = (V_v, A_v)$ 
+with a source and destination vertices $s_v, t_v$ respectively, 
+a physical DAG $D_p = (V_p, A_p)$
+with a source and destination vertices $s_p, t_p$ respectively,
+demand functions $p_d : V_v \to \R$, $b_d : E_v \to \R$,
+capacity functions $p_c : V_p \to \R$, $b_c : E_p \to \R$,
+and a cost function $c: V_v \times V_p \to \R$. 
+
+Given a virtual $s_vt_v$-path $p$ of length $l$,
+let $i_1, \ldots, i_l$ be the indices of the vertices of this path.
+We denote a partition of $p$ into subpaths by the indices of the last vertex in
+each subpath i.e. we use $j_1, \ldots, j_k$ to denote the partition 
+$((v_{i_1}, \ldots, v_{i_{j_1}}), \ldots, (v_{i_{j_{k-1} + 1}}, \ldots,
+v_{i_{j_k}}))$.
+Given a partition $(j_1, \ldots, j_k)$ we denote by $V(j_i)$ the vertices of the
+$i$th subpath.
+A (feasible) \emph{embedding} of a virtual path into the physical DAG 
+w.r.t partition $P = (j_1, \ldots,j_k)$ is a mapping $e_P : P \to V_p$ such that
+for all $1 \leq i \leq k$ it holds that:
+\begin{enumerate}
+  \item $p_c(e_P(j_i)) \geq \sum_{v \in V(j_i)} p_d(v)$
+  \item There is a physical path from $e_P(j_i)$ to $e_P(j_{i+1})$ with a
+  bottleneck at least $b_d(v_{j_i}, v_{j_{i+1}})$.
+\end{enumerate}
+The \emph{cost} of a (feasible) embedding, $e_P$ is given by:
+$\sum_{i = 1}^k \sum_{v \in V(j_i)} c(v, e_P(j_i))$.   
+
+In the \todo{choose a name for the problem} VPN problem the goal is to find a
+feasible embedding of a virtual path into the physical DAG that minimizes the
+cost.
+
+\begin{figure}[ht]
+\centering
+\scalebox{.87}{
+\input{fig-embedding}
+}
+
+\end{figure}
