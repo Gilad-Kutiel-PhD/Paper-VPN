@@ -16,6 +16,11 @@
 \draw (5) to[] node[label above] {1} (8);
 \draw (8) to[] node[label above] {2} (t);
 
+\draw (3) to[] node[label above] {2} (2);
+\draw (5) to[] node[label above] {7} (7);
+\draw (2) to[bend left] node[label above] {7} (5);
+\draw (7) to[bend right] node[label below] {7} (t);
+
 \begin{scope}[dashed, blue]
 \draw (s) to[] node[label below] {4} (3);
 \draw (3) to[] node[label below] {5} (4);
@@ -25,6 +30,9 @@
 \draw (9) to[] node[label below] {4} (t);
 \end{scope}
 
+\node[clear node] at(0,3) {Virtual DAG};
+\draw[-, gray, ultra thin, dashed] (-1,-2) -- (13, -2);
+\node[clear node] at(0,-6) {Physical DAG};
 
 \node(ps) at(1,-4) {s};
 \node(p2) at(3,-3) {2};
@@ -49,6 +57,9 @@
 \draw (p5) to[] node[label above] {3} (p6);
 \draw (p6) to[] node[label above] {4} (p8);
 \draw (p8) to[] node[label above] {4} (pt);
+
+\draw (p3) to[bend right] node[label above] {4} (p8);
+
 
 \draw[dotted, orange, -]
 (s.west) to[out=-90, in=-90] node(j1)[midway, clear node] {}
