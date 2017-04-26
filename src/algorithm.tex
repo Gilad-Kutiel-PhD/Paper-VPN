@@ -1,0 +1,27 @@
+In this section we present an FPTAS algorithm to the VPN problem.
+We are given an instance of the VPN problem 
+\begin{align}
+D_v = (V_v, A_v)			\\
+D_p = (V_p, A_p)			\\
+(s_v, t_v, s_p, t_p)	\\
+(p_d, b_d, p_c, b_c)	\\
+c
+\end{align}
+For now assume all values are integral and polynomial bounded in the size of the input.
+Sort the DAGs topologically and assume w.l.o.g that $s_v = s_p = 1$,
+$t_v = n$, and $t_p = m$.
+Let $O(i, j)$ be the optimal embedding of any $1i$ virtual path, 
+into a $1j$ physical path.
+We can compute $O(i, j)$ as follow:
+$$
+O(i, j) = \min_{a \text{ ancestor of } i} \min_{b \text{ ancestor of } j} O(a, b)
++ \min_(ai, bj)
+$$
+Where $\min(ai, bj)$ is the optimal embedding of a virtual 
+path starting at any child of $a$, $a'$ and ending at $i$ into node $j$
+that respect the bottleneck constraint, i.e. $b_d(a, a') \leg bn(b, j)$.
+\todo{define bn(i, j) to be the bottleneck between i and j}
+We claim that $\min(ai, bj)$ can be found efficiently 
+\todo{describe how}
+
+\todo{argue about scaling and rounding}
