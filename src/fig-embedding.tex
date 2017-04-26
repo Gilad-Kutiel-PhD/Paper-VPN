@@ -1,48 +1,55 @@
 \begin{tikzpicture}[every node/.style={default node}, very thick]
 
 \begin{scope}[random seed=1, spring layout, node distance=1.8cm]
-\node(a) {a};
-\node(b) {b};
-\node(c) {c};
-\node(d) {d};
-\node(e) {e};
-\node(f) {f};
-\node(g) {g};
-\node(h) {h};
-\node(i) {i};
-\node(j) {j};
+\node[dashed](a) {2};
+\node(b) {3};
+\node(c) {4};
+\node(d) {1};
+\node(e) {5};
+\node(f) {6};
+\node(g) {3};
+\node(h) {2};
+\node(i) {7};
+\node[dashed](j) {1};
 
 \graph{
-	(a) -> (b);
-	(b) -> {(d), (e)};
-	(d) -> {(f), (h)};
-	(f) -> {(g), (h), (c)};
-	(h) -> {(g), (i), (e)};
-	{[edges={blue, dashed}]
+	(a) ->["5" label above] (b);
+	(b) ->["6" label above] {(d), (e)};
+	(d) ->["7" label above] {(f), (h)};
+	(f) ->["4" label above] {(g), (h), (c)};
+	(h) ->["8" label above] {(g), (i), (e)};
+	{[edges={blue, dashed}, edge node={node[label above] {2}}]
 		(a) -> (c) -> (d) -> (e) -> (i) -> (g) -> (j);
 	}
 };
 
-\node(pa) {a'};
-\node(pb) {b'};
-\node(pc) {c'};
-\node(pd) {d'};
-\node(pe) {e'};
-\node(pf) {f'};
-\node(pg) {g'};
-\node(ph) {h'};
+\node[dashed](pa) {8};
+\node(pb) {3};
+\node(pc) {5};
+\node(pd) {6};
+\node(pe) {19};
+\node(pf) {8};
+\node[dashed](pg) {4};
+\node(ph) {2};
 
 \graph{
-	(pa) -> (pb);
-	(pb) -> {(pd), (pe)};
-	(pd) -> {(pf), (ph)};
-	(pf) -> {(pg), (ph), (pc)};
-	(ph) -> {(pg), (pe)};
-	(pe) -> (ph);
+	(pa) ->["2" label above] (pb);
+	(pb) ->["3" label above] {(pd), (pe)};
+	(pd) ->["1" label above] {(pf), (ph)};
+	(pf) ->["4" label above] {(pg), (ph), (pc)};
+	(ph) ->["6" label above] (pg);
+	(pe) ->["3" label above] (ph);
+	(pc) ->["2" label above] (pd);
 };
 \end{scope}
 
-\begin{scope}[dotted, orange, -]
+\node[clear node, above right] at(a.north east) {$s_v$};
+\node[clear node, left] at(j.west) {$t_v$};
+
+\node[clear node, above] at(pa.north) {$s_p$};
+\node[clear node, below] at(pg.south) {$t_p$};
+
+\begin{scope}[dotted, semithick, orange, -]
 \draw
 (a.north east) to[out=135, in=45] node(j1)[midway, clear node] {}
 (c.north west) to[out=225, in=135]
