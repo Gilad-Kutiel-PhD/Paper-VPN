@@ -1,90 +1,74 @@
-\begin{tikzpicture}[every node/.style={default node}, very thick, ->]
-\node(s) at(0,0) {s};
-\node(2) at(2,1) {2};
-\node(3) at(2,-1) {3};
-\node(4) at(4,0) {4};
-\node(5) at(6,1) {5};
-\node(6) at(6,-1) {6};
-\node(7) at(8,-1) {7};
-\node(8) at(8,1) {8};
-\node(9) at(10,0) {9};
-\node(t) at(12,0) {t};
+\begin{tikzpicture}[every node/.style={default node}, very thick]
 
-\draw (s) to[] node[label above] {2} (2);
-\draw (2) to[] node[label above] {6} (4);
-\draw (4) to[] node[label above] {3} (5);
-\draw (5) to[] node[label above] {1} (8);
-\draw (8) to[] node[label above] {2} (t);
+\begin{scope}[random seed=1, spring layout, node distance=1.8cm]
+\node(a) {a};
+\node(b) {b};
+\node(c) {c};
+\node(d) {d};
+\node(e) {e};
+\node(f) {f};
+\node(g) {g};
+\node(h) {h};
+\node(i) {i};
+\node(j) {j};
 
-\draw (3) to[] node[label above] {2} (2);
-\draw (5) to[] node[label above] {7} (7);
-\draw (2) to[bend left] node[label above] {7} (5);
-\draw (7) to[bend right] node[label below] {7} (t);
+\graph{
+	(a) -> (b);
+	(b) -> {(d), (e)};
+	(d) -> {(f), (h)};
+	(f) -> {(g), (h), (c)};
+	(h) -> {(g), (i), (e)};
+	{[edges={blue, dashed}]
+		(a) -> (c) -> (d) -> (e) -> (i) -> (g) -> (j);
+	}
+};
 
-\begin{scope}[dashed, blue]
-\draw (s) to[] node[label below] {4} (3);
-\draw (3) to[] node[label below] {5} (4);
-\draw (4) to[] node[label below] {1} (6);
-\draw (6) to[] node[label below] {3} (7);
-\draw (7) to[] node[label below] {1} (9);
-\draw (9) to[] node[label below] {4} (t);
+\node(pa) {a'};
+\node(pb) {b'};
+\node(pc) {c'};
+\node(pd) {d'};
+\node(pe) {e'};
+\node(pf) {f'};
+\node(pg) {g'};
+\node(ph) {h'};
+
+\graph{
+	(pa) -> (pb);
+	(pb) -> {(pd), (pe)};
+	(pd) -> {(pf), (ph)};
+	(pf) -> {(pg), (ph), (pc)};
+	(ph) -> {(pg), (pe)};
+	(pe) -> (ph);
+};
 \end{scope}
 
-\node[clear node] at(0,3) {Virtual DAG};
-\draw[-, gray, ultra thin, dashed] (-1,-2) -- (13, -2);
-\node[clear node] at(0,-6) {Physical DAG};
-
-\node(ps) at(1,-4) {s};
-\node(p2) at(3,-3) {2};
-\node(p3) at(3,-5) {3};
-\node(p4) at(5,-3) {4};
-\node(p5) at(5,-5) {5};
-\node(p6) at(7,-4) {6};
-\node(p7) at(9,-3) {7};
-\node(p8) at(9,-5) {8};
-\node(pt) at(11,-4) {t};
-
-\draw (ps) to[] node[label below] {4} (p3);
-\draw (p3) to[] node[label below] {2} (p4);
-\draw (p4) to[] node[label below] {5} (p6);
-\draw (p6) to[] node[label below] {3} (p7);
-\draw (p7) to[] node[label below] {1} (p8);
-\draw (p8) to[] node[label below] {4} (pt);
-
-\draw (ps) to[] node[label above] {4} (p2);
-\draw (p2) to[] node[label above] {2} (p4);
-\draw (p4) to[] node[label above] {5} (p5);
-\draw (p5) to[] node[label above] {3} (p6);
-\draw (p6) to[] node[label above] {4} (p8);
-\draw (p8) to[] node[label above] {4} (pt);
-
-\draw (p3) to[bend right] node[label above] {4} (p8);
-
-
-\draw[dotted, orange, -]
-(s.west) to[out=-90, in=-90] node(j1)[midway, clear node] {}
-(4.east) to[out=90, in=0]
-(4.north) to[out=180, in=0]
-(s.north) to[out=180, in=90]
-(s.west)
+\begin{scope}[dotted, orange, -]
+\draw
+(a.north east) to[out=135, in=45] node(j1)[midway, clear node] {}
+(c.north west) to[out=225, in=135]
+(d.south west) to[out=-45, in=-45]
+(a.north east)
 ;
 
-\draw[dotted, orange, -]
-(6.west) to[out=-90, in=-90] node(j2)[midway, clear node] {}
-(7.east) to[out=90, in=90]
-(6.west)
+\draw
+(e.east) to[out=-90, in=-90] node(j2)[midway, clear node] {}
+(i.west) to[out=90, in=90]
+(e.east)
 ;
 
-\draw[dotted, orange, -]
-(9.west) to[out=-90, in=-90] node(j3)[midway, clear node] {}
-(t.east) to[out=90, in=90]
-(9.west)
+\draw
+(g.east) to[out=-90, in=-90] node(j3)[midway, clear node] {}
+(j.west) to[out=90, in=90]
+(g.east)
 ;
 
-\begin{scope}[orange, dotted]
-\draw[decorate,decoration=snake] (j1) -- (p2);
-\draw[decorate,decoration=snake] (j2) -- (p6);
-\draw[decorate,decoration=snake] (j3) -- (p7);
+\draw[->] (j1) to[bend left] (pa);
+\draw[->] (j2) to[bend right] (pe);
+\draw[->] (j3) to[bend right] (pg);
 \end{scope}
+	
+
+\node[clear node] at(-5,0) {Virtual Graph};
+\node[clear node] at(5, -2){Physical Graph};
 
 \end{tikzpicture}
