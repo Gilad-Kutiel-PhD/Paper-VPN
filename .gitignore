@@ -19,3 +19,5 @@
 *#
 /out/
 /tmp/
+*.fdb_latexmk
+*.fls
