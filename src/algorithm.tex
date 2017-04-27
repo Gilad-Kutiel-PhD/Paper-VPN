@@ -4,35 +4,62 @@ We are given an instance of the VPN problem
 D_v = (V_v, A_v)			\\
 D_p = (V_p, A_p)			\\
 (s_v, t_v, s_p, t_p)	\\
-(p_d, b_d, p_c, b_c)	\\
-c
+(p_d, b_d, p_c, b_c, c)	\\
 \end{align}
 For now assume all values are integral and polynomial bounded in the size of the input.
 
-We start with the following:
-For an ancestor $a_v$ of $t'_v$ denote by $C(a_v)$ its children.
-Let $a_p$ be an ancestor of $t'_p$ we want to find an embedding of minimum cost
-of some virtual $c_vt'_v$-path into the node $t'_p$, 
-where $c_v \in C(a_v)$.
-Observe that once $c_v$ is chosen the arc $(a_v, c_v)$ determines completely
-whether a physical path with a feasible bottleneck exists, namely, a physical
-path exists if and only if there is a physical $s'_vt'_v$-path containing only
-arcs with bandwidth at least $b_d(a_v, c_v)$.
+For a vertex $v$ let $C(v)$ be the set of its children.
+Let $O'(s'_v, t'_v, s'_p, t'_p)$ be the optimal embedding of some virtual
+$C(s'v)t'_v$-path into the physical vertex $t'_p$ such that the bottleneck
+between $s'_p$ and $t'_p$ is at least $b_d(s'_v, t'_v)$.
+Let $c_v \in C(s'_v)$ and observe that once $c_v$ is chosen the arc 
+$(s'_v, c_v)$ determines completely whether a physical path with a feasible
+bottleneck exists, namely, 
+a physical path exists if and only if there is a physical $s'_vt'_v$-path containing only
+arcs with bandwidth at least $b_d(s'_v, c_v)$.
 On the other hand, the set of $c_vt'_v$-paths
 determine completely the cost (and processing-wise feasibility) of the embedding.
-Among all the $c_vt'_v$-paths we want to select the one that minimize the
-embedding cost under the processing capacity constraints.
 Figure \todo{} depicts the above observations.
 
 \begin{figure}[ht]
 \centering
 \input{fig-dp}
+\caption[]{
+\begin{enumerate*}
+\item Computing $O'(s'_v, t'_v, s'_p, t'_p)$.
+\item The set of $c_dt'_v$-paths determines completely the cost of the embedding
+\item 
+The arc $(s'_v, c_d)$ determines completely the connectivity of $s'_p$ and
+$t'_p$, i.e. physical arcs with bandwidth less than $b_d(s'_v, c_d)$ can not be
+used.
+\end{enumerate*}
+}
 \end{figure}
 
-\todo{define bn(i, j) to be the bottleneck between i and j}
-We claim that $\min(ai, bj)$ can be found efficiently 
+Among all the $c_vt'_v$-paths we want to select the one that minimize the
+embedding cost under the processing capacity constraints.
+This can be done... 
 \todo{describe how}
+Calculating $O'(s'_v, t'_v, s'_p, t'_p)$ can be done simply by finding the
+optimal path among all children of $s'_v$.
 
+Let $O(t'_v, t'_p)$ be the optimal embedding of some virtual $s_vt'_v$-path
+into some physical $s_pt'_p$-path then $O(t_v, t_p)$ is the global optimal
+embedding.
+Also $O(t'_v, s_p)$ can be computed efficiently for every $t'_v$ as described
+above, and $O(s_v, t'_v)$ is simply the minimum cost of embedding $s_v$ in any
+physical vertex $s'_p$ such that a physical $s'_pt'_v$-path exists.
+For an arbitrary vertices $t'_v$, and $t'_p$, $O(t'_v, t'_p)$ can be computed
+efficiently using dynamic programming with the following recursion formula:
+$$
+O(t'_v, t'_p) = 
+\min_{\substack{
+s'_v \in P(t'_v)
+\\
+s'_p \in P(t'_p)
+}}
+O(s'_v, s'_p) + O'(s'_v, t'_v, s'_p, t'_p)
+$$ 
 \todo{argue about scaling and rounding}
 
  

@@ -2,10 +2,10 @@
 
 \node[clear node] at(-3, 0) {$\dots$};
 
-\node(s) at(-2,0) {$a_v$};
+\node(s) at(-2,0) {$s'_v$};
 
 \node(c1) at(1,1) {$c_1$};
-\node[clear node] at (2,0) {$\vdots$};
+\node[clear node] at (1,0) {$\vdots$};
 \node(c2) at(1,-1) {$c_d$};
 
 \node(t) at(5, 0) {$t'_v$};
@@ -39,6 +39,7 @@ node[clear node, pos=0.5](c1n){}
 \node[clear node] at (-3,-5) {$\dots$};
 
 \node(sp) at(-2, -5) {$s'_p$};
+\node[clear node] at (1,-5) {$\vdots$};
 \node(tp) at(5, -5) {$t'_p$};
 
 \node[clear node] at (6,-5) {$\dots$};
@@ -48,7 +49,7 @@ node[clear node, pos=0.5](c1n){}
 node[pos=0.5, clear node](p1){}
 (tp.north west)
 ;
-\draw[decorate] (sp) to[] 
+\draw[decorate] (sp) to[bend left, looseness=.5] 
 node[pos=0.3, clear node](p2){}
 (tp);
 \draw[decorate]	(sp.south east) to[bend right] (tp.south west);
