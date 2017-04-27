@@ -8,20 +8,31 @@ D_p = (V_p, A_p)			\\
 c
 \end{align}
 For now assume all values are integral and polynomial bounded in the size of the input.
-Sort the DAGs topologically and assume w.l.o.g that $s_v = s_p = 1$,
-$t_v = n$, and $t_p = m$.
-Let $O(i, j)$ be the optimal embedding of any $1i$ virtual path, 
-into a $1j$ physical path.
-We can compute $O(i, j)$ as follow:
-$$
-O(i, j) = \min_{a \text{ ancestor of } i} \min_{b \text{ ancestor of } j} O(a, b)
-+ \min_(ai, bj)
-$$
-Where $\min(ai, bj)$ is the optimal embedding of a virtual 
-path starting at any child of $a$, $a'$ and ending at $i$ into node $j$
-that respect the bottleneck constraint, i.e. $b_d(a, a') \leg bn(b, j)$.
+
+We start with the following:
+For an ancestor $a_v$ of $t'_v$ denote by $C(a_v)$ its children.
+Let $a_p$ be an ancestor of $t'_p$ we want to find an embedding of minimum cost
+of some virtual $c_vt'_v$-path into the node $t'_p$, 
+where $c_v \in C(a_v)$.
+Observe that once $c_v$ is chosen the arc $(a_v, c_v)$ determines completely
+whether a physical path with a feasible bottleneck exists, namely, a physical
+path exists if and only if there is a physical $s'_vt'_v$-path containing only
+arcs with bandwidth at least $b_d(a_v, c_v)$.
+On the other hand, the set of $c_vt'_v$-paths
+determine completely the cost (and processing-wise feasibility) of the embedding.
+Among all the $c_vt'_v$-paths we want to select the one that minimize the
+embedding cost under the processing capacity constraints.
+Figure \todo{} depicts the above observations.
+
+\begin{figure}[ht]
+\centering
+\input{fig-dp}
+\end{figure}
+
 \todo{define bn(i, j) to be the bottleneck between i and j}
 We claim that $\min(ai, bj)$ can be found efficiently 
 \todo{describe how}
 
 \todo{argue about scaling and rounding}
+
+ 
