@@ -1,6 +1,6 @@
-We are given a virtual DAG $D_v = (V_v, A_v)$ 
+We are given a virtual directed graph $D_v = (V_v, A_v)$ 
 with source and destination vertices $s_v, t_v$ respectively, 
-a physical DAG $D_p = (V_p, A_p)$
+a physical directed graph $D_p = (V_p, A_p)$
 with source and destination vertices $s_p, t_p$ respectively,
 demand functions $p_d : V_v \to \R$, $b_d : E_v \to \R$,
 capacity functions $p_c : V_p \to \R$, $b_c : E_p \to \R$,
@@ -21,6 +21,7 @@ for all $1 \leq i \leq k$ it holds that:
   \item $p_c(\psi(j_i)) \geq \sum_{v \in V(j_i)} p_d(v)$
   \item There is a physical path, $\pi_i$ from $\psi(j_i)$ to $\psi(j_{i+1})$ with a
   bottleneck at least $b_d(v_{j_i}, v_{j_{i+1}})$.
+  \item $\bigcup_{i = 1}^k \pi_i$ is a simple path.
 \end{enumerate}
 The \emph{cost} of a (feasible) embedding, $e_P$ is given by:
 $\sum_{i = 1}^k \sum_{v \in V(j_i)} c(v, e_P(j_i))$.   
