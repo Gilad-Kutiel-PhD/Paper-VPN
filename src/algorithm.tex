@@ -28,7 +28,7 @@ We claim that $O$ can be computed recursively as follow:
 \begin{align*}
 &O(v_v, v_p) = 
 \min_{\substack{
-u_v : pi(u_v) < pi(v_v), 
+u_v : pi(u_v) \leq pi(v_v), 
 \\
 u_pv_p \in A_p
 }}
@@ -38,6 +38,18 @@ O(u_v, u_p)
 \\
 &O(s_v, v_p) = c(s_v, v_p)
 \end{align*}
+
+\begin{figure}[ht]
+\centering
+\input{fig-dp1}
+\caption[]{
+The optimal embedding of a $s_vw_v$-path into a $s_pw_p$ path can be efficiently 
+computed by breaking the problem into the problem of embedding a $s_vu_v$-path
+into a $s_pv_p$-path (blue, dashed rectangles) 
+and the problem of embedding a $u_vw_v$-path into $w_p$ (red, dotted
+rectangles).
+}
+\end{figure}
 
 
 % For a physical vertex $v_p$ we define 
