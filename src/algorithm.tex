@@ -33,27 +33,27 @@ $P$ can be computed recursively as follow:
 \end{align*}
  
 We now show how to compute the optimal embedding.
-Let $C(\gamma , w_p)$ denote the
-optimal embedding of a $\sigma \gamma $-path into a $sw_p$-path.
+Let $C(\gamma , w)$ denote the
+optimal embedding of a $\sigma \gamma $-path into a $sw$-path.
 Let $\pi:\beta  \to \N$ be any typological ordering of $\beta $. 
 We claim that $O$ can be computed recursively as follow:
 \begin{align*}
-&C(\gamma , w_p) = 
+&C(\gamma , w) = 
 \min_{\substack{
 \alpha  : pi(\alpha ) \leq pi(\beta ), 
 \\
-vw_p \in A_p
+vw \in A_p
 }}
-C(\alpha , u_p)
+C(\alpha , u)
 +
-\argmin_{C : P_{w_p}(\beta , \gamma , C) \leq p_c(w_p)}
+\argmin_{C : P_{w}(\beta , \gamma , C) \leq p_c(w)}
 \\
-&C(\sigma , w_p) = c(\sigma , w_p)
+&C(\sigma , w) = c(\sigma , w)
 \end{align*}
 Now, to compute the optimal embedding, one need to compute $C(\tau , t)$. 
 We also note that in order to obey to the bandwidth constraints, 
 one need to temporally remove all edges $\alpha \beta $ with bandwidth greater than
-$b_c(v, w_p)$ from the virtual graph and only then compute $P_{w_p}(\beta , \gamma , C)$.
+$b_c(v, w)$ from the virtual graph and only then compute $P_{w}(\beta , \gamma , C)$.
 The above formulation is illustrated in Figure~\ref{fig:dp1}.
 
 \begin{figure}[ht]
@@ -61,10 +61,10 @@ The above formulation is illustrated in Figure~\ref{fig:dp1}.
 \input{fig-dp1}
 \caption[]{
 \label{fig:dp1}
-The optimal embedding of a $\sigma \gamma $-path into a $sw_p$ path can be efficiently 
+The optimal embedding of a $\sigma \gamma $-path into a $sw$ path can be efficiently 
 computed by breaking the problem into the problem of embedding a $\sigma \alpha $-path
 into a $sv$-path (blue, dashed rectangles) 
-and the problem of embedding a $\alpha \gamma $-path into $w_p$ (red, dotted
-rectangles) where $b_d(\alpha , \beta ) \leq b_c(v, w_p)$.
+and the problem of embedding a $\alpha \gamma $-path into $w$ (red, dotted
+rectangles) where $b_d(\alpha , \beta ) \leq b_c(v, w)$.
 }
 \end{figure}
