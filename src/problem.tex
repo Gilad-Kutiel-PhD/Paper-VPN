@@ -26,14 +26,29 @@ for all $1 \leq i \leq k$ it holds that:
 The \emph{cost} of a (feasible) embedding, $e_P$ is given by:
 $\sum_{i = 1}^k \sum_{v \in V(j_i)} c(v, e_P(j_i))$.   
 
-In the Service Chain Placement in SDN problem the goal is to find a
+In the \VPN problem the goal is to find a
 feasible embedding of a virtual path into the physical DAG that minimizes the
 cost.
+Figure~\ref{fig:problem} illustrate an embedding of a virtual request into a
+physical network. 
 
 \begin{figure}[ht]
 \centering
 \scalebox{.8}{
 \input{fig-embedding}
 }
-
+\caption{
+An embedding of a graph representation of a virtual request (on the left) into
+the physical network (on the right).
+The source and destination vertices are dashed, as well as the chosen virtual
+path.
+The numbers on the vertices represent the processing demand and capacity
+respectively, 
+the numbers on the edges represent the bandwidth demand and capacity
+respectively.
+The partition of the virtual path and its embedding are marked by the orange,
+dotted arrows.
+The cost function is not depicts in this figure.
+\label{fig:problem}
+}
 \end{figure}
