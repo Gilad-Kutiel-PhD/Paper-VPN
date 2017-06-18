@@ -1,9 +1,9 @@
 In this section we present an FPTAS algorithm to the \VPN{} problem.
 We are given an instance of the \VPN{} problem 
 \begin{align*}
-D_v = (V_v, A_v)		\\
-D_p = (V_p, A_p)		\\
-(s_v, t_v, s_p, t_p)	\\
+D_v = (\beta , A_v)		\\
+D_p = (v, A_p)		\\
+(\sigma , \tau , s, t)	\\
 (p_d, b_d, p_c, b_c, c)
 \end{align*}
 For now, assume all values are integral and polynomial bounded in the size of
@@ -14,46 +14,46 @@ We then argue that, using a standard scaling and rounding technique, we can use
 the same computation to achieve a solution with a cost only
 $1 + \varepsilon$ times greater that of the optimal solution, for any
 $\varepsilon > 0$.
-Also, for convenient and w.l.o.g, assume that $s_v, t_v$ are dummy vertices, 
-i.e. $c(s_v, v_p) = c(t_v, v_p) = 0$ for every $v_p \in V_p$.
+Also, for convenient and w.l.o.g, assume that $\sigma , \tau $ are dummy vertices, 
+i.e. $c(\sigma , v) = c(\tau , v) = 0$ for every $v \in v$.
 
 We start by arguing that the minimum processing time required to embed some
-$u_vw_v$-path into a vertex $v_p$ can be computed efficiently.
-Let $P_{v_p}(u_v, w_v, C)$ denote the minimum processing required to embed
-all the virtual vertices, excluding $u_v$, on a $u_vw_v$-path into the physical
-vertex $v_p$ with cost constraint $C$.
+$\alpha \gamma $-path into a vertex $v$ can be computed efficiently.
+Let $P_{v}(\alpha , \gamma , C)$ denote the minimum processing required to embed
+all the virtual vertices, excluding $\alpha $, on a $\alpha \gamma $-path into the physical
+vertex $v$ with cost constraint $C$.
 $P$ can be computed recursively as follow:
 \begin{align*}
-&P_{v_p}(u_v, w_v, C) = 
-\min_{v_vv_v \in A_v} P_{v_p}(u_v, v_v, C - c(w_v, v_p))
+&P_{v}(\alpha , \gamma , C) = 
+\min_{\alpha \beta  \in A_v} P_{v}(\alpha , \beta , C - c(\gamma , v))
 \\
-&P(u_v, u_v, C) = 0
+&P(\alpha , \alpha , C) = 0
 \\
 &P(-, -, <0) = \infty
 \end{align*}
  
 We now show how to compute the optimal embedding.
-Let $C(w_v, w_p)$ denote the
-optimal embedding of a $s_vw_v$-path into a $s_pw_p$-path.
-Let $\pi:V_v \to \N$ be any typological ordering of $V_v$. 
+Let $C(\gamma , w_p)$ denote the
+optimal embedding of a $\sigma \gamma $-path into a $sw_p$-path.
+Let $\pi:\beta  \to \N$ be any typological ordering of $\beta $. 
 We claim that $O$ can be computed recursively as follow:
 \begin{align*}
-&C(w_v, w_p) = 
+&C(\gamma , w_p) = 
 \min_{\substack{
-u_v : pi(u_v) \leq pi(v_v), 
+\alpha  : pi(\alpha ) \leq pi(\beta ), 
 \\
-v_pw_p \in A_p
+vw_p \in A_p
 }}
-C(u_v, u_p)
+C(\alpha , u_p)
 +
-\argmin_{C : P_{w_p}(v_v, w_v, C) \leq p_c(w_p)}
+\argmin_{C : P_{w_p}(\beta , \gamma , C) \leq p_c(w_p)}
 \\
-&C(s_v, w_p) = c(s_v, w_p)
+&C(\sigma , w_p) = c(\sigma , w_p)
 \end{align*}
-Now, to compute the optimal embedding, one need to compute $C(t_v, t_p)$. 
+Now, to compute the optimal embedding, one need to compute $C(\tau , t)$. 
 We also note that in order to obey to the bandwidth constraints, 
-one need to temporally remove all edges $u_vv_v$ with bandwidth greater than
-$b_c(v_p, w_p)$ from the virtual graph and only then compute $P_{w_p}(v_v, w_v, C)$.
+one need to temporally remove all edges $\alpha \beta $ with bandwidth greater than
+$b_c(v, w_p)$ from the virtual graph and only then compute $P_{w_p}(\beta , \gamma , C)$.
 The above formulation is illustrated in Figure~\ref{fig:dp1}.
 
 \begin{figure}[ht]
@@ -61,10 +61,10 @@ The above formulation is illustrated in Figure~\ref{fig:dp1}.
 \input{fig-dp1}
 \caption[]{
 \label{fig:dp1}
-The optimal embedding of a $s_vw_v$-path into a $s_pw_p$ path can be efficiently 
-computed by breaking the problem into the problem of embedding a $s_vu_v$-path
-into a $s_pv_p$-path (blue, dashed rectangles) 
-and the problem of embedding a $u_vw_v$-path into $w_p$ (red, dotted
-rectangles) where $b_d(u_v, v_v) \leq b_c(v_p, w_p)$.
+The optimal embedding of a $\sigma \gamma $-path into a $sw_p$ path can be efficiently 
+computed by breaking the problem into the problem of embedding a $\sigma \alpha $-path
+into a $sv$-path (blue, dashed rectangles) 
+and the problem of embedding a $\alpha \gamma $-path into $w_p$ (red, dotted
+rectangles) where $b_d(\alpha , \beta ) \leq b_c(v, w_p)$.
 }
 \end{figure}
