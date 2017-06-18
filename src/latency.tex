@@ -13,7 +13,26 @@ We now show that if all values are integral and polynomial bounded, we can
 efficiently find a feasible embedding with a cost bounded by $C$ that minimize
 the latency.
 
-Let $O(t'_v, t'_p, C)$ be an embedding of some virtual $s_vt'_v$-path 
-into a physical $s_pt'_p$-path that has cost not more than $C$ and that
-minimizes the latency.
+Let $L(w_v, w_p, C)$ denote the minimum possible latency result from an
+embedding of some virtual $s_vw_v$-path into a physical $s_pw_p$-path 
+that has cost not more than $C$.
 
+We claim that $L(w_v, w_p, C)$ can be computed efficiently as follow:
+\begin{align*}
+&L(w_v, w_p, C) = \min_{\substack{
+u_v : pi(u_v) \leq pi(v_v), 
+\\
+v_pw_p \in A_p
+\\
+\delta : P(u_v, w_v, \delta) \leq p_c(w_p)
+}}
+l(v_p, w_p) + L(u_v, v_p, C - \delta)
+\\
+&L(s_v, w_p, >=0) = 0
+\\
+&L(-, -, <0) = \infty
+\end{align*} 
+
+Now, to compute the optimal embedding with the additional latency constraint,
+$L$, one can simply (binary) search for the minimum value of $C$ such that
+$L(t_v, t_p, C) \leq L$.  

@@ -1,48 +1,66 @@
-In this section we present an FPTAS algorithm to the \VPN problem.
-We are given an instance of the \VPN problem 
+In this section we present an FPTAS algorithm to the \VPN{} problem.
+We are given an instance of the \VPN{} problem 
 \begin{align*}
 D_v = (V_v, A_v)		\\
 D_p = (V_p, A_p)		\\
 (s_v, t_v, s_p, t_p)	\\
 (p_d, b_d, p_c, b_c, c)
 \end{align*}
-For now assume all values are integral and polynomial bounded in the size of the input.
+For now, assume all values are integral and polynomial bounded in the size of
+the input.
+Under this assumption we show that an optimal embedding can be computed
+efficiently.
+We then argue that, using a standard scaling and rounding technique, we can use
+the same computation to achieve a solution with a cost only
+$1 + \varepsilon$ times greater that of the optimal solution, for any
+$\varepsilon > 0$.
+Also, for convenient and w.l.o.g, assume that $s_v, t_v$ are dummy vertices, 
+i.e. $c(s_v, v_p) = c(t_v, v_p) = 0$ for every $v_p \in V_p$.
 
-Let $T_{v_p}(u_v, w_v, C)$ denote the minimum processing required to embed
+We start by arguing that the minimum processing time required to embed some
+$u_vw_v$-path into a vertex $v_p$ can be computed efficiently.
+Let $P_{v_p}(u_v, w_v, C)$ denote the minimum processing required to embed
 all the virtual vertices, excluding $u_v$, on a $u_vw_v$-path into the physical
 vertex $v_p$ with cost constraint $C$.
-$T$ can be computed recursively as follow:
+$P$ can be computed recursively as follow:
 \begin{align*}
-&T_{v_p}(u_v, w_v, C) = 
-\min_{v_vv_v \in A_v} T_{v_p}(u_v, v_v, C - c(w_v, v_p))
+&P_{v_p}(u_v, w_v, C) = 
+\min_{v_vv_v \in A_v} P_{v_p}(u_v, v_v, C - c(w_v, v_p))
 \\
-&T(u_v, u_v, C) = 0
+&P(u_v, u_v, C) = 0
 \\
-&T(-, -, <0) = \infty
+&P(-, -, <0) = \infty
 \end{align*}
  
-Let $O(v_v, v_p)$ denote the optimal embedding of a $s_vv_v$-path into a
-$s_pv_p$-path.
-Let $pi:V_v \to \N$ be any typological ordering of $V_v$. 
+We now show how to compute the optimal embedding.
+Let $C(w_v, w_p)$ denote the
+optimal embedding of a $s_vw_v$-path into a $s_pw_p$-path.
+Let $\pi:V_v \to \N$ be any typological ordering of $V_v$. 
 We claim that $O$ can be computed recursively as follow:
 \begin{align*}
-&O(v_v, v_p) = 
+&C(w_v, w_p) = 
 \min_{\substack{
 u_v : pi(u_v) \leq pi(v_v), 
 \\
-u_pv_p \in A_p
+v_pw_p \in A_p
 }}
-O(u_v, u_p)
+C(u_v, u_p)
 +
-\argmin_{C : T_{v_p}(u_v, v_v, C) \leq p_c(v_p)}
+\argmin_{C : P_{w_p}(v_v, w_v, C) \leq p_c(w_p)}
 \\
-&O(s_v, v_p) = c(s_v, v_p)
+&C(s_v, w_p) = c(s_v, w_p)
 \end{align*}
+We note that in order to obey to the bandwidth constraints, 
+one need to temporally remove all edges $u_vv_v$ with bandwidth greater than
+$b_c(v_p, w_p)$ from the virtual graph and only then compute $P_{w_p}(v_v, w_v,
+C)$.
+The above formulation is illustrated in Figure~\ref{fig:dp1}.
 
 \begin{figure}[ht]
 \centering
 \input{fig-dp1}
 \caption[]{
+\label{fig:dp1}
 The optimal embedding of a $s_vw_v$-path into a $s_pw_p$ path can be efficiently 
 computed by breaking the problem into the problem of embedding a $s_vu_v$-path
 into a $s_pv_p$-path (blue, dashed rectangles) 
@@ -50,70 +68,3 @@ and the problem of embedding a $u_vw_v$-path into $w_p$ (red, dotted
 rectangles) where $b_d(u_v, v_v) \leq b_c(v_p, w_p)$.
 }
 \end{figure}
-
-
-% For a physical vertex $v_p$ we define 
-% $c_{v_p}(u_v, v_v):A_v \to \R = c(v_v, v_p)$.
-% Given two virtual vertices $s'_v, t'_v$ and a physical vertex $v_p$, 
-% one can verify that the minimum cost of embedding any 
-% 
-% 
-% we would like to find an optimal embedding of an $s'_vt'_v$-path into
-% $v_p$.
-% A solution to this sub-problem can be found as follow:
-% First we build the \emph{cost graph} correspond to $s'_v, t'_v$ and $v_p$, 
-% the cost graph is a graph that lets us (efficiently) compute the cost of em  
-% 
-% For a vertex $v$ let $C(v)$ be the set of its children.
-% Let $O'(s'_v, t'_v, s'_p, t'_p)$ be the optimal embedding of some virtual
-% $C(s'v)t'_v$-path into the physical vertex $t'_p$ such that the bottleneck
-% between $s'_p$ and $t'_p$ is at least $b_d(s'_v, t'_v)$.
-% Let $c_v \in C(s'_v)$ and observe that once $c_v$ is chosen the arc 
-% $(s'_v, c_v)$ determines completely whether a physical path with a feasible
-% bottleneck exists, namely, 
-% a physical path exists if and only if there is a physical $s'_vt'_v$-path containing only
-% arcs with bandwidth at least $b_d(s'_v, c_v)$.
-% On the other hand, the set of $c_vt'_v$-paths
-% determine completely the cost (and processing-wise feasibility) of the embedding.
-% Figure depicts the above observations.
-% 
-% \begin{figure}[ht]
-% \centering
-% \input{fig-dp}
-% \caption[]{
-% \begin{enumerate*}
-% \item Computing $O'(s'_v, t'_v, s'_p, t'_p)$.
-% \item The set of $c_dt'_v$-paths determines completely the cost of the embedding
-% \item 
-% The arc $(s'_v, c_d)$ determines completely the connectivity of $s'_p$ and
-% $t'_p$, i.e. physical arcs with bandwidth less than $b_d(s'_v, c_d)$ can not be
-% used.
-% \end{enumerate*}
-% }
-% \end{figure}
-% 
-% Among all the $c_vt'_v$-paths we want to select the one that minimize the
-% embedding cost under the processing capacity constraints.
-% This can be done... 
-% Calculating $O'(s'_v, t'_v, s'_p, t'_p)$ can be done simply by finding the
-% optimal path among all children of $s'_v$.
-% 
-% Let $O(t'_v, t'_p)$ be the optimal embedding of some virtual $s_vt'_v$-path
-% into some physical $s_pt'_p$-path then $O(t_v, t_p)$ is the global optimal
-% embedding.
-% Also $O(t'_v, s_p)$ can be computed efficiently for every $t'_v$ as described
-% above, and $O(s_v, t'_v)$ is simply the minimum cost of embedding $s_v$ in any
-% physical vertex $s'_p$ such that a physical $s'_pt'_v$-path exists.
-% For an arbitrary vertices $t'_v$, and $t'_p$, $O(t'_v, t'_p)$ can be computed
-% efficiently using dynamic programming with the following recursion formula:
-% $$
-% O(t'_v, t'_p) = 
-% \min_{\substack{
-% s'_v \in P(t'_v)
-% \\
-% s'_p \in P(t'_p)
-% }}
-% O(s'_v, s'_p) + O'(s'_v, t'_v, s'_p, t'_p)
-% $$ 
-% 
-%  
