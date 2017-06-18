@@ -50,10 +50,10 @@ C(u_v, u_p)
 \\
 &C(s_v, w_p) = c(s_v, w_p)
 \end{align*}
-We note that in order to obey to the bandwidth constraints, 
+Now, to compute the optimal embedding, one need to compute $C(t_v, t_p)$. 
+We also note that in order to obey to the bandwidth constraints, 
 one need to temporally remove all edges $u_vv_v$ with bandwidth greater than
-$b_c(v_p, w_p)$ from the virtual graph and only then compute $P_{w_p}(v_v, w_v,
-C)$.
+$b_c(v_p, w_p)$ from the virtual graph and only then compute $P_{w_p}(v_v, w_v, C)$.
 The above formulation is illustrated in Figure~\ref{fig:dp1}.
 
 \begin{figure}[ht]
