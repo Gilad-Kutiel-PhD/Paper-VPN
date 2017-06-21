@@ -8,7 +8,7 @@
 \node(v3) at(6.5,-1) {};
 \node(tv) at(10,0) {$\gamma$};
 
-\draw[cloud] 
+\draw[cloud, blue, dashed] 
 ($(sv.west) + (-.3,0)$)	to[out=90, in=90] 
 ($(v0.east) + (.3, 0)$)	to[out=-90, in=-90]
 ($(sv.west) + (-.3,0)$)
@@ -32,7 +32,7 @@ node[label above, above=2mm] {$P_{v}(\alpha , \gamma, C)$}
 \node(p3) at(5, -6){};
 \node(t) at(7.5,-5) {v};
 
-\draw[cloud] 
+\draw[cloud, blue, dashed] 
 ($(s.west) + (-.3,0)$)			to[out=85, in=150] 
 ($(p1.north east) + (.3, 0)$)	to[out=-90, in=90]
 ($(p3.south east) + (.3, 0)$)	to[out=210, in=-85]
