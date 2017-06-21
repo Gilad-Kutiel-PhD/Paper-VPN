@@ -8,6 +8,7 @@
 	shapes,
 	decorations.pathmorphing,
 	decorations.markings,
+	decorations.pathreplacing,
 	quotes,
 }
 
@@ -42,6 +43,7 @@
 
 % LABELS
 \tikzset{label/.style={
+	shape=rectangle,
 	draw=none,
 	sloped,
 	midway,
@@ -49,21 +51,36 @@
 
 \tikzset{label above/.style={
 	label,
-	above=-4mm,
+	above=.5mm,
 }}
 
 \tikzset{label below/.style={
 	label,
-	below=-4mm,
+	below=.5mm,
 }}
 
 % EDGES
-\tikzset{path/.style={
-	decorate, 
-	decoration={snake, segment length=18pt},
-	thin,
-	gray,
+\tikzset{
+	light/.style={
+		thin,
+		gray,
+	},
+	path/.style={
+		light,
+		decorate, 
+		decoration={snake, segment length=18pt},
+	},
+	brace/.style={
+		decorate,
+		decoration={brace, amplitude=5},
+		-,
+	},
+}
+
+\tikzset{cloud/.style={
+	path,
 	-,
+	decoration={snake, segment length=24pt},
 }}
 
 % MISC
