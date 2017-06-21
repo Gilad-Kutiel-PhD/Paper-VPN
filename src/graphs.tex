@@ -1,0 +1,44 @@
+In this section we consider the problem on undirected (physical) graphs.
+Once again we seek to embed a virtual $\sigma\tau$-path 
+into a simple physical $st$-path.
+Note, that we still assume that the virtual graph is a DAG. 
+
+We extend our algorithm to work also for this case as well.
+Recall that the problem on general graphs cannot be approximate at all,
+thus we assume in this section that the there exists an optimal embedding using
+at most $k$ \emph{heavy} vertices, thus are vertices with degree greater than two.
+The modified algorithm runs in time polynomial in the input length and
+exponential in $k$ and achieves the same guarantees as before with high
+probability.
+
+The modified algorithm acts as follow:
+let $K = {v_1, \ldots, v_k}$ be the set of heavy vertices, and let 
+$\pi:[k] \to [k]$ be a random permutation.
+Let $v_1, v_l \in K$ be two heavy vertices such that $\pi(v_1) < \pi(v_l)$ and
+let $w_1, \ldots, w_l$ any light path between them, i.e. a path that does not
+contains any other heavy vertex.
+We orient the edges from $u$ to $v$, i.e. $(w_i, w_{i+1})$ for every 
+$1 \leq i \leq l - 1$.
+One can be verify that this can be done efficiently and that after this process
+each edge become an arc and that $G$ is a DAG.
+
+Completing the orientation, we use our previous algorithm to find an optimal
+embedding.
+We repeat this process, each time with a new independent random permutation, and
+keep the best embedding so far.
+
+We claim that with high probability, after $O(k!)$ iterations, the above
+algorithm finds the optimal embedding, formally:
+
+\begin{theorem}
+With probability at least $1 - e^{-x}$ the algorithm finds the optimal embedding
+after $xk!$ iterations.
+\end{theorem}
+
+\begin{proof}
+Consider an optimal embedding and the order it induces on the heavy vertices,
+If the random permutation order the heavy vertices in that order we are
+guaranteed to find the optimal embedding.
+This happens with probability $1/k!$ and the probability to miss the optimal
+embedding after $xk!$ iterations is $1 - (1 - 1/k!)^{xk!} \leq 1 - e^{-x}$.
+\end{proof}
