@@ -1,4 +1,13 @@
-In this section we present an FPTAS algorithm to the \VPN{} problem.
+In this section, 
+assuming costs are integral and polynomial bounded in the input length,
+we present an efficient algorithm to the \VPN{} problem.
+We then argue that, using a standard scaling and rounding technique, we can use
+the same computation to achieve a solution with a cost only
+$1 + \varepsilon$ times greater that of the optimal solution, for any
+$\varepsilon > 0$, i.e. an FPTAS also for an arbitrary cost function.
+We also extend our algorithm when every physical arc carry some latency on it
+and a global latency constraint is given.
+
 We are given an instance of the \VPN{} problem 
 \begin{align*}
 D_v = (\beta , A_v)		\\
@@ -6,22 +15,16 @@ D_p = (v, A_p)		\\
 (\sigma , \tau , s, t)	\\
 (p_d, b_d, p_c, b_c, c)
 \end{align*}
-For now, assume all values are integral and polynomial bounded in the size of
-the input.
-Under this assumption we show that an optimal embedding can be computed
-efficiently.
-We then argue that, using a standard scaling and rounding technique, we can use
-the same computation to achieve a solution with a cost only
-$1 + \varepsilon$ times greater that of the optimal solution, for any
-$\varepsilon > 0$.
 Also, for convenient and w.l.o.g, assume that $\sigma , \tau $ are dummy vertices, 
-i.e. $c(\sigma , v) = c(\tau , v) = 0$ for every $v \in v$.
+i.e. $c(\sigma , v) = c(\tau , v) = 0$ for every $v \in V_p$ and that
+$b_d(\sigma\alpha) = b_d(\alpha\tau) = 0$ for every $\alpha \in V_v$.
 
 We start by arguing that the minimum processing time required to embed some
-$\alpha \gamma $-path into a vertex $v$ can be computed efficiently.
+$\alpha \gamma $-path into a vertex $v$ given a cost constraint can be computed
+efficiently.
 Let $P_{v}(\alpha , \gamma , C)$ denote the minimum processing required to embed
 all the virtual vertices, excluding $\alpha $, on a $\alpha \gamma $-path into the physical
-vertex $v$ with cost constraint $C$.
+vertex $v$ with a cost constraint $C$.
 $P$ can be computed recursively as follow:
 \begin{align*}
 &P_{v}(\alpha , \gamma , C) = 
@@ -36,11 +39,11 @@ We now show how to compute the optimal embedding.
 Let $C(\gamma , w)$ denote the
 optimal embedding of a $\sigma \gamma $-path into a $sw$-path.
 Let $\pi:\beta  \to \N$ be any typological ordering of $\beta $. 
-We claim that $O$ can be computed recursively as follow:
+We claim that $C$ can be computed recursively as follow:
 \begin{align*}
 &C(\gamma , w) = 
 \min_{\substack{
-\alpha  : pi(\alpha ) \leq pi(\beta ), 
+\alpha  : \pi(\alpha ) \leq \pi(\beta ), 
 \\
 vw \in A_p
 }}
@@ -56,7 +59,7 @@ one need to temporally remove all edges $\alpha \beta $ with bandwidth greater t
 $b_c(v, w)$ from the virtual graph and only then compute $P_{w}(\beta , \gamma , C)$.
 The above formulation is illustrated in Figure~\ref{fig:dp1}.
 
-\begin{figure}[ht]
+\begin{figure}[h]
 \centering
 \input{fig-dp2}
 \caption[]{
@@ -66,5 +69,7 @@ efficiently computed by breaking the problem into the problem of embedding
 a $\sigma \alpha $-path into a $su$-path (blue, dashed clouds) 
 and the problem of embedding a $\beta \gamma $-path into $v$ (orange, dotted) 
 where $b_d(\alpha , \beta) \leq b_c(u, v)$.
+Virtual arcs with high bandwidth demand (dashed arc) need to be removed before
+the computation of the optimal path embedding.
 }
 \end{figure}
