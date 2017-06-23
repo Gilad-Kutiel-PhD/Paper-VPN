@@ -5,9 +5,7 @@ We then argue that, using a standard scaling and rounding technique, we can use
 the same computation to achieve a solution with a cost only
 $1 + \varepsilon$ times greater that of the optimal solution, for any
 $\varepsilon > 0$, i.e. an FPTAS, for an arbitrary cost function.
-We also extend our algorithm when every physical arc carry some latency on it
-and a global latency constraint is given.
-Our algorithms are recursive and can be efficiently computed using dynamic
+It is a recursive algorithm that can be efficiently implemented using dynamic
 programming.
 
 We are given an instance of the \VPN{} problem 
@@ -17,62 +15,86 @@ G = (V, E)		\\
 (\sigma , \tau , s, t)	\\
 (p, b, c)
 \end{align*}
-
-We start by arguing that a minimum cost 
-$\alpha \gamma $-path with respect to vertex $v$ can be
-found efficiently, that is a virtual $\alpha \gamma $-path that can be embedded 
-into $v$ without violating its processing capacity that has the minimum cost
-among all those paths.
-Let $P_{v}(\alpha ,\gamma , C)$ 
-denote the minimum processing required to embed all the virtual vertices, excluding $\alpha $, on a $\alpha \gamma $-path into the physical
-vertex $v$ with a cost constraint $C$.
-$P$ can be computed recursively as follow:
-\begin{align*}
-&P_{v}(\alpha , \gamma , C) = 
-\min_{\alpha \beta  \in \calE} P_{v}(\alpha , \beta , C - c(\gamma , v))
-\\
-&P(\alpha , \alpha , C) = 0
-\\
-&P(-, -, <0) = \infty
-\end{align*}
-Computing $\min_{C : P_v(\alpha, \gamma, C) \leq p(v)}$ gives the desired
-result.
- 
-We now show how to compute the optimal embedding.
-Let $C(\gamma , w)$ denote the
-optimal embedding of a $\sigma \gamma $-path into a $sw$-path.
-Let $\pi:\beta  \to \N$ be any typological ordering of $\beta $. 
-We claim that $C$ can be computed recursively as follow:
-\begin{align*}
-&C(\gamma , w) = 
-\min_{\substack{
-\alpha  : \pi(\alpha ) \leq \pi(\beta ), 
-\\
-vw \in E
-}}
-C(\alpha , u)
-+
-\argmin_{C : P_{w}(\beta , \gamma , C) \leq p_c(w)}
-\\
-&C(\sigma , w) = c(\sigma , w)
-\end{align*}
-Now, to compute the optimal embedding, one need to compute $C(\tau , t)$. 
-We also note that in order to obey to the bandwidth constraints, 
-one need to temporally remove all edges $\alpha \beta $ with bandwidth greater than
-$b_c(v, w)$ from the virtual graph and only then compute $P_{w}(\beta , \gamma , C)$.
-The above formulation is illustrated in Figure~\ref{fig:dp1}.
+The algorithm maintains a pair of physical and virtual nodes,
+$\gamma$ and $w$ respectively.
+In each step it chooses a virtual edge $\alpha\beta$ and a physical node $v$
+that are ascendant of $\gamma$ and $w$ respectively.
+It then embeds a minimum cost $\beta\gamma$-path into $w$ 
+without violating its processing capacity,
+it also compute a $vw$-path to be used in the solution, 
+making sure the path can carry the bandwidth demand of the edge $\beta\gamma$.
+Finally it finds an optimal embedding to a $\sigma\alpha$-path into a $sv$-path 
+recursively.
+This informal description of the algorithm is illustrated in Figure~\ref{fig:dp1}.
 
 \begin{figure}[ht]
 \centering
 \input{fig-dp2}
 \caption[]{
 \label{fig:dp1}
-The optimal embedding of a $\sigma \gamma $-path into a $sv$ path can be
+The optimal embedding of a $\sigma \gamma $-path into a $sw$-path can be
 efficiently computed by breaking the problem into the problem of embedding 
-a $\sigma \alpha $-path into a $su$-path (blue, dashed clouds) 
-and the problem of embedding a $\beta \gamma $-path into $v$ (orange, dotted) 
-where $b_d(\alpha , \beta) \leq b_c(u, v)$.
-Virtual arcs with high bandwidth demand (dashed arc) need to be removed before
-the computation of the optimal path embedding.
+a $\sigma\alpha$-path into a $sv$-path (blue, dashed clouds) 
+and the problem of embedding a $\beta\gamma$-path into $w$ (orange, dotted).
+The $vw$-path must carry $b(\alpha\beta)$ bandwidth, 
+The $\beta\gamma$-path is a minimum cost $\beta\gamma$-path 
+that can be embedded into $w$.
 }
 \end{figure}
+
+We now give a more formal description of the algorithm.
+Let $C(\sigma-\gamma , s-w)$ denote the
+minimum cost embedding of a $\sigma\gamma $-path into a $sw$-path.
+Let $\pi$ be a typological ordering 
+(we use $\pi$ to denote a typological ordering of 
+both the virtual and the physical graphs).
+Also let $C(\beta-\gamma, w)$ be the minimum cost embedding of a $\beta\gamma$-path
+into $w$, 
+and let $r_b(v, w)$ be a predicate that is true if $w$ is reachable from $v$
+using only edges with bandwidth at least $b$. 
+We claim that $C$ can be computed recursively as follow:
+\begin{align*}
+&C(\sigma-\gamma , s-w) = 
+\min_{\substack{
+\alpha\beta \in \calE,  
+v \in V:
+\\
+\pi(v) < \pi(w),
+\\
+\pi(\beta ) < \pi(\gamma ), 
+\\
+r_{b(\alpha\beta)}(v,w)
+}}
+C(\sigma-\alpha , s-v)
++
+C(\beta-\gamma, w)
+\\
+&C(\sigma-\sigma , s-v) = 0
+\\
+&C(\sigma-\alpha , s-s) = \infty
+\end{align*}
+Computing $C(\sigma-\tau , s-t)$ gives the optimal embedding. 
+It is clear that $r_b(v,w)$ can be computed efficiently by removing all the edges
+with bandwidth less than $b$ and checking connectivity.
+We now argue that $C(\beta-\gamma, w)$ can be computed efficiently as well.
+Let $P_w(\alpha-\gamma, c)$ 
+be the minimum processing required to embed a virtual, 
+$\alpha\gamma$-path into $w$ with a cost constraint $c$, 
+then $P$ can be computed recursively as follow:
+\begin{align*}
+&P_{w}(\alpha-\gamma, c) = 
+\min_{\beta\gamma  \in \calE} P_{w}(\alpha-\beta, c - c(\gamma, w))
+\\
+&P_w(\alpha-\alpha, c) = 
+\begin{cases}
+p(\alpha) & c(\alpha, w) \leq c
+\\
+\infty & \text{otherwise}
+\end{cases}
+\\
+&P(\cdot, \cdot, <0) = \infty
+\end{align*}
+To complete our argument observe that the following holds:
+$$C(\beta-\gamma, w) = \smashoperator{\min_{c : P_w(\beta-\gamma, c) \leq p(w)}}c$$ 
+
+

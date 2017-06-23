@@ -12,16 +12,17 @@
 	quotes,
 }
 
-% \usetikzlibrary{graphs, graphdrawing}
-% \usegdlibrary{trees,force,layered}
+\usetikzlibrary{graphs, graphdrawing}
+\usegdlibrary{trees,force,layered}
 
-\tikzset{
+\tikzset{every picture/.style={
 	>=Latex, 
 	on grid, 
 	auto, 
-	thick,
+	very thick,
 	->,
-}
+}}
+
 
 % NODE
 \tikzset{default node/.style={
@@ -50,12 +51,12 @@
 
 \tikzset{label above/.style={
 	label,
-	above=.5mm,
+	above,
 }}
 
 \tikzset{label below/.style={
 	label,
-	below=.5mm,
+	below,
 }}
 
 % EDGES
@@ -77,9 +78,13 @@
 }
 
 \tikzset{cloud/.style={
-	path,
 	-,
-	decoration={snake, segment length=24pt},
+	decorate, 
+	decoration={
+		snake, 
+		segment length=3mm,
+		amplitude=.5mm,
+	},
 }}
 
 % MISC

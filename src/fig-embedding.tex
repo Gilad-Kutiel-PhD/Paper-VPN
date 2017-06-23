@@ -1,4 +1,4 @@
-\begin{tikzpicture}[every node/.style={default node}, very thick]
+\begin{tikzpicture}[every node/.style={default node}]
 
 \begin{scope}[random seed=1, spring layout, node distance=1.8cm]
 \node[dashed](a) {2};
@@ -33,21 +33,24 @@
 \node(ph) {2};
 
 \graph{
-	(pa) ->["2" label above] (pb);
-	(pb) ->["3" label above] {(pd), (pe)};
+	(pb) ->["3" label above] (pd);
 	(pd) ->["1" label above] {(pf), (ph)};
 	(pf) ->["4" label above] {(pg), (ph), (pc)};
-	(ph) ->["6" label above] (pg);
-	(pe) ->["3" label above] (ph);
 	(pc) ->["2" label above] (pd);
+	{[edges={blue, dashed}]
+		(pa) ->["2" label above] (pb);
+		(pb) ->["3" label above] (pe);
+		(pe) ->["3" label above] (ph);
+		(ph) ->["6" label above] (pg);
+	}
 };
 \end{scope}
 
-\node[clear node, above right] at(a.north east) {$s_v$};
-\node[clear node, left] at(j.west) {$t_v$};
+\node[clear node, above right] at(a.north east) {$\sigma$};
+\node[clear node, left] at(j.west) {$\tau$};
 
-\node[clear node, above] at(pa.north) {$s_p$};
-\node[clear node, below] at(pg.south) {$t_p$};
+\node[clear node, above] at(pa.north) {$s$};
+\node[clear node, below] at(pg.south) {$t$};
 
 \begin{scope}[group]
 \draw

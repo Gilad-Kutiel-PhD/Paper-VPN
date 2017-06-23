@@ -1,38 +1,41 @@
-We now extend the problem by adding a global latency constraint.
-Formally, we are given a latency function $l : A_v \times A_p \to \R$,
-and a latency constraint $L$.
-The goal is to find a min-cost embedding that also respect the latency
+We now consider the \VPN{} problem with latency.
+Recall that in this variant of the problem we are also given a latency function
+$l : E \times \calE \to \R$, and a latency constraint $L$.
+The goal is to find a minimum cost embedding that also respect the latency
 constraint.
-Observe that given two physical vertices $s_p$, $t_p$ and a virtual edge $e_v$
-a $s_pt_p$-path that minimize the latency can be efficiently found by using any
-standard shortest path algorithm where the "distance" function is replaced by
-the appropriate latency.
-Observe that this can also be done if we restrict ourselves to use only physical
-edges with a lower bound on their bandwidth.
-We now show that if all values are integral and polynomial bounded, we can
-efficiently find a feasible embedding with a cost bounded by $C$ that minimize
-the latency.
 
-Let $L(w_v, w_p, C)$ denote the minimum possible latency result from an
-embedding of some virtual $s_vw_v$-path into a physical $s_pw_p$-path 
-that has cost not more than $C$.
-
-We claim that $L(w_v, w_p, C)$ can be computed efficiently as follow:
+Let $L(\sigma-\gamma, s-w, c)$ denote an embedding of a $\sigma\gamma$-path
+into a $sw$-path with the minimum possible latency that cost at most $c$.
+Let $L_{b}(\alpha\beta, v-w)$ be the minimum possible latency on a $\alpha\beta$-path
+w.r.t virtual edge $\alpha\beta$, using only edges with bandwidth capacity at least $b$,
+i.e. if $P$ is the set of edges in this path then $\forall_{e \in P}~b(e) \geq b$,
+and $\sum_{e \in P}l(\alpha\beta, e)$ is minimum.
+Observe that the later can be reduced to a shortest path problem on $G$ by removing
+edged with bandwidth less than $b$ and setting the weight of each edge $e$ to be 
+$l(\alpha\beta, e)$.
+Now $L(\sigma-\gamma, s-w, c)$ can be computed recursively as follow:
 \begin{align*}
-&L(w_v, w_p, C) = \min_{\substack{
-u_v : pi(u_v) \leq pi(v_v), 
+&L(\sigma-\gamma, s-w, c) = 
+\min_{\substack{
+\alpha\beta \in \calE,  
+v \in V:
 \\
-v_pw_p \in A_p
+\pi(v) < \pi(w),
 \\
-\delta : P(u_v, w_v, \delta) \leq p_c(w_p)
+\pi(\beta ) < \pi(\gamma ), 
+\\
+r_{b(\alpha\beta)}(v,w)
 }}
-l(v_p, w_p) + L(u_v, v_p, C - \delta)
+L_{b}(\alpha\beta, v-w) + 
+L(\sigma-\alpha, s-v, c - C(\beta-\gamma, w))
 \\
-&L(s_v, w_p, >=0) = 0
+&L(\sigma-\sigma, s-v, \geq 0) = 0
 \\
-&L(-, -, <0) = \infty
+&L(\sigma-\alpha, s-s, \cdot) = \infty
+\\
+&L(\cdot, \cdot, <0) = \infty
 \end{align*} 
 
 Now, to compute the optimal embedding with the additional latency constraint,
-$L$, one can simply (binary) search for the minimum value of $C$ such that
-$L(t_v, t_p, C) \leq L$.  
+$L$, one can simply (binary) search for the minimum value of $c$ such that
+$L(\sigma-\tau, s-t, c) \leq L$.

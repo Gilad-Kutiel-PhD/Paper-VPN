@@ -1,55 +1,47 @@
 \begin{tikzpicture}[every node/.style={default node}]
-\node[draw=none] at(5, 2.7) {Virtual Graph};
+
+\tikzset{ref/.style={insert path={
+	coordinate[pos=0](#1 nw)
+	coordinate[pos=1](#1 se)
+	coordinate[pos=.5](#1 center)
+	(#1 se -| #1 center) coordinate(#1 south)
+	(#1 center |- #1 nw) coordinate(#1 north)
+}}}
+
+\node[draw=none] at(5, 1) {Virtual Graph};
 
 \node(sv) at(0,0) {$\sigma$};
-\node(v0) at(4,0) {$\alpha$};
-\node(v1) at(6.5,1) {$\beta$};
-\node[draw=none] at(6.5,0) {$\vdots$};
-\node(v3) at(6.5,-1) {};
-\node(tv) at(10,0) {$\gamma$};
+\node(alpha) at(4,0) {$\alpha$};
+\node(beta) at(6.2,0) {$\beta$};
+\node(gamma) at(10,0) {$\gamma$};
 
-\draw[cloud, blue, dashed] 
-($(sv.west) + (-.3,0)$)	to[out=90, in=90] 
-($(v0.east) + (.3, 0)$)	to[out=-90, in=-90]
-($(sv.west) + (-.3,0)$)
+\draw[blue, dashed] 
+($(sv.north west) + (-.3,.3)$) rectangle 
+($(alpha.south east) + (.3, -.3)$) [ref=r1]
 ;
 
-\draw (v0) -- (v1) node[label above] {$b_d(\alpha\beta)$};
-\draw[dashed] (v0) -- (v3);
+\draw (alpha) -- (beta) node[label above] {$b(\alpha\beta)$};
 
-\draw[path] (v1) -- (tv.north west);
-\draw[path] (v3) -- (tv.south west);
+\draw[path] (beta) -- (gamma);
 
-\draw[brace, light] ($(v0) + (-.5, 1.6)$) -- ($(tv) + (.5, 1.6)$)
-node[label above, above=2mm] {\small min cost path}
+
+\node(s) at(0,-2) {s};
+\node(u) at(5, -2){v};
+\node(v) at(8,-2) {w};
+\node[draw=none] at(5, -3) {Physical Graph};
+
+\draw[blue, dashed] 
+($(s.north west) + (-.3,.3)$) rectangle 
+($(u.south east) + (.3, -.3)$) [ref=r2]
 ;
 
-
-\node[draw=none] at(4.5, -8) {Physical Graph};
-\node(s) at(0,-5) {s};
-\node(p1) at(5, -4){u};
-\node[draw=none] at(5, -5){$\vdots$};
-\node(p3) at(5, -6){};
-\node(t) at(7.5,-5) {v};
-
-\draw[cloud, blue, dashed] 
-($(s.west) + (-.3,0)$)			to[out=85, in=150] 
-($(p1.north east) + (.3, 0)$)	to[out=-90, in=90]
-($(p3.south east) + (.3, 0)$)	to[out=210, in=-85]
-($(s.west) + (-.3,0)$)
-;
-
-\draw (p1) -- (t) node[label above] {$b_c(uv)$};
-\draw (p3) -- (t);
+\draw[path] (u) -- (v);
 
 \draw[group]
-(v1.west) to[out=90, in=180]
-(v1.north) to[out=0, in=135]
-(tv.north east) to[out=-45, in=0]
-(tv.south) to[out=180, in=-45] coordinate[near start](f)
-(v1.south west) to[out=135, in=-90]
-(v1.west)
+($(beta.north west) + (-.3,.3)$) rectangle
+($(gamma.south east) + (.3, -.3)$) [ref=r3]
 ;
 
-\draw[group, ->] (f) to[bend left] (t.east);
+\draw[blue, dashed, ->] (r1 south) to[bend right] (r2 north);
+\draw[group, ->] (r3 south) to[bend left] (v.north);
 \end{tikzpicture}
