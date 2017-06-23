@@ -4,36 +4,39 @@ we present an efficient algorithm to the \VPN{} problem.
 We then argue that, using a standard scaling and rounding technique, we can use
 the same computation to achieve a solution with a cost only
 $1 + \varepsilon$ times greater that of the optimal solution, for any
-$\varepsilon > 0$, i.e. an FPTAS also for an arbitrary cost function.
+$\varepsilon > 0$, i.e. an FPTAS, for an arbitrary cost function.
 We also extend our algorithm when every physical arc carry some latency on it
 and a global latency constraint is given.
+Our algorithms are recursive and can be efficiently computed using dynamic
+programming.
 
 We are given an instance of the \VPN{} problem 
 \begin{align*}
-D_v = (\beta , A_v)		\\
-D_p = (v, A_p)		\\
+\calG = (\calV, \calE)		\\
+G = (V, E)		\\
 (\sigma , \tau , s, t)	\\
-(p_d, b_d, p_c, b_c, c)
+(p, b, c)
 \end{align*}
-Also, for convenient and w.l.o.g, assume that $\sigma , \tau $ are dummy vertices, 
-i.e. $c(\sigma , v) = c(\tau , v) = 0$ for every $v \in V_p$ and that
-$b_d(\sigma\alpha) = b_d(\alpha\tau) = 0$ for every $\alpha \in V_v$.
 
-We start by arguing that the minimum processing time required to embed some
-$\alpha \gamma $-path into a vertex $v$ given a cost constraint can be computed
-efficiently.
-Let $P_{v}(\alpha , \gamma , C)$ denote the minimum processing required to embed
-all the virtual vertices, excluding $\alpha $, on a $\alpha \gamma $-path into the physical
+We start by arguing that a minimum cost 
+$\alpha \gamma $-path with respect to vertex $v$ can be
+found efficiently, that is a virtual $\alpha \gamma $-path that can be embedded 
+into $v$ without violating its processing capacity that has the minimum cost
+among all those paths.
+Let $P_{v}(\alpha ,\gamma , C)$ 
+denote the minimum processing required to embed all the virtual vertices, excluding $\alpha $, on a $\alpha \gamma $-path into the physical
 vertex $v$ with a cost constraint $C$.
 $P$ can be computed recursively as follow:
 \begin{align*}
 &P_{v}(\alpha , \gamma , C) = 
-\min_{\alpha \beta  \in A_v} P_{v}(\alpha , \beta , C - c(\gamma , v))
+\min_{\alpha \beta  \in \calE} P_{v}(\alpha , \beta , C - c(\gamma , v))
 \\
 &P(\alpha , \alpha , C) = 0
 \\
 &P(-, -, <0) = \infty
 \end{align*}
+Computing $\min_{C : P_v(\alpha, \gamma, C) \leq p(v)}$ gives the desired
+result.
  
 We now show how to compute the optimal embedding.
 Let $C(\gamma , w)$ denote the
@@ -45,7 +48,7 @@ We claim that $C$ can be computed recursively as follow:
 \min_{\substack{
 \alpha  : \pi(\alpha ) \leq \pi(\beta ), 
 \\
-vw \in A_p
+vw \in E
 }}
 C(\alpha , u)
 +
@@ -59,7 +62,7 @@ one need to temporally remove all edges $\alpha \beta $ with bandwidth greater t
 $b_c(v, w)$ from the virtual graph and only then compute $P_{w}(\beta , \gamma , C)$.
 The above formulation is illustrated in Figure~\ref{fig:dp1}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \input{fig-dp2}
 \caption[]{
