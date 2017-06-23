@@ -1,26 +1,41 @@
-In this section we consider the problem on undirected (physical) graphs.
+In this section we consider the problem when the physical network is undirected.
 Once again we seek to embed a virtual $\sigma\tau$-path 
 into a simple physical $st$-path.
 Note, that we still assume that the virtual graph is a DAG. 
 
 We extend our algorithm to work also for this case as well.
 Recall that the problem on general graphs cannot be approximate at all,
-thus we assume in this section that the there exists an optimal embedding using
-at most $k$ \emph{heavy} vertices, thus are vertices with degree greater than two.
-The modified algorithm runs in time polynomial in the input length and
-exponential in $k$ and achieves the same guarantees as before with high
-probability.
+thus we assume in this section that there exists an optimal embedding that uses
+a physical path with at most $k$ \emph{heavy} vertices, thus are vertices with
+degree greater than two (we do not assume anything about the physical network).
+The modified algorithm includes a preprocessing stage that applies
+random orientation to the physical network, it runs in time polynomial in the
+input length and in $O(k!)$ and finds the optimal embedding with high probability.
 
-The modified algorithm acts as follow:
-let $K = {v_1, \ldots, v_k}$ be the set of heavy vertices, and let 
-$\pi:[k] \to [k]$ be a random permutation.
-Let $v_1, v_l \in K$ be two heavy vertices such that $\pi(v_1) < \pi(v_l)$ and
-let $w_1, \ldots, w_l$ any light path between them, i.e. a path that does not
-contains any other heavy vertex.
-We orient the edges from $u$ to $v$, i.e. $(w_i, w_{i+1})$ for every 
-$1 \leq i \leq l - 1$.
-One can be verify that this can be done efficiently and that after this process
-each edge become an arc and that $G$ is a DAG.
+The preprocessing stage is as follow:
+let $V_h = {v_1, \ldots, v_h}$ be the set of heavy vertices, and let 
+$\pi:[h] \to [h]$ be a random permutation.
+Let $w_1, \ldots, w_l$ be a light path, that is, $w_1, w_l \in V_j$, 
+$\forall 1 < i < l, w_i \notin V_h$, $\pi(w_1) < \pi(w_l)$, then
+we direct the edges from $w_1$ to $w_l$ i.e. $(w_i, w_{i+1})$ for every $1 \leq
+i \leq l - 1$.
+One can verifies that this can be done efficiently and that when this process
+terminates $G$ is a DAG, Figure~\ref{fig:orientation} depicts the preprocessing
+stage.
+
+\begin{figure}[h]
+\input{fig-orientation}
+\caption{
+\label{fig:orientation}
+The preprocessing stage: on the left is the undirected physical network,
+Only the heavy nodes are drawn.
+The numbers represent the permutation and the blue, dashed path represents a
+path of an optimal embedding.
+On the right side is the orientated physical network, 
+note that it is enough that the internal ordering of the nodes on the blue,
+dashed path is "correct" to ensure that the algorithm finds the optimal
+embedding. }
+\end{figure}
 
 Completing the orientation, we use our previous algorithm to find an optimal
 embedding.

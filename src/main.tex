@@ -1,4 +1,4 @@
-%\nonstopmode
+\nonstopmode
 %\documentclass[11pt]{article}
 \documentclass[runningheads]{llncs}
 
@@ -111,413 +111,413 @@ Faculty of Engineering, Bar Ilan University, Ramt-Gan 52900, Israel.\\
 \begin{document}
 \maketitle
 
-\begin{abstract}
-We study the allocation problem of a \emph{service chain} in a
-software-defined network that supports network function
-virtualization.
-%
-Given a network that contains servers with limited processing power
-and of links with limited bandwidth, a service chain is a sequence of
-virtual network functions (VNFs) that service a certain flow request
-in the network.
-%
-The allocation of a service chain consists of routing and VNF
-placement.  That is, each VNF from the seqeunce is placed in a server
-along a path, and it is feasible if each server can handle the VNFs
-that are assigned to it, and if each link on the path can carry the
-flow that is assigned to it.
-%
-A request for service is composed of a source and a destination in the
-network, an upper bound on the total latency, and a specification of
-all service chains that are considered valid for this request.
-%
-Each pair of server and VNF are associated with a cost for placing the
-network function in the server, and given a request, the goal is to
-find a valid service chain of minimum total cost or to identify that
-a valid service chain does not exist.
-
-We show that even the feasibility problem is NP-hard in general
-di-graphs.  Hence we first focus on directed acyclic graphs (DAGs).
-We show that the problem is still NP-hard in DAGs and present an
-FPTAS.
-%
-Based on out PTAS, we also provide a randomized algorithm for
-instances in which the service chain passes through a bounded number
-of servers whose degree is larger than two.
-
-?????
-
-Fault tolerant placement: two service chains?
-
-FPT algorithm where the number of servers whose degree is larger than
-two is a parameter?
-\end{abstract}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Introduction}
-
-
-Computer communication networks are in constant need of expansion to
-cope with the ever growing traffic.  As networks grow, management and
-maintenance become more and more complicated.
-%
-Current developments aim to improve the utilization of network
-resources include the detachment of network applications from network
-infrastructure and the transition from network planning to network
-programming.
-
-One aspect of network programming is to manage resources from a
-central point of view, namely to make decisions based on availability,
-network status, required quality of service, and the identity of the
-client.  Hence, a central issue is a central agent that is able to
-received reports from network components and client requests, and as a
-result can alter the allocation of resources in the networks.  This
-approach is called Software Defined Networking (SDN), where there is a
-separation between routing and management (control plane) and the
-underlying routers and switches that forward traffic (data plane) (see
-Kreutz et al.~\cite{KRVRAU15}).
-
-A complimentary approach is Network Function Virtualization
-(NFV)~\cite{NFV12}.  Instead of relying on special purpose machines,
-network applications become virtual network functions (VNF) that are
-executed on generic machines and can be placed in various locations in
-the network.  Virtualization increases the flexibility of resource
-allocation and thus the utilization of the network resources.
-%
-Internet Service Providers (ISPs) that provide services to clients
-benefit from NFV, since it helps to better utilize their physical
-network.  In addition, when network services are virtualized, an ISP
-may support \emph{service chaining}~\cite{ServiceChaining15}, namely a
-compound service that consists of a sequence of VNFs.  Furthermore,
-one may offer a compound service a service that may be obtained using
-one of several sequences of VNFs.
-
-In this paper we study the allocation problem of a compund request for
-a service chain in a software-defined network that supports NFV.
-Given a (physical) network that contains servers with limited
-processing power and of links with limited bandwidth, a service chain
-is a sequence of virtual network functions (VNFs) that service a
-certain flow request in the network.
-%
-The allocation of a service chain consists of routing and VNF
-placement.  That is, each VNF from the seqeunce is placed in a server
-along a path, and it is feasible if each server can handle the VNFs
-that are assigned to it, and if each link on the path can carry the
-flow that is assigned to it.
-%
-A request for service is composed of a source and a destination in the
-network, an upper bound on the total latency, and a specification of
-all service chains that are considered valid for this request.
-%
-Each pair of server and VNF are associated with a cost for placing the
-network function in the server.  This cost measures compatibility of a
-VNF to a server (infinite costs means ``incompatible'').  Given a
-request, the goal is to find a valid service chain of minimum total
-cost or to identify that a valid service chain does not exist.
-
-
-\dror{Explain one shot approach}
-
-\paragraph*{\bf Related work.}
-%
-
-Cohen et al.~\cite{CLNR15} considered VNF placement.  In their model
-the input is an undirected graph with a metric distance function on
-the edges.  clients are located in various nodes, and each client is
-interested in a subset of VNFs.  For each node $v$ and VNF $\alpha$,
-there is a setup cost associated with placing a copy of $\alpha$ at
-$v$ (multiple copies are allowed), and there is a load that is induced
-on $v$ for placing a copy of $\alpha$.  Furthermore, each node has a
-limited capacity.  Also, each copy of a VNF can handle a limited
-amount of clients A solution is the assignment of each client to a
-subset of nodes, each corresponding to one of its required VNFs.  The
-cost of a solution is the total setup costs plus the sum of distances
-between the clients and the node from which they get service.
-%
-Cohen et al.~\cite{CLNR15} gave bi-criteria approximation algorithms
-for various versions of the problem, namely algorithms that compute
-constant factor approximations that violate the load constraints by a
-constant factor.
-%
-It is important to note that in this problem does not consider
-routing, and also it assumes unordered VNF subsets.
-
-Even, Medina, and Patt-Shamir~\cite{EMP16} studied online path
-computation and VNF placement.  They considered service chain requests
-that arrive in an online manner.  Each request is a a flow with a
-high-level specification of routing and VNF requirements.  Each VNF
-can be performed by a specified subset of servers in the system.  Upon
-arrival of a request, the algorithm either rejects the request or
-accepts it and with a specific routing and VNF assignment, under given
-server capacity constraints.  Each request has a benefit that is
-gained if it is accepted, and the goal is to maximize the total
-benefit.
-%
-Even, Medina, and Patt-Shamir~\cite{EMP16} proposed an algorithm that
-copes with requests with unknown duration without preemption by using
-a third response, which is refer to as “stand by”, whose competitive
-ratio is $O(\log (knb_{\max})$, where $n$ is the number of nodes,
-$b_{\max}$ is an upper bound on a request benefit per time unit, and
-$k$ is the maximum number of VNFs of any service chain.  This
-performance guarantee holds for the case where the processing of any
-processing request in any possible service chain is never more than
-$O(1/(k \log (nk)))$ fraction of the capacity of any network
-component.
-
-Even, Rost, and Schmid~\cite{ERS16}
-
-\dror{finish}
-
-\paragraph*{\bf Our results.}
-%
-We show that even the feasibility problem is NP-hard in general
-di-graphs.  Hence we first focus on directed acyclic graphs (DAGs).
-We show that the problem is still NP-hard in DAGs and present an
-FPTAS.
-%
-Based on out PTAS, we also provide a randomized algorithm for
-instances in which the service chain passes through a bounded number
-of servers whose degree is larger than two.
-
-?????
-
-\bigskip
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Preliminaries}
-
-
-\paragraph*{\bf Model.}
-%
-The \scplong (\scp) input is composed of three components, a physical
-network, a virtual specification, and placement costs:
-\begin{description}
-\item[Physical network:]
-%
-  The physical network is a digraph $G = (V,E)$.  Each node $v \in V$
-  has a non-negative processing capacity $p(v)$, and each directed
-  edge $e \in A$ has a non-negative bandwidth cap $b(e)$.
-
-\item[Virtual specification:]
-%
-  The description of a request for a service chain consists of a
-  physical source $s \in V$, a physical destination $t \in V$, and a
-  directed acyclic graph (DAG) $\calG = (\calV,\calE)$.
-%
-  Without loss of generality, we assume that $p(s) = p(t) = 0$.  
-%
-  The DAG $\calG$ has a source node $\sigma \in \calV$ and a
-  destination $\tau \in \calV$ Each node $\alpha \in \calV$ represent
-  a VNF that has a processing demand $p(\alpha)$.  Without loss of
-  generality, we assume that $p(\sigma) = p(\tau) = 0$.  Each edge
-  $\eps \in \calE$ has a bandwidth demand $b(\eps)$.
-  
-\item[Placement costs:]
-%
-  There is a non-negative cost $c(\alpha,v)$ for placing the VNF
-  $\alpha$ in $v$.  We assume that $c(\sigma,s) = 0$ and $c(\sigma,v)
-  = \infty$, for every $v \neq s$.  Similarly, we assume that
-  $c(\tau,t) = 0$ and $c(\tau,v) = \infty$, for every $v \neq t$.
-\end{description}
-
-A solution consists of the following:
-\begin{description}
-\item[Virtual path:] A path from $\sigma$ to $\tau$ in $\calG$, namely
-  a sequence of vertices $\alpha_0,\ldots,\alpha_\ell$, where
-  $\alpha_0 = \sigma$, $\alpha_\ell = \tau$, and
-  $(\alpha_j,\alpha_{j+1}) \in \calE$, for every $j \in
-  \set{0,\ldots,\ell-1}$.
-
-\item[Physical path:] A simple path from $s$ to $t$ in $G$, namely a
-  sequence of node $v_0,\ldots,v_k$, where $v_0 = s$, $v_k = t$, and
-  $(v_i,v_{i+1}) \in E$, for every $i \in \set{0,\ldots,k-1}$.
-  
-\item[Placement:] A function $f$ that maps the virtual path to the
-  physical path.  Formally, a placement is a function $f:
-  \set{\alpha_0,\ldots,\alpha_\ell} \to \set{v_0,\ldots,v_k}$
-  such that
-\begin{enumerate}
-\item If $f(\alpha_j) = v_i$ and $f(\alpha_{j+1}) = v_{i'}$, then $i
-  \leq i'$.
-\item $b(\alpha_j,\alpha_{j+1}) \leq b(v_i,v_{i+1})$, for every
-  $(v_i,v_{i+1}) \in \bar{f}(\alpha_j,\alpha_{j+1})$, where
-  $\bar{f}(\alpha_j,\alpha_{j+1})$ to be the set of physical edges
-  that correspond to it, i.e.,
-\[
-\bar{f}(\alpha_j,\alpha_{j+1}) \eqdf \set{(v_i,v_{i+1}) : i' \leq i < i''}
-~,
-\]
-  where $f(\alpha_j) = v_{i'}$ and $f(\alpha_{j+1}) = v_{i''}$.
-
-\item $\sum_{\alpha \in f^{-1}(v)} p(\alpha) \leq p(v)$, where
-  $f^{-1}(v) \eqdf \set{\alpha : f(\alpha) = v}$.
- 
-\end{enumerate}
-\end{description}
-
-An example of an \scp instance and a solution is given in
-Figure~\ref{fig:solution}.
-
-\begin{figure}
-\centering
-\scalebox{1}{
-\input{fig-embedding}
-}
-\caption{???}
-\label{fig:solution}
-\end{figure}
-
-The cost of a placement $f$ is:
-\[
-\sum_j c(\alpha_j,f(\alpha_j))
-~.
-\]
-In \scp the goal is to find a feasible placement of a virtual path
-into the physical DAG that minimizes the cost.
-
-%%%%%
-
-We also consider an extended version of \scp in which each physical
-link causes a delay and there is an upper bound $T$ on the total
-delay.  More formally, each pair of a virtual edge $\eps$ and physical
-edge $e$ is associated with a latency $t(\eps,e)$.
-%
-Given a placement $f: \set{\alpha_0,\ldots,\alpha_\ell} \to
-\set{v_0,\ldots,v_k}$, the total latency of the solution is given by
-\[
-T(f) = \sum_j \sum_{e \in \bar{f}(\eps)} t(\eps,e)
-~.
-\]
-In this case there is an additional constraint that $T(f) \leq T$.
-
-
-%%%%%
-
-\paragraph*{\bf Definitions and notation.}
-%
-Define $n_p \eqdf \abs{V}$ and $m_p \eqdf \abs{E}$.  Similarly, define
-$n_v \eqdf \abs{\calV}$ and $m_v \eqdf \abs{\calE}$.
-
-Given a virtual DAG $\calG$, we assume the existence of a topological
-sorting of the vertices and write $\alpha \prec_v \beta$ if $\alpha$
-precedes $\beta$ in this ordering.  If the physical network is a DAG,
-then we make a similar assumption and write $v \prec_p u$ if $v$
-precedes $u$ in this ordering.
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Hardness}
-
-In this section we present two hardness results.  First, we show that
-even the feasibility question of \scp is NP-hard, and therefore no
-approximation algorithm exists for \scp.  In addition, we show that
-\scp is NP-hard even if $\abs{V \setminus \set{s,t}} = 1$.  We also
-show that \scp is NP-hard even if both the physical network and the
-virtual DAG are simple paths.
-
-We show that finding a feasible solution is NP-hard.
-
-\begin{theorem}
-Feasibility of \scp is NP-hard
-\end{theorem}
-\begin{proof}
-We use a reduction from \textsc{Hamiltonian Path} that is known to be
-NP-hard~\cite{GarJoh79}.
-%
-Given an instance $H$ of \textsc{Hamiltonian Path} we construct an
-instance of \scp.  For the physical network we have that $G$, where
-$V(G) = V(H) \cup \set{s,t}$, and $E(G) = E(H) \cup \set{(s,v),(v,t) :
-  v \in V(H)}$.  In addition, $p(v) = 1$, for every $v$, and $b(e) =
-1$, for every $e$.  The virtual DAG $\calG$ is a path containing $n+2$
-virtual functions, $\sigma = \alpha_0, \alpha_1, \ldots, \alpha_n,
-\alpha_{n+1} = \tau$, where $p(\alpha_i) = 1$, for every $i \in
-\set{1,\ldots,n}$.  Also, $b(\alpha_i,\alpha_{i+1}) = 1$, for every
-$i$.
-
-The construction can clearly be computed in polynomial time.
-%
-An Hamiltonian Path in $G$, induces a \scp solution that follows the
-path, i.e., $\alpha_i$ is placed in the $i$th vertex along the path.
-%
-One the other hand, since all demands and capacities are $1$, no two
-VNFs can share a physical node.  Hence a \scp solution induces an
-Hamiltonian path.
-%
-\qed
-\end{proof}
-
-Next, we show that \scp is NP-hard even if the physical network is a
-DAG.
-
-\begin{theorem}
-\scp is NP-hard, even if $\abs{V \setminus \set{s,t}} = 1$.
-\end{theorem}
-\begin{proof}
-The prove the theorem using a reduction from \textsc{Partition}.
-Given a \textsc{Partition} instance $\set{a_1, \ldots, a_n}$ we
-construct an \scp instance as follows.
-%
-The physical network $G$ contains three nodes: $s$, $v$, and $t$, and
-there are two edges $(s,v)$ and $(v,t)$.  The capacity of $v$ is $p(v)
-= \half \sum_i a_i$.  Edge capacities are zero.
-%
-The virtual DAG is composed of $2n+2$ vertices, namely
-\[
-\calV
-= \set{\sigma,\tau}
-  \cup \set{\alpha_1, \ldots, \alpha_n}
-  \cup \set{\beta_1, \ldots, \beta_n}
-~.
-\]
-Also,
-\[
-\calE
-= \bigcup_i \set{ \set{\alpha_i,\beta_i} \times \set{\alpha_{i+1},\beta_{i+1}} } 
-  \cup
-  \set{ (\sigma,\alpha_1), (\sigma,\beta_1), (\alpha_n,t), (\beta_n,t) }
-~.
-\]
-The DAG is shown in Figure~\ref{fig:dag}.
-%
-The demands are $p(\alpha_i) = a_i$ and $p(\beta_i) = 0$, for every
-$i$.  Also, $b(\eps) = 0$, for every $\eps \in \calE$.  The costs are:
-$c(\alpha_i,v) = 0$ and $c(\beta_i,v) = a_i$, for every $i$.
-
-The \scp instance can be computed in polynomial time.
-%
-Also, it is not hard to verify that $a \in \textsc{Partition}$ if and
-only if there exists a solution whose cost is $\half \sum_i a_i$.
-%
-\qed
-\end{proof}
-
-\begin{figure}
-\centering
-\input{fig-reduction}
-\caption{???}
-\label{fig:dag}
-\end{figure}
-
-\dror{Figure 2: source and destination should be fixed}
-
-\begin{theorem}
-\scp is NP-hard, even if both the physical network and the virtual DAG
-are paths.
-\end{theorem}
-\begin{proof}
-
-\dror{reduction from partition using latency}
-  
-%
-\qed
-\end{proof}
+% \begin{abstract}
+% We study the allocation problem of a \emph{service chain} in a
+% software-defined network that supports network function
+% virtualization.
+% %
+% Given a network that contains servers with limited processing power
+% and of links with limited bandwidth, a service chain is a sequence of
+% virtual network functions (VNFs) that service a certain flow request
+% in the network.
+% %
+% The allocation of a service chain consists of routing and VNF
+% placement.  That is, each VNF from the seqeunce is placed in a server
+% along a path, and it is feasible if each server can handle the VNFs
+% that are assigned to it, and if each link on the path can carry the
+% flow that is assigned to it.
+% %
+% A request for service is composed of a source and a destination in the
+% network, an upper bound on the total latency, and a specification of
+% all service chains that are considered valid for this request.
+% %
+% Each pair of server and VNF are associated with a cost for placing the
+% network function in the server, and given a request, the goal is to
+% find a valid service chain of minimum total cost or to identify that
+% a valid service chain does not exist.
+% 
+% We show that even the feasibility problem is NP-hard in general
+% di-graphs.  Hence we first focus on directed acyclic graphs (DAGs).
+% We show that the problem is still NP-hard in DAGs and present an
+% FPTAS.
+% %
+% Based on out PTAS, we also provide a randomized algorithm for
+% instances in which the service chain passes through a bounded number
+% of servers whose degree is larger than two.
+% 
+% ?????
+% 
+% Fault tolerant placement: two service chains?
+% 
+% FPT algorithm where the number of servers whose degree is larger than
+% two is a parameter?
+% \end{abstract}
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% \section{Introduction}
+% 
+% 
+% Computer communication networks are in constant need of expansion to
+% cope with the ever growing traffic.  As networks grow, management and
+% maintenance become more and more complicated.
+% %
+% Current developments aim to improve the utilization of network
+% resources include the detachment of network applications from network
+% infrastructure and the transition from network planning to network
+% programming.
+% 
+% One aspect of network programming is to manage resources from a
+% central point of view, namely to make decisions based on availability,
+% network status, required quality of service, and the identity of the
+% client.  Hence, a central issue is a central agent that is able to
+% received reports from network components and client requests, and as a
+% result can alter the allocation of resources in the networks.  This
+% approach is called Software Defined Networking (SDN), where there is a
+% separation between routing and management (control plane) and the
+% underlying routers and switches that forward traffic (data plane) (see
+% Kreutz et al.~\cite{KRVRAU15}).
+% 
+% A complimentary approach is Network Function Virtualization
+% (NFV)~\cite{NFV12}.  Instead of relying on special purpose machines,
+% network applications become virtual network functions (VNF) that are
+% executed on generic machines and can be placed in various locations in
+% the network.  Virtualization increases the flexibility of resource
+% allocation and thus the utilization of the network resources.
+% %
+% Internet Service Providers (ISPs) that provide services to clients
+% benefit from NFV, since it helps to better utilize their physical
+% network.  In addition, when network services are virtualized, an ISP
+% may support \emph{service chaining}~\cite{ServiceChaining15}, namely a
+% compound service that consists of a sequence of VNFs.  Furthermore,
+% one may offer a compound service a service that may be obtained using
+% one of several sequences of VNFs.
+% 
+% In this paper we study the allocation problem of a compund request for
+% a service chain in a software-defined network that supports NFV.
+% Given a (physical) network that contains servers with limited
+% processing power and of links with limited bandwidth, a service chain
+% is a sequence of virtual network functions (VNFs) that service a
+% certain flow request in the network.
+% %
+% The allocation of a service chain consists of routing and VNF
+% placement.  That is, each VNF from the seqeunce is placed in a server
+% along a path, and it is feasible if each server can handle the VNFs
+% that are assigned to it, and if each link on the path can carry the
+% flow that is assigned to it.
+% %
+% A request for service is composed of a source and a destination in the
+% network, an upper bound on the total latency, and a specification of
+% all service chains that are considered valid for this request.
+% %
+% Each pair of server and VNF are associated with a cost for placing the
+% network function in the server.  This cost measures compatibility of a
+% VNF to a server (infinite costs means ``incompatible'').  Given a
+% request, the goal is to find a valid service chain of minimum total
+% cost or to identify that a valid service chain does not exist.
+% 
+% 
+% \dror{Explain one shot approach}
+% 
+% \paragraph*{\bf Related work.}
+% %
+% 
+% Cohen et al.~\cite{CLNR15} considered VNF placement.  In their model
+% the input is an undirected graph with a metric distance function on
+% the edges.  clients are located in various nodes, and each client is
+% interested in a subset of VNFs.  For each node $v$ and VNF $\alpha$,
+% there is a setup cost associated with placing a copy of $\alpha$ at
+% $v$ (multiple copies are allowed), and there is a load that is induced
+% on $v$ for placing a copy of $\alpha$.  Furthermore, each node has a
+% limited capacity.  Also, each copy of a VNF can handle a limited
+% amount of clients A solution is the assignment of each client to a
+% subset of nodes, each corresponding to one of its required VNFs.  The
+% cost of a solution is the total setup costs plus the sum of distances
+% between the clients and the node from which they get service.
+% %
+% Cohen et al.~\cite{CLNR15} gave bi-criteria approximation algorithms
+% for various versions of the problem, namely algorithms that compute
+% constant factor approximations that violate the load constraints by a
+% constant factor.
+% %
+% It is important to note that in this problem does not consider
+% routing, and also it assumes unordered VNF subsets.
+% 
+% Even, Medina, and Patt-Shamir~\cite{EMP16} studied online path
+% computation and VNF placement.  They considered service chain requests
+% that arrive in an online manner.  Each request is a a flow with a
+% high-level specification of routing and VNF requirements.  Each VNF
+% can be performed by a specified subset of servers in the system.  Upon
+% arrival of a request, the algorithm either rejects the request or
+% accepts it and with a specific routing and VNF assignment, under given
+% server capacity constraints.  Each request has a benefit that is
+% gained if it is accepted, and the goal is to maximize the total
+% benefit.
+% %
+% Even, Medina, and Patt-Shamir~\cite{EMP16} proposed an algorithm that
+% copes with requests with unknown duration without preemption by using
+% a third response, which is refer to as “stand by”, whose competitive
+% ratio is $O(\log (knb_{\max})$, where $n$ is the number of nodes,
+% $b_{\max}$ is an upper bound on a request benefit per time unit, and
+% $k$ is the maximum number of VNFs of any service chain.  This
+% performance guarantee holds for the case where the processing of any
+% processing request in any possible service chain is never more than
+% $O(1/(k \log (nk)))$ fraction of the capacity of any network
+% component.
+% 
+% Even, Rost, and Schmid~\cite{ERS16}
+% 
+% \dror{finish}
+% 
+% \paragraph*{\bf Our results.}
+% %
+% We show that even the feasibility problem is NP-hard in general
+% di-graphs.  Hence we first focus on directed acyclic graphs (DAGs).
+% We show that the problem is still NP-hard in DAGs and present an
+% FPTAS.
+% %
+% Based on out PTAS, we also provide a randomized algorithm for
+% instances in which the service chain passes through a bounded number
+% of servers whose degree is larger than two.
+% 
+% ?????
+% 
+% \bigskip
+% 
+% 
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% \section{Preliminaries}
+% 
+% 
+% \paragraph*{\bf Model.}
+% %
+% The \scplong (\scp) input is composed of three components, a physical
+% network, a virtual specification, and placement costs:
+% \begin{description}
+% \item[Physical network:]
+% %
+%   The physical network is a digraph $G = (V,E)$.  Each node $v \in V$
+%   has a non-negative processing capacity $p(v)$, and each directed
+%   edge $e \in A$ has a non-negative bandwidth cap $b(e)$.
+% 
+% \item[Virtual specification:]
+% %
+%   The description of a request for a service chain consists of a
+%   physical source $s \in V$, a physical destination $t \in V$, and a
+%   directed acyclic graph (DAG) $\calG = (\calV,\calE)$.
+% %
+%   Without loss of generality, we assume that $p(s) = p(t) = 0$.  
+% %
+%   The DAG $\calG$ has a source node $\sigma \in \calV$ and a
+%   destination $\tau \in \calV$ Each node $\alpha \in \calV$ represent
+%   a VNF that has a processing demand $p(\alpha)$.  Without loss of
+%   generality, we assume that $p(\sigma) = p(\tau) = 0$.  Each edge
+%   $\eps \in \calE$ has a bandwidth demand $b(\eps)$.
+%   
+% \item[Placement costs:]
+% %
+%   There is a non-negative cost $c(\alpha,v)$ for placing the VNF
+%   $\alpha$ in $v$.  We assume that $c(\sigma,s) = 0$ and $c(\sigma,v)
+%   = \infty$, for every $v \neq s$.  Similarly, we assume that
+%   $c(\tau,t) = 0$ and $c(\tau,v) = \infty$, for every $v \neq t$.
+% \end{description}
+% 
+% A solution consists of the following:
+% \begin{description}
+% \item[Virtual path:] A path from $\sigma$ to $\tau$ in $\calG$, namely
+%   a sequence of vertices $\alpha_0,\ldots,\alpha_\ell$, where
+%   $\alpha_0 = \sigma$, $\alpha_\ell = \tau$, and
+%   $(\alpha_j,\alpha_{j+1}) \in \calE$, for every $j \in
+%   \set{0,\ldots,\ell-1}$.
+% 
+% \item[Physical path:] A simple path from $s$ to $t$ in $G$, namely a
+%   sequence of node $v_0,\ldots,v_k$, where $v_0 = s$, $v_k = t$, and
+%   $(v_i,v_{i+1}) \in E$, for every $i \in \set{0,\ldots,k-1}$.
+%   
+% \item[Placement:] A function $f$ that maps the virtual path to the
+%   physical path.  Formally, a placement is a function $f:
+%   \set{\alpha_0,\ldots,\alpha_\ell} \to \set{v_0,\ldots,v_k}$
+%   such that
+% \begin{enumerate}
+% \item If $f(\alpha_j) = v_i$ and $f(\alpha_{j+1}) = v_{i'}$, then $i
+%   \leq i'$.
+% \item $b(\alpha_j,\alpha_{j+1}) \leq b(v_i,v_{i+1})$, for every
+%   $(v_i,v_{i+1}) \in \bar{f}(\alpha_j,\alpha_{j+1})$, where
+%   $\bar{f}(\alpha_j,\alpha_{j+1})$ to be the set of physical edges
+%   that correspond to it, i.e.,
+% \[
+% \bar{f}(\alpha_j,\alpha_{j+1}) \eqdf \set{(v_i,v_{i+1}) : i' \leq i < i''}
+% ~,
+% \]
+%   where $f(\alpha_j) = v_{i'}$ and $f(\alpha_{j+1}) = v_{i''}$.
+% 
+% \item $\sum_{\alpha \in f^{-1}(v)} p(\alpha) \leq p(v)$, where
+%   $f^{-1}(v) \eqdf \set{\alpha : f(\alpha) = v}$.
+%  
+% \end{enumerate}
+% \end{description}
+% 
+% An example of an \scp instance and a solution is given in
+% Figure~\ref{fig:solution}.
+% 
+% \begin{figure}
+% \centering
+% \scalebox{1}{
+% \input{fig-embedding}
+% }
+% \caption{???}
+% \label{fig:solution}
+% \end{figure}
+% 
+% The cost of a placement $f$ is:
+% \[
+% \sum_j c(\alpha_j,f(\alpha_j))
+% ~.
+% \]
+% In \scp the goal is to find a feasible placement of a virtual path
+% into the physical DAG that minimizes the cost.
+% 
+% %%%%%
+% 
+% We also consider an extended version of \scp in which each physical
+% link causes a delay and there is an upper bound $T$ on the total
+% delay.  More formally, each pair of a virtual edge $\eps$ and physical
+% edge $e$ is associated with a latency $t(\eps,e)$.
+% %
+% Given a placement $f: \set{\alpha_0,\ldots,\alpha_\ell} \to
+% \set{v_0,\ldots,v_k}$, the total latency of the solution is given by
+% \[
+% T(f) = \sum_j \sum_{e \in \bar{f}(\eps)} t(\eps,e)
+% ~.
+% \]
+% In this case there is an additional constraint that $T(f) \leq T$.
+% 
+% 
+% %%%%%
+% 
+% \paragraph*{\bf Definitions and notation.}
+% %
+% Define $n_p \eqdf \abs{V}$ and $m_p \eqdf \abs{E}$.  Similarly, define
+% $n_v \eqdf \abs{\calV}$ and $m_v \eqdf \abs{\calE}$.
+% 
+% Given a virtual DAG $\calG$, we assume the existence of a topological
+% sorting of the vertices and write $\alpha \prec_v \beta$ if $\alpha$
+% precedes $\beta$ in this ordering.  If the physical network is a DAG,
+% then we make a similar assumption and write $v \prec_p u$ if $v$
+% precedes $u$ in this ordering.
+% 
+% 
+% 
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% \section{Hardness}
+% 
+% In this section we present two hardness results.  First, we show that
+% even the feasibility question of \scp is NP-hard, and therefore no
+% approximation algorithm exists for \scp.  In addition, we show that
+% \scp is NP-hard even if $\abs{V \setminus \set{s,t}} = 1$.  We also
+% show that \scp is NP-hard even if both the physical network and the
+% virtual DAG are simple paths.
+% 
+% We show that finding a feasible solution is NP-hard.
+% 
+% \begin{theorem}
+% Feasibility of \scp is NP-hard
+% \end{theorem}
+% \begin{proof}
+% We use a reduction from \textsc{Hamiltonian Path} that is known to be
+% NP-hard~\cite{GarJoh79}.
+% %
+% Given an instance $H$ of \textsc{Hamiltonian Path} we construct an
+% instance of \scp.  For the physical network we have that $G$, where
+% $V(G) = V(H) \cup \set{s,t}$, and $E(G) = E(H) \cup \set{(s,v),(v,t) :
+%   v \in V(H)}$.  In addition, $p(v) = 1$, for every $v$, and $b(e) =
+% 1$, for every $e$.  The virtual DAG $\calG$ is a path containing $n+2$
+% virtual functions, $\sigma = \alpha_0, \alpha_1, \ldots, \alpha_n,
+% \alpha_{n+1} = \tau$, where $p(\alpha_i) = 1$, for every $i \in
+% \set{1,\ldots,n}$.  Also, $b(\alpha_i,\alpha_{i+1}) = 1$, for every
+% $i$.
+% 
+% The construction can clearly be computed in polynomial time.
+% %
+% An Hamiltonian Path in $G$, induces a \scp solution that follows the
+% path, i.e., $\alpha_i$ is placed in the $i$th vertex along the path.
+% %
+% One the other hand, since all demands and capacities are $1$, no two
+% VNFs can share a physical node.  Hence a \scp solution induces an
+% Hamiltonian path.
+% %
+% \qed
+% \end{proof}
+% 
+% Next, we show that \scp is NP-hard even if the physical network is a
+% DAG.
+% 
+% \begin{theorem}
+% \scp is NP-hard, even if $\abs{V \setminus \set{s,t}} = 1$.
+% \end{theorem}
+% \begin{proof}
+% The prove the theorem using a reduction from \textsc{Partition}.
+% Given a \textsc{Partition} instance $\set{a_1, \ldots, a_n}$ we
+% construct an \scp instance as follows.
+% %
+% The physical network $G$ contains three nodes: $s$, $v$, and $t$, and
+% there are two edges $(s,v)$ and $(v,t)$.  The capacity of $v$ is $p(v)
+% = \half \sum_i a_i$.  Edge capacities are zero.
+% %
+% The virtual DAG is composed of $2n+2$ vertices, namely
+% \[
+% \calV
+% = \set{\sigma,\tau}
+%   \cup \set{\alpha_1, \ldots, \alpha_n}
+%   \cup \set{\beta_1, \ldots, \beta_n}
+% ~.
+% \]
+% Also,
+% \[
+% \calE
+% = \bigcup_i \set{ \set{\alpha_i,\beta_i} \times \set{\alpha_{i+1},\beta_{i+1}} } 
+%   \cup
+%   \set{ (\sigma,\alpha_1), (\sigma,\beta_1), (\alpha_n,t), (\beta_n,t) }
+% ~.
+% \]
+% The DAG is shown in Figure~\ref{fig:dag}.
+% %
+% The demands are $p(\alpha_i) = a_i$ and $p(\beta_i) = 0$, for every
+% $i$.  Also, $b(\eps) = 0$, for every $\eps \in \calE$.  The costs are:
+% $c(\alpha_i,v) = 0$ and $c(\beta_i,v) = a_i$, for every $i$.
+% 
+% The \scp instance can be computed in polynomial time.
+% %
+% Also, it is not hard to verify that $a \in \textsc{Partition}$ if and
+% only if there exists a solution whose cost is $\half \sum_i a_i$.
+% %
+% \qed
+% \end{proof}
+% 
+% \begin{figure}
+% \centering
+% \input{fig-reduction}
+% \caption{???}
+% \label{fig:dag}
+% \end{figure}
+% 
+% \dror{Figure 2: source and destination should be fixed}
+% 
+% \begin{theorem}
+% \scp is NP-hard, even if both the physical network and the virtual DAG
+% are paths.
+% \end{theorem}
+% \begin{proof}
+% 
+% \dror{reduction from partition using latency}
+%   
+% %
+% \qed
+% \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
