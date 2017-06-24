@@ -4,6 +4,19 @@ $l : E \times \calE \to \R$, and a latency constraint $L$.
 The goal is to find a minimum cost embedding that also respect the latency
 constraint.
 
+We first describe an algorithm that, given a cost constraint $c$, 
+finds an embedding that costs at most $c$ and has the minimum possible latency.
+Once again, the algorithm maintains a pair of physical and virtual nodes,
+$\gamma$ and $w$ respectively.
+In each step it chooses a virtual edge $\alpha\beta$ and a physical node $v$
+that are ascendant of $\gamma$ and $w$ respectively.
+It then finds a $vw$-path that support the bandwidth of $\alpha\beta$ and
+has the minimum possible latency with respect to this edge.
+It also finds $\beta\gamma$-path that can be embedded into $w$ and has the 
+minimum possible cost.
+Finally it finds an embedding of a $\sigma\alpha$-path into a $sv$-path with 
+the minimum possible latency recursively.
+
 Let $L(\sigma-\gamma, s-w, c)$ denote an embedding of a $\sigma\gamma$-path
 into a $sw$-path with the minimum possible latency that cost at most $c$.
 Let $L_{b}(\alpha\beta, v-w)$ be the minimum possible latency on a $\alpha\beta$-path
