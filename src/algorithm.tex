@@ -165,21 +165,21 @@ bounded in the size of the input.
 Combining the above with the algorithms described earlier 
 yields FPTAS for the \VPN{} problem for an arbitrary cost function.
 
-Let $\~c$ be the maximum cost incurs by embedding a single virtual node into 
+Let $\hat{c}$ be the maximum cost incurs by embedding a single virtual node into 
 a physical node in an optimal embedding, 
-that is $\~c \eqdf \max_{\alpha \in \calV}c(\alpha, f_{opt}(\alpha))$.
+that is $\hat{c} \eqdf \max_{\alpha \in \calV}c(\alpha, f_{opt}(\alpha))$.
 Given $\varepsilon$ we define 
 $$
 c'(\alpha, v) \eqdf
 \begin{cases}
-\ceil{c(\alpha, v)/\mu} & c(\alpha, v) \leq \~c
+\ceil{c(\alpha, v)/\mu} & c(\alpha, v) \leq \hat{c}
 \\
-\infty & c(\alpha, v) > \~c
+\infty & c(\alpha, v) > \hat{c}
 \end{cases}
 $$
 where 
 $
-\mu \eqdf \frac{\~c\varepsilon}{n}
+\mu \eqdf \frac{\hat{c}\varepsilon}{n}
 $.
 Let $s$ be an optimal placement w.r.t $c'$ 
 and let $o$ be an optimal placement w.r.t $c$, 
@@ -198,10 +198,10 @@ S = & \sum_{\alpha \in \calV}c(\alpha, s(\alpha)) \leq
 \mu\sum_{\alpha \in \calV}c(\alpha, o(\alpha))/\mu + 1 \leq
 \\&
 \sum_{\alpha \in \calV}c(\alpha, o(\alpha)) + n\mu =
-O + \~c\varepsilon \leq (1 + \varepsilon)O
+O + \hat{c}\varepsilon \leq (1 + \varepsilon)O
 \end{align*}
 \end{proof}
-Clearly, $\~c$, is not known in advanced, but one can "guess" 
+Clearly, $\hat{c}$, is not known in advanced, but one can "guess" 
 its value as there are at most
 $|\calV| \cdot |V|$ possible values to choose from.
 
