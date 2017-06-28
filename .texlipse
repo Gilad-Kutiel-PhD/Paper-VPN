@@ -1,5 +1,5 @@
 #TeXlipse project settings
-#Sun Jun 25 08:07:32 IDT 2017
+#Wed Jun 28 07:37:34 IDT 2017
 markTmpDer=true
 builderNum=8
 outputDir=out/
@@ -7,7 +7,7 @@ makeIndSty=
 bibrefDir=
 outputFormat=pdf
 tempDir=tmp
-mainTexFile=main.tex
+mainTexFile=chain.tex
 outputFile=vpn.pdf
 langSpell=en
 markDer=true
