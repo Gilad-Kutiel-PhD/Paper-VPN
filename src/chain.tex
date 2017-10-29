@@ -988,6 +988,16 @@ that $\pi$ does not agree with $\pi'$ in $k!$ iterations is $1 - (1 -
 \end{proof}
 
 \section{Fault Tolerance}
+In this section we consider the problem of a service chain placement when there 
+is also demand for fault tolerance.
+Formally, given a physical network, a virtual specification and a parameter 
+$\phi \in \mathbb{N}$, a $\phi$-robust placement is a collection of $\phi$ placements,
+$f_1,\ldots,f_\phi$,
+that correspond to $\phi$ internal vertex disjoint physical paths. 
+We are looking for a $\phi$-robust placement that minimize the total cost:
+$$
+\sum_{i = 1}^\phi \sum_j c(\alpha_j,f_i(\alpha_j))
+$$
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
