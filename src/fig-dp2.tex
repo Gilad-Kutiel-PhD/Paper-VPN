@@ -8,27 +8,27 @@
 	(#1 center |- #1 nw) coordinate(#1 north)
 }}}
 
-\node[draw=none] at(5, 1) {Virtual Graph};
+\node[draw=none] at(-2, 0) {Virtual:};
 
 \node(sv) at(0,0) {$\sigma$};
-\node(alpha) at(4,0) {$\alpha$};
+\node(alpha) at(4,0) {$\gamma$};
 \node(beta) at(6.2,0) {$\beta$};
-\node(gamma) at(10,0) {$\gamma$};
+\node(gamma) at(10,0) {$\alpha$};
 
 \draw[blue, dashed] 
 ($(sv.north west) + (-.3,.3)$) rectangle 
 ($(alpha.south east) + (.3, -.3)$) [ref=r1]
 ;
 
-\draw (alpha) -- (beta) node[label above] {$b(\alpha\beta)$};
+\draw (alpha) -- (beta) node[label above] {$b(\gamma,\beta)$};
 
 \draw[path] (beta) -- (gamma);
 
 
-\node(s) at(0,-2) {s};
-\node(u) at(5, -2){v};
-\node(v) at(8,-2) {w};
-\node[draw=none] at(5, -3) {Physical Graph};
+\node(s) at(0,-2) {$s$};
+\node(u) at(5, -2){$u$};
+\node(v) at(8,-2) {$v$};
+\node[draw=none] at(-2, -2) {Physical:};
 
 \draw[blue, dashed] 
 ($(s.north west) + (-.3,.3)$) rectangle 
