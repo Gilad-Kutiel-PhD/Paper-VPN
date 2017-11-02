@@ -998,6 +998,84 @@ We are looking for a $\phi$-robust placement that minimize the total cost:
 $$
 \sum_{i = 1}^\phi \sum_j c(\alpha_j,f_i(\alpha_j))
 $$
+In this section we discuss how to efficiently find an optimal 
+(assuming integral polynomial bounded costs) 2-robust placement.
+The algorithm presented here, however, can be generalized to find an optimal $\phi$-robust
+placement for any $\phi$
+
+\subsection{Failure of the Greedy Algorithm}
+Here we give a simple example why the greedy algorithm fails badly.
+By greedy we mean applying the previous algorithm once to find an optimal placement, 
+then removing all the vertices from the resulted path and applying the same algorithm again
+to find the second placement.
+Consider the physical graph as described in Figure~\ref{fig:greedy-bad} and a virtual path of
+two virtual functions $\alpha$ and $\beta$.
+Assume latencies, bandwidth, and processing constraints are all negligible 
+and assume the following cost function 
+$c(1, \alpha) = c(2, \alpha) = 1-\varepsilon, c(1, \beta) = c(2, \alpha) = 1$.
+The greedy algorithm is unable to find a 2-robust placement in this case - after the 
+first iteration there is no path from $s$ to $t$ - while, clearly there is a 2-robust
+placement that costs $4 - 2 \epsilon$.   
+\begin{figure}
+\caption{
+\label{fig:greedy-bad}
+}
+\begin{center}
+\input{fig-alg-bad-example}
+\end{center}
+\end{figure}
+
+  
+\subsection{Fault Tolerance on Layered Graph}
+We first assume that the input graph is a directed layered graph, i.e.
+$G = (\bigcup_{i = 1}^l L_i, A)$ where 
+$A \subseteq \bigcup_{i = 1}^{l - 1} L_i \times L_{i+1}$.
+We assume that the number of vertices in each layer is at least two, or otherwise a 2-robust 
+placement does not exist.
+The algorithm uses dynamic programming.
+We find the optimal 2-robust placement for every  
+combination of two physical vertices from the same layer, 
+and every combination of two virtual functions.
+Formally, given the input $(G = (V, E), \calG = (\calV, \calE), p, b, s, t, c)$
+We define $ft(v_1, v_2, \alpha_1, \alpha_2)$ to be the optimal 2-robust placement of 2 chains
+that start at $\sigma$ and end at $\alpha_1, \alpha_2$ respectively into 
+(internal vertex disjoint) physical paths that start at $s$ and end at $v_1,v_2$ respectively.
+One can verified that the following recursive formula holds:
+$$
+ft(v_1, v_2, \alpha_1, \alpha_2) = 
+\min_{
+\begin{subarray}{c}
+u_1,u_2,(\beta_1,\beta_2:
+\\
+u_1
+\\
+asdf
+\end{subarray}
+}
+$$
+  
+
+
+\subsection{Layered Graph Transformation}
+Given a directed acyclic graph $G = (V, A)$, 
+and let $\pi:V \to [n]$ be an arbitrary topological sorting of $G$ 
+we transform it into a layered graph $G'$ by replacing every edge $(u, v)$ with a directed path of 
+length (number of arcs) $\pi(v) - \pi(u)$ from $u$ to $v$.
+We set the processing capacity of each internal vertex on this path to be zero,
+and the bandwidth of the arcs along the path to be $b(u,v)$.
+It is easy to see that the resulting graph is indeed a layered graph and that every placement
+on $G$ corresponds to a placement on $G'$ with the same cost.
+Figure~\ref{fig:layer-transform} depicts this process.
+\begin{figure}
+\caption{
+\label{fig:layer-transform}
+}
+\begin{center}
+\input{layer-transform}
+\end{center}
+\end{figure}
+ 
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
