@@ -1042,16 +1042,26 @@ that start at $\sigma$ and end at $\alpha_1, \alpha_2$ respectively into
 (internal vertex disjoint) physical paths that start at $s$ and end at $v_1,v_2$ respectively.
 One can verified that the following recursive formula holds:
 $$
-ft(v_1, v_2, \alpha_1, \alpha_2) = 
-\min_{
-\begin{subarray}{c}
-u_1,u_2,(\beta_1,\beta_2:
+ft(v_1, v_2, \alpha_1, \alpha_2, b_1, b_2) =
+\begin{cases} 
+\min_{\substack{\\ u_1, u_2: \\ b(u_1, v_1) \geq b_1 \\ b(u_2, v_2) \geq b_2}}
+ft(u_1, u_2, \alpha_1, \alpha_2, b_1, b_2)
 \\
-u_1
+\text{Two more cases here...}
 \\
-asdf
-\end{subarray}
-}
+\min_{\substack{
+\\ 
+(\gamma_1, \beta_1), (\gamma_2, \beta_2) \in \calE,
+\\
+u_1, u_2:
+\beta_1 \prec \alpha_1, \beta_2 \prec \alpha_2,
+\\
+b(u_1, v_1) \ge b(\gamma_1, \beta_1)
+\\  
+b(u_2, v_2) \ge b(\gamma_2, \beta_2)
+}}
+ft(u_1, u_2, \beta_1, \beta_2, b(\gamma_1, \beta_1), b(\gamma_2, \beta_2))
+\end{cases}
 $$
   
 
