@@ -987,6 +987,26 @@ that $\pi$ does not agree with $\pi'$ in $k!$ iterations is $1 - (1 -
 \qed
 \end{proof}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{FPT Algorithm for General Networks}
+We now propose an FPT algorithm for general networks that is similar to the randomized 
+algorithm from Section~\ref{sec:general}.
+Our FPT algorithm runs in $O(k! \cdot (A + O))$ where $k$ is the number of neighborly
+vertices in the graph, $A$ is the time required to find a solution on a DAG,
+and $O$ is the time required to orient the graph given a permutation on the neighborly
+vertices, as discussed above.
+The algorithm executes the FPTAS for DAGs given in Theorem~\ref{thm:fptas}
+once for any orientation results from any of the $k!$ possible permutations and
+returns the best solution.
+The following theorem follows immediately.
+
+\begin{theorem}
+There is an FPT algorithm that finds a $(1+\eps)$-approximate placement after $k!$ iterations 
+\end{theorem} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Fault Tolerance}
 In this section we consider the problem of a service chain placement when there 
 is also demand for fault tolerance.
@@ -1042,29 +1062,88 @@ that start at $\sigma$ and end at $\alpha_1, \alpha_2$ respectively into
 (internal vertex disjoint) physical paths that start at $s$ and end at $v_1,v_2$ respectively.
 One can verified that the following recursive formula holds:
 $$
-ft(v_1, v_2, \alpha_1, \alpha_2, b_1, b_2) =
-\begin{cases} 
-\min_{\substack{\\ u_1, u_2: \\ b(u_1, v_1) \geq b_1 \\ b(u_2, v_2) \geq b_2}}
-ft(u_1, u_2, \alpha_1, \alpha_2, b_1, b_2)
+ft(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) = \min
+\begin{cases}
+nn(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2)
 \\
-\text{Two more cases here...}
+ny(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2)
 \\
-\min_{\substack{
-\\ 
-(\gamma_1, \beta_1), (\gamma_2, \beta_2) \in \calE,
+yn(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2)
 \\
-u_1, u_2:
-\beta_1 \prec \alpha_1, \beta_2 \prec \alpha_2,
-\\
-b(u_1, v_1) \ge b(\gamma_1, \beta_1)
-\\  
-b(u_2, v_2) \ge b(\gamma_2, \beta_2)
-}}
-ft(u_1, u_2, \beta_1, \beta_2, b(\gamma_1, \beta_1), b(\gamma_2, \beta_2))
+yy(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) 
 \end{cases}
 $$
-  
 
+where
+$$
+\begin{array}{l}
+nn(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) = 
+\displaystyle\smashoperator{\min_{\substack{\\ u_1, u_2: \\ b(u_1, v_1) \geq b(\gamma_1, \beta_1) \\ b(u_2, v_2) \geq b(\gamma_2, \beta_2)}}}
+ft(u_1, u_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2)
+\\
+ny(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) = 
+\displaystyle\smashoperator{\min_{
+	\substack{
+	u_1, u_2: 
+	\\ 
+	b(u_1, v_1) \geq b(\gamma_1, \beta_1) 
+	\\ 
+	b(u_2, v_2) \geq b(\gamma_2, \beta_2)
+	\\
+	\gamma'_2\beta'_2 \in \calE:
+	\\
+	\beta'_2 \prec \gamma_2 
+	}}}
+ft(u_1, u_2, \alpha_1, \gamma_2, \gamma_1\beta_1, \gamma'_2\beta'_2)
+\\
+yn(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) = 
+\displaystyle\smashoperator{\min_{
+	\substack{
+	u_1, u_2: 
+	\\ 
+	b(u_1, v_1) \geq b(\gamma_1, \beta_1) 
+	\\ 
+	b(u_2, v_2) \geq b(\gamma_2, \beta_2)
+	\\
+	\gamma'_1\beta'_1 \in \calE:
+	\\
+	\beta'_1 \prec \gamma_1 
+	}}}
+ft(u_1, u_2, \gamma_1, \alpha_2, \gamma'_1\beta'_1, \gamma_2\beta_2)
+\\
+yy(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) = 
+\displaystyle\smashoperator{\min_{
+	\substack{
+	u_1, u_2: 
+	\\ 
+	b(u_1, v_1) \geq b(\gamma_1, \beta_1) 
+	\\ 
+	b(u_2, v_2) \geq b(\gamma_2, \beta_2)
+	\\
+	\gamma'_1\beta'_1, \gamma'_2\beta'_2 \in \calE:
+	\\
+	\beta'_1 \prec \gamma_1, \beta'_2 \prec \gamma_2 
+	}}}
+ft(u_1, u_2, \gamma_1, \gamma_2, \gamma'_1\beta'_1, \gamma'_2\beta'_2)
+\end{array}
+$$
+
+\begin{theorem}
+There is an algorithm that, on a layered graph, finds an optimal 2-robust placement in 
+polynomial time. 
+\end{theorem}
+
+\begin{proof}
+One can verify, that using dynamic programming, the above recursive can be solved in polynomial time,
+using backtracking we can also find the optimal solution.
+\end{proof}
+
+We note that the above algorithm does not take into account the latency constraint.
+It is possible, however, given a latency constraint, $L$, to modify the algorithm to return
+an optimal solution such that the total latency of the two placements is no more than $2L$.
+Such a solution is guaranteed to be optimal in terms of costs.
+It is also easy to see that in such solution at least one of the placements has lower latency 
+than $L$ and the other one has latency that is at most $2L$. 
 
 \subsection{Layered Graph Transformation}
 Given a directed acyclic graph $G = (V, A)$, 
@@ -1077,9 +1156,14 @@ It is easy to see that the resulting graph is indeed a layered graph and that ev
 on $G$ corresponds to a placement on $G'$ with the same cost.
 Figure~\ref{fig:layer-transform} depicts this process.
 \begin{figure}
-\caption{
+\captionsetup{singlelinecheck=off}
+\caption[layered]{foo
 \label{fig:layer-transform}
-}
+\begin{enumerate}
+\item A directed acyclic graph that is not a layered graph
+  \item A topological sorting of the above graph
+  \item A layered graph obtained by replacing crossing arcs with simple paths 
+\end{enumerate}}
 \begin{center}
 \input{layer-transform}
 \end{center}
