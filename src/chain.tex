@@ -29,6 +29,8 @@
 
 \renewcommand{\floatpagefraction}{0.6}
 
+\parskip = \smallskipamount
+
 \sloppy
 
 
@@ -74,6 +76,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{document}
+
 \title{\bf Service Chain Placement in SDNs%
 \thanks{Research supported in part by Network Programming (Neptune)
   Consortium, Israel.}
@@ -108,9 +112,6 @@ Faculty of Engineering, Bar Ilan University, Ramt-Gan 52900, Israel.\\
 \email{dror.rawitz@biu.ac.il}
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{document}
 \maketitle
 
 \begin{abstract}
@@ -146,9 +147,9 @@ specification consists of only one option (i.e., the virtual DAG is a
 path).
 %
 On the other hand, we present an FPTAS for the case where the network
-is a DAG.  In addition, based on our FPTAS, we provide a randomized
-algorithm for instances in which the service chain passes through a
-bounded number of vertices whose degree is larger than two.
+is a DAG.  In addition, based on our FPTAS, we provide algorithms for
+instances in which the service chain passes through a bounded number
+of vertices whose degree is larger than two.
 \end{abstract}
 
 
@@ -202,8 +203,9 @@ one of several sequences of VNFs.
 
 %%%%%
 
-\paragraph*{\bf Related work.}
-%
+\subsection{Related Work}
+%\paragraph*{\bf Related work.}
+
 In this paper we consider an SDN network that employs
 NVF~\cite{SDN-NFV15}.  Such networks attracted a lot of attention in
 the networking community, especially from a systems point of view
@@ -287,8 +289,9 @@ $O(\eps^2/\log n)$ fraction of the capacity of any network component.
 
 %%%%%
 
-\paragraph*{\bf Our results.}
-%
+\subsection{Our Results}
+%\paragraph*{\bf Our results.}
+
 We study the allocation problem of a compound flow request for a
 service chain in a software-defined network that supports NFV, where
 the goal is to find an optimal placement with respect to the current
@@ -326,7 +329,7 @@ reduction from \textsc{Hamiltonian Path}.
 We show that the problem is still NP-hard if the network is a DAG even
 for a very simple network, and even if the specification consists of a
 single option.  Both reductions are from \textsc{Partition}.
-%
+
 On the positive side, we present an FPTAS for the case where the
 network is a DAG which is based on a non-trivial dynamic programming
 algorithm.
@@ -336,8 +339,13 @@ networks in which there is an optimal placement whose physical path
 consists of at most $k$ vertices whose degree is larger than $2$.  For
 example, this can be assumed if all simple paths from $s$ to $t$
 contain at most $k$ such vertices.  The algorithm computes a
-$(1+\eps)$-approximate placement with probability $(1-e^{-1})$ using
-$k!$ invocation of the FPTAS.
+$(1+\eps)$-approximate placement with high probability using $k! \log
+n$ invocations of the FPTAS.
+%
+We also present a (deterministic) parameterized algorithm that
+computes a $(1+\eps)$-approximate placement in time $O(k! \cdot
+\text{poly}(n))$, where $k$ is the number of vertices in the network
+whose degree is larger than $2$.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -346,28 +354,34 @@ $k!$ invocation of the FPTAS.
 
 \paragraph*{Model.}
 %
-The \scplong (\scp) input is composed of three components, a physical
-network, a virtual specification, and placement costs:
+An instance of the \scplong (\scp) problem is composed of three
+components, a physical network, a virtual specification, and placement
+costs:
 \begin{description}
 \item[Physical network:]
 %
   The physical network is a graph $G = (V,E)$.  Each node $v \in V$
   has a non-negative processing capacity $p(v)$, and each directed
   edge $e \in E$ has a non-negative bandwidth capacity $b(e)$.
+%
+  Without loss of generality, we assume that $p(s) = p(t) = 0$.  
 
+\medskip
+  
 \item[Virtual specification:]
 %
   The description of a request for a service chain consists of a
   physical source $s \in V$, a physical destination $t \in V$, and a
   directed acyclic graph (DAG) $\calG = (\calV,\calE)$.
 %
-  Without loss of generality, we assume that $p(s) = p(t) = 0$.  
-%
   The DAG $\calG$ has a source node $\sigma \in \calV$ and a
   destination $\tau \in \calV$. Each node $\alpha \in \calV$ represent
-  a VNF that has a processing demand $p(\alpha)$.  Without loss of
-  generality, we assume that $p(\sigma) = p(\tau) = 0$.  Each edge
-  $\eps \in \calE$ has a bandwidth demand $b(\eps)$.
+  a VNF that has a processing demand $p(\alpha)$.
+%
+  Without loss of generality, we assume that $p(\sigma) = p(\tau) =
+  0$.  Each edge $\eps \in \calE$ has a bandwidth demand $b(\eps)$.
+
+\medskip
   
 \item[Placement costs:]
 %
@@ -385,9 +399,13 @@ A solution consists of the following:
   $(\alpha_j,\alpha_{j+1}) \in \calE$, for every $j \in
   \set{0,\ldots,q-1}$.
 
+\medskip
+  
 \item[Physical path:] A simple path from $s$ to $t$ in $G$, namely a
   sequence of nodes $v_0,\ldots,v_k$, where $v_0 = s$, $v_k = t$, and
   $(v_i,v_{i+1}) \in E$, for every $i \in \set{0,\ldots,k-1}$.
+
+\medskip
   
 \item[Placement:] A function $f$ that maps a virtual path to a simple
   physical path.  Formally, a placement is a function $f:
@@ -417,7 +435,7 @@ Figure~\ref{fig:solution}.
 
 \begin{figure}[t]
 \centering
-\scalebox{0.8}{
+\scalebox{0.85}{
 \input{fig-embedding}
 }
 \caption{An example of an \scp instance and a solution.}
@@ -527,13 +545,13 @@ there are two edges $(s,v)$ and $(v,t)$.  The capacity of $v$ is $p(v)
 = \half \sum_i a_i$.  Edge bandwidth are zero.
 %
 The virtual DAG is composed of $2n+2$ vertices, namely
-\(
+\[
 \calV
 = \set{\sigma,\tau}
   \cup \set{\alpha_1, \ldots, \alpha_n}
   \cup \set{\beta_1, \ldots, \beta_n}
-%~.
-\).
+~.
+\]
 Also,
 \[
 \calE
@@ -653,7 +671,12 @@ recursively as follow:
 \begin{cases}
 %\infty    & c < 0, \\
 \infty    & c(\alpha,v) > c, \\
-p(\alpha) & c(\alpha,v) \leq c, \beta = \alpha, \\
+p(\alpha) &
+\begin{array}{c}
+c(\alpha,v) \leq c, \\
+\beta = \alpha,
+\end{array}
+\\
 \displaystyle
 \min_{(\gamma,\beta) \in \calE}
    \set{\process_v(\alpha \leadsto \gamma, c - c(\beta,v)) + p(\beta)}
@@ -802,8 +825,12 @@ Now we are ready for the computation of $\latency(\alpha,v,c)$:
 \[
 \latency(\alpha,v,c) =
 \begin{cases}
-\infty  &  c < 0 \\
-0       &  \alpha = \sigma, v = s, c \geq 0 \\
+\infty  &  c < 0,\\
+0       &
+\begin{array}{c}
+\alpha = \sigma, v = s, \\
+\text{and } c \geq 0,
+\end{array} \\
 \displaystyle
 \min_{
   \substack{\beta \prec \alpha, (\gamma,\beta) \in \calE, \\
@@ -839,6 +866,7 @@ using standard techniques.
 %%%%%
 
 \subsection{FPTAS for General Costs}
+\label{sub:fptas}
 
 In this section we present an FPTAS for \scp in DAGs for general
 costs, namely without the assumption that costs are polynomially
@@ -915,18 +943,27 @@ NP-hard in general networks, and therefore we focus on a special case.
 %
 A vertex $v \in V$ is called \emph{neighborly} if it has more than two
 neighbors.
-%In this section
-We assume that there exists an optimal placement whose physical path
-consists of at most $k$ neighborly vertices.  For example, this can be
-assumed if all simple paths from $s$ to $t$ contain at most $k$
-neighborly vertices.
 %
-We present a randomized algorithm that consists of $k!$ iterations of
-the following two phases: an orientation phase that applies a random
+First, we assume that there exists an optimal placement whose physical
+path consists of at most $k$ neighborly vertices.  For example, this
+can be assumed if all simple paths from $s$ to $t$ contain at most $k$
+neighborly vertices.  In this case we present a randomized algorithm
+that computes an $(1+\eps)$-approximate placement with high
+probability whose running time is $O(k! \cdot \text{poly}(n))$.
+%
+Our second algorithm works under the stronger assumption that there
+are $k$ neighborly vertices in the network.  In this case, we present
+a deterministic algorithm whose running time is $O(k! \cdot
+\text{poly}(n))$.
+
+%%%%%
+
+Our randomized algorithm that consists of $k!$ iterations of the
+following two phases: an orientation phase that applies a random
 orientation to the physical network, and an execution of the FPTAS for
 DAGs given in Theorem~\ref{thm:fptas}.  The algorithm finds a
-$(1-\eps)$-approximate placement with probability $(1-1/e)$, and
-its running time of the algorithm is $O(t(n)k!)$, where $t(n)$ is the
+$(1-\eps)$-approximate placement with probability $(1-1/e)$, and the
+running time of the algorithm is $O((n+t(n))k!)$, where $t(n)$ is the
 time it takes to compute a placement when the physical network is a
 DAG.
 %
@@ -948,7 +985,7 @@ A na\"ive implementation of this phase would run in $O(|V||E|)$ time.
 
 \begin{figure}[t]
 \centering
-\scalebox{0.8}{
+\scalebox{0.9}{
   \input{fig-orientation}
 }
 \caption{Orientation phase: on the left is the physical network, where
@@ -965,8 +1002,10 @@ a placement.  We repeat this process $k!$ times, each time with a new
 independent random permutation, and keep the best embedding so far.
 
 \begin{theorem}
-With probability at least $1 - e^{-1}$ the algorithm finds a
-$(1+\eps)$-approximate placement after $k!$ iterations.
+There exists an algorithm, that given an \scp instance with an optimal
+solution that contains at most $k$ neighborly vertices, finds a
+$(1+\eps)$-approximate placement with probability $1 - e^{-1}$, whose
+running time is $O(k! \cdot \text{\rm poly}(n))$.
 \end{theorem}
 \begin{proof}
 Consider an optimal placement with at most $k$ neighborly vertices,
@@ -980,33 +1019,40 @@ FPTAS will find a $(1+\eps)$-approximate placement in $G_\pi$.  This
 placement is feasible, and therefore $(1+\eps)$-approximate placement,
 with respect to $G$.
 %
-$\pi$ agrees with $\pi'$ with probability $1/k!$, and the probability
-that $\pi$ does not agree with $\pi'$ in $k!$ iterations is $1 - (1 -
-1/k!)^{k!} \leq 1 - e^{-1}$.
+The permutation $\pi$ agrees with $\pi'$ with probability $1/k!$, and
+the probability that $\pi$ agrees with $\pi'$ in $k!$ iterations is $1
+- (1 - 1/k!)^{k!} \geq 1 - e^{-1}$.  One may amplify the success
+probability to $1 - \inv{n}$ using $\log n$ repetitions.
 %
 \qed
 \end{proof}
 
-\paragraph{\textbf{FPT Algorithm}}
-Let $k = |N|$, we present an FPT algorithm that runs in $k!$ iterations and is
-guaranteed to find the optimal placement.
-For each possible permutation of the $k!$ permutations on the $k$ neighborly vertices, 
-the algorithm applies the graph orientation procedure as described above,
-and then executes the FPTAS for DAGs given in Theorem~\ref{thm:fptas}, 
-thus the running time of the algorithm is $O(k!(A + O))$ where $A$ is the running time of the
-FPTAS and $O$ is the time it takes to orient an undirected graph.
+%%%%%
+
+In the case where $\abs{N} = k$ we can simply examine the $k!$
+permutations of the neighborly vertices.  For each possible
+permutation the algorithm applies the graph orientation procedure as
+described above, and then executes the FPTAS for DAGs given in
+Section~\ref{sub:fptas}.  Thus the running time of the algorithm is
+$O((n+t(n)k!)$, where $t(n)$ is the running time of the FPTAS for
+DAGs.
+%
+We note that permutation enumeration for $k$ numbers takes $O(k!)$
+time (see e.g.,~\cite{Even73,Sedgewick77})
 
 \begin{theorem}
-There is an FPT algorithm that finds a $(1+\eps)$-approximate placement 
-in $O(k!(A + O))$ time
-\end{theorem} 
-
-\begin{proof}
-The running time of the algorithm follows from the discussion above, the correctness of the 
-algorithm follows directly from the fact that there is a correct orientation among the $k!$
-possible once that corresponds to the optimal placement 
-\qed
-\end{proof}
+There exists an $O(k! \cdot \text{\rm poly}(n))$-time algorithm, that
+given an \scp instance with $k$ neighborly vertices, finds a
+$(1+\eps)$-approximate placement.
+\end{theorem}
+%\begin{proof}
+%The running time of the algorithm follows from the discussion above,
+%the correctness of the algorithm follows directly from the fact that
+%there is a correct orientation among the $k!$ possible once that
+%corresponds to the optimal placement
+%
+%\qed
+%\end{proof}
 
 
 
@@ -1021,6 +1067,13 @@ possible once that corresponds to the optimal placement
 
 %FPT algorithm where the number of servers whose degree is larger than
 %two is a parameter?
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Acknowledgement}
+
+We thank Reuven Bar-Yehuda for helpful discussions.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
