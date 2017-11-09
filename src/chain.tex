@@ -958,7 +958,7 @@ a deterministic algorithm whose running time is $O(k! \cdot
 
 %%%%%
 
-Our randomized algorithm that consists of $k!$ iterations of the
+Our randomized algorithm consists of $k!$ iterations of the
 following two phases: an orientation phase that applies a random
 orientation to the physical network, and an execution of the FPTAS for
 DAGs given in Theorem~\ref{thm:fptas}.  The algorithm finds a
@@ -1004,7 +1004,7 @@ independent random permutation, and keep the best embedding so far.
 \begin{theorem}
 There exists an algorithm, that given an \scp instance with an optimal
 solution that contains at most $k$ neighborly vertices, finds a
-$(1+\eps)$-approximate placement with probability $1 - e^{-1}$, whose
+$(1+\eps)$-approximate placement with high probability, whose
 running time is $O(k! \cdot \text{\rm poly}(n))$.
 \end{theorem}
 \begin{proof}
@@ -1033,9 +1033,8 @@ In the case where $\abs{N} = k$ we can simply examine the $k!$
 permutations of the neighborly vertices.  For each possible
 permutation the algorithm applies the graph orientation procedure as
 described above, and then executes the FPTAS for DAGs given in
-Section~\ref{sub:fptas}.  Thus the running time of the algorithm is
-$O((n+t(n)k!)$, where $t(n)$ is the running time of the FPTAS for
-DAGs.
+Section~\ref{sub:fptas}.  
+Thus the running time of the algorithm is $O(k! \cdot \text{\rm poly}(n))$.
 %
 We note that permutation enumeration for $k$ numbers takes $O(k!)$
 time (see e.g.,~\cite{Even73,Sedgewick77})
