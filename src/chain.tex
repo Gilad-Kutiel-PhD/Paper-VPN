@@ -974,7 +974,7 @@ neighborly vertices, and let $\pi:N \to \set{1,\ldots,\abs{N}}$ be a
 random permutation.  We direct the edges according to $\pi$.  Observe
 that each edge $e \in E$ is found on a simple path between two
 neighborly nodes $v_e$ and $v'_e$, in which all internal vertices are
-in $V \subseteq N$.  The edge $e$ is directed towards $v_e$, if
+in $V \setminus N$.  The edge $e$ is directed towards $v_e$, if
 $\pi(v_e) > \pi(v'_e)$, and otherwise it is directed towards $v'_e$.
 %
 Observe that when this process terminates we get a DAG, denoted by
