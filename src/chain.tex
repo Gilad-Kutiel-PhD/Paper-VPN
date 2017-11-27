@@ -114,7 +114,6 @@ Faculty of Engineering, Bar Ilan University, Ramt-Gan 52900, Israel.\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{document}
 \maketitle
 
 \begin{abstract}
@@ -356,7 +355,7 @@ whose degree is larger than $2$.
 
 \section{Preliminaries}
 
-\paragraph*{Model.}
+\subsection*{Model.}
 %
 An instance of the \scplong (\scp) problem is composed of three
 components, a physical network, a virtual specification, and placement
@@ -483,7 +482,7 @@ In this case there is an additional constraint that $L(f) \leq L$.
 %Define $n_p \eqdf \abs{V}$ and $m_p \eqdf \abs{E}$.  Similarly, define
 %$n_v \eqdf \abs{\calV}$ and $m_v \eqdf \abs{\calE}$.
 
-\paragraph*{Notation.}
+\subsection*{Notation.}
 %
 Given a virtual DAG $\calG$, we assume the existence of a topological
 sorting of the vertices and write $\alpha \prec \beta$ if $\alpha$
@@ -944,35 +943,38 @@ size and in $1/\eps$.
 \label{sec:general}
 
 In this section we consider \scp when the physical network is an
-undirected graph.  Recall that even the feasibility version of \scp is
-NP-hard in general networks, and therefore we focus on a special case.
+undirected graph.  
+Recall that even the feasibility version of \scp is NP-hard in general networks,
+and therefore we focus on a special case.
 %
 A vertex $v \in V$ is called \emph{neighborly} if it has more than two
 neighbors.
 %In this section
 We assume that there exists an optimal placement whose physical path
-consists of at most $k$ neighborly vertices.  For example, this can be
-assumed if all simple paths from $s$ to $t$ contain at most $k$
+consists of at most $k$ neighborly vertices.  
+For example, this can be assumed if all simple paths from $s$ to $t$ contain at most $k$
 neighborly vertices.
 %
 We present a randomized algorithm that consists of $k!$ iterations of
 the following two phases: an orientation phase that applies a random
 orientation to the physical network, and an execution of the FPTAS for
-DAGs given in Theorem~\ref{thm:fptas}.  The algorithm finds a
-$(1-\eps)$-approximate placement with probability $(1-1/e)$, and
-its running time of the algorithm is $O(t(n)k!)$, where $t(n)$ is the
-time it takes to compute a placement when the physical network is a
-DAG.
+DAGs given in Theorem~\ref{thm:fptas}.  
+The algorithm finds a $(1-\eps)$-approximate placement with probability $(1-1/e)$, 
+and its running time of the algorithm is $O(t(n)k!)$, 
+where $t(n)$ is the time it takes to compute a placement when 
+the physical network is a DAG.
 %
 As usual, one may amplify the probability of success using repetition.
 
-The orientation phase is done as follows: let $N$ be the set of
-neighborly vertices, and let $\pi:N \to \set{1,\ldots,\abs{N}}$ be a
-random permutation.  We direct the edges according to $\pi$.  Observe
-that each edge $e \in E$ is found on a simple path between two
+The orientation phase is done as follows: 
+let $N$ be the set of neighborly vertices, 
+and let $\pi:N \to \set{1,\ldots,\abs{N}}$ be a random permutation.  
+We direct the edges according to $\pi$.  
+Observe that each edge $e \in E$ is found on a simple path between two
 neighborly nodes $v_e$ and $v'_e$, in which all internal vertices are
-in $V \subseteq N$.  The edge $e$ is directed towards $v_e$, if
-$\pi(v_e) > \pi(v'_e)$, and otherwise it is directed towards $v'_e$.
+in $V \subseteq N$.  
+The edge $e$ is directed towards $v_e$, if $\pi(v_e) > \pi(v'_e)$, 
+and otherwise it is directed towards $v'_e$.
 %
 Observe that when this process terminates we get a DAG, denoted by
 $G_\pi$, where there is a topological order than is consistent which
@@ -1021,6 +1023,52 @@ that $\pi$ does not agree with $\pi'$ in $k!$ iterations is $1 - (1 -
 \qed
 \end{proof}
 
+\subsection*{Discussion About the Orientation Phase}
+We now discuss the orientation phase and propose a different method to apply 
+an orientation to an undirected graph.
+While the proposed method does not surpass the trivial orientation in the worse case, 
+in certain cases, the new method yields an exponential improvement over the trivial one.
+
+The orientation works as follow:
+given an undirected graph $G = (V, E)$ we first find its block tree 
+(where every vertex in the tree is a maximal subgraph of $G$ without a cut-vertex),
+then, on the unique  path from $s$ to $t$ we internally orient each block arbitrarily to
+produce a DAG.
+Note that if $B_1, \ldots, B_k$ are the blocks of $G$ on the path from $s$ to $t$ then
+the first and last vertices w.r.t to each block are known and only the order
+of the internal neighborly vertices in each block is needed to be determined,
+thus, we can find all relevant orientations by repeating the process above
+$\Pi_{i = 1}^k n(B_i)$ times, where $n(B_i)$ is the number of internal neighborly vertices
+in $B_i$.
+
+\begin{theorem}
+There is an FPT algorithm that finds a $(1+\eps)$-approximate placement after
+$\Pi_{i = 1}^k n(B_i)$ iterations.
+\end{theorem}
+
+Figure~\ref{fig:or2} shows that in some cases this approach is faster than the trivial one.
+We also note that if the given graph is a cactus graph then using this approach result in 
+a polynomial algorithm.
+This special case of cactus graph was already considered in \cite{Stefan} and was also found
+as a special case for which a hard problem becomes tractable. 
+
+\begin{theorem}
+There is a polynomial algorithm that finds a $(1+\eps)$-approximate placement 
+for cactus graph.
+\end{theorem}
+
+
+\begin{figure}
+\begin{center}
+\input{fig-or2}
+\end{center}
+\caption{
+A undirected graph with its block marked in a dashed, green lines.
+In this instance, using the trivial approach the orientation phase takes 16! iterations,
+while using the second approach we only need 3! iterations.
+\label{fig:or2}
+}
+\end{figure}   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{FPT Algorithm for General Networks}
