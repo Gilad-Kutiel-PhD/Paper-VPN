@@ -29,6 +29,8 @@
 
 \renewcommand{\floatpagefraction}{0.6}
 
+\parskip = \smallskipamount
+
 \sloppy
 
 
@@ -73,6 +75,8 @@
 \newcommand{\dror}[1]{\sethlcolor{yellow}\hl{Dror: #1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
 
 \title{\bf Service Chain Placement in SDNs%
 \thanks{Research supported in part by Network Programming (Neptune)
@@ -165,6 +169,7 @@ bounded number of vertices whose degree is larger than two.
 
 \section{Introduction}
 
+
 Computer communication networks are in constant need of expansion to
 cope with the ever growing traffic.  As networks grow, management and
 maintenance become more and more complicated.
@@ -202,8 +207,9 @@ one of several sequences of VNFs.
 
 %%%%%
 
-\paragraph*{\bf Related work.}
-%
+\subsection{Related Work}
+%\paragraph*{\bf Related work.}
+
 In this paper we consider an SDN network that employs
 NVF~\cite{SDN-NFV15}.  Such networks attracted a lot of attention in
 the networking community, especially from a systems point of view
@@ -287,8 +293,9 @@ $O(\eps^2/\log n)$ fraction of the capacity of any network component.
 
 %%%%%
 
-\paragraph*{\bf Our results.}
-%
+\subsection{Our Results}
+%\paragraph*{\bf Our results.}
+
 We study the allocation problem of a compound flow request for a
 service chain in a software-defined network that supports NFV, where
 the goal is to find an optimal placement with respect to the current
@@ -336,8 +343,13 @@ networks in which there is an optimal placement whose physical path
 consists of at most $k$ vertices whose degree is larger than $2$.  For
 example, this can be assumed if all simple paths from $s$ to $t$
 contain at most $k$ such vertices.  The algorithm computes a
-$(1+\eps)$-approximate placement with probability $(1-e^{-1})$ using
-$k!$ invocation of the FPTAS.
+$(1+\eps)$-approximate placement with high probability using $k! \log
+n$ invocations of the FPTAS.
+%
+We also present a (deterministic) parameterized algorithm that
+computes a $(1+\eps)$-approximate placement in time $O(k! \cdot
+\text{poly}(n))$, where $k$ is the number of vertices in the network
+whose degree is larger than $2$.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -346,15 +358,20 @@ $k!$ invocation of the FPTAS.
 
 \paragraph*{Model.}
 %
-The \scplong (\scp) input is composed of three components, a physical
-network, a virtual specification, and placement costs:
+An instance of the \scplong (\scp) problem is composed of three
+components, a physical network, a virtual specification, and placement
+costs:
 \begin{description}
 \item[Physical network:]
 %
   The physical network is a graph $G = (V,E)$.  Each node $v \in V$
   has a non-negative processing capacity $p(v)$, and each directed
   edge $e \in E$ has a non-negative bandwidth capacity $b(e)$.
+%
+  Without loss of generality, we assume that $p(s) = p(t) = 0$.  
 
+\medskip
+  
 \item[Virtual specification:]
 %
   The description of a request for a service chain consists of a
@@ -365,9 +382,12 @@ network, a virtual specification, and placement costs:
 %
   The DAG $\calG$ has a source node $\sigma \in \calV$ and a
   destination $\tau \in \calV$. Each node $\alpha \in \calV$ represent
-  a VNF that has a processing demand $p(\alpha)$.  Without loss of
-  generality, we assume that $p(\sigma) = p(\tau) = 0$.  Each edge
-  $\eps \in \calE$ has a bandwidth demand $b(\eps)$.
+  a VNF that has a processing demand $p(\alpha)$.
+%
+  Without loss of generality, we assume that $p(\sigma) = p(\tau) =
+  0$.  Each edge $\eps \in \calE$ has a bandwidth demand $b(\eps)$.
+
+\medskip
   
 \item[Placement costs:]
 %
@@ -385,9 +405,13 @@ A solution consists of the following:
   $(\alpha_j,\alpha_{j+1}) \in \calE$, for every $j \in
   \set{0,\ldots,q-1}$.
 
+\medskip
+  
 \item[Physical path:] A simple path from $s$ to $t$ in $G$, namely a
   sequence of nodes $v_0,\ldots,v_k$, where $v_0 = s$, $v_k = t$, and
   $(v_i,v_{i+1}) \in E$, for every $i \in \set{0,\ldots,k-1}$.
+
+\medskip
   
 \item[Placement:] A function $f$ that maps a virtual path to a simple
   physical path.  Formally, a placement is a function $f:
@@ -417,7 +441,7 @@ Figure~\ref{fig:solution}.
 
 \begin{figure}[t]
 \centering
-\scalebox{0.8}{
+\scalebox{0.85}{
 \input{fig-embedding}
 }
 \caption{An example of an \scp instance and a solution.}
@@ -527,13 +551,13 @@ there are two edges $(s,v)$ and $(v,t)$.  The capacity of $v$ is $p(v)
 = \half \sum_i a_i$.  Edge bandwidth are zero.
 %
 The virtual DAG is composed of $2n+2$ vertices, namely
-\(
+\[
 \calV
 = \set{\sigma,\tau}
   \cup \set{\alpha_1, \ldots, \alpha_n}
   \cup \set{\beta_1, \ldots, \beta_n}
-%~.
-\).
+~.
+\]
 Also,
 \[
 \calE
@@ -653,7 +677,12 @@ recursively as follow:
 \begin{cases}
 %\infty    & c < 0, \\
 \infty    & c(\alpha,v) > c, \\
-p(\alpha) & c(\alpha,v) \leq c, \beta = \alpha, \\
+p(\alpha) &
+\begin{array}{c}
+c(\alpha,v) \leq c, \\
+\beta = \alpha,
+\end{array}
+\\
 \displaystyle
 \min_{(\gamma,\beta) \in \calE}
    \set{\process_v(\alpha \leadsto \gamma, c - c(\beta,v)) + p(\beta)}
@@ -802,8 +831,12 @@ Now we are ready for the computation of $\latency(\alpha,v,c)$:
 \[
 \latency(\alpha,v,c) =
 \begin{cases}
-\infty  &  c < 0 \\
-0       &  \alpha = \sigma, v = s, c \geq 0 \\
+\infty  &  c < 0,\\
+0       &
+\begin{array}{c}
+\alpha = \sigma, v = s, \\
+\text{and } c \geq 0,
+\end{array} \\
 \displaystyle
 \min_{
   \substack{\beta \prec \alpha, (\gamma,\beta) \in \calE, \\
@@ -839,6 +872,7 @@ using standard techniques.
 %%%%%
 
 \subsection{FPTAS for General Costs}
+\label{sub:fptas}
 
 In this section we present an FPTAS for \scp in DAGs for general
 costs, namely without the assumption that costs are polynomially
@@ -1182,6 +1216,13 @@ Figure~\ref{fig:layer-transform} depicts this process.
 
 %FPT algorithm where the number of servers whose degree is larger than
 %two is a parameter?
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Acknowledgement}
+
+We thank Reuven Bar-Yehuda for helpful discussions.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
