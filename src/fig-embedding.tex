@@ -1,7 +1,7 @@
 \begin{tikzpicture}[every node/.style={default node}]
 
 \begin{scope}[random seed=1, spring layout, node distance=1.8cm]
-\node[dashed](a) {0};
+\node[dashed](a) {2};
 \node(b) {3};
 \node(c) {4};
 \node(d) {1};
@@ -10,7 +10,7 @@
 \node(g) {3};
 \node(h) {2};
 \node(i) {7};
-\node[dashed](j) {0};
+\node[dashed](j) {1};
 
 \graph{
 	(a) ->["5" label above] (b);
@@ -23,13 +23,13 @@
 	}
 };
 
-\node[dashed](pa) {0};
-\node(pb) {7};
+\node[dashed](pa) {8};
+\node(pb) {3};
 \node(pc) {5};
 \node(pd) {6};
 \node(pe) {19};
 \node(pf) {8};
-\node[dashed](pg) {0};
+\node[dashed](pg) {4};
 \node(ph) {2};
 
 \graph{
@@ -46,39 +46,33 @@
 };
 \end{scope}
 
-\node[clear node, above] at(a.north) {$\sigma$};
-\node[clear node, above] at(j.north) {$\tau$};
+\node[clear node, above right] at(a.north east) {$\sigma$};
+\node[clear node, left] at(j.west) {$\tau$};
 
 \node[clear node, above] at(pa.north) {$s$};
 \node[clear node, below] at(pg.south) {$t$};
 
 \begin{scope}[group]
 \draw
-(a.north east) to[out=90, in=90] node(j0)[midway, clear node] {}
+(a.north east) to[out=135, in=45] node(j1)[midway, clear node] {}
+(c.north west) to[out=225, in=135]
+(d.south west) to[out=-45, in=-45]
 (a.north east)
 ;
 
 \draw
-%(a.north east) to[out=135, in=45] 
-(c.north west) to[out=225, in=135]
-(d.south west) to[out=-45, in=-45] node(j1)[midway, clear node] {}
-(c.north east)
+(e.east) to[out=-90, in=-90] node(j2)[midway, clear node] {}
+(i.west) to[out=90, in=90]
+(e.east)
 ;
 
 \draw
-(e.west) to[out=-90, in=180] 
-(i.south) to[out=0, in=-90] node(j2)[midway, clear node] {}
-(g.east) to[out=90, in=90]
-(e.west)
+(g.east) to[out=-90, in=-90] node(j3)[midway, clear node] {}
+(j.west) to[out=90, in=90]
+(g.east)
 ;
 
-\draw
-(j.south) to[out=90, in=90] node(j3)[midway, clear node] {}
-(j.south)
-;
-
-\draw[->] (j0) to[bend left] (pa);
-\draw[->] (j1) to[bend left] (pb);
+\draw[->] (j1) to[bend left] (pa);
 \draw[->] (j2) to[bend right] (pe);
 \draw[->] (j3) to[bend right] (pg);
 \end{scope}

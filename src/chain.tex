@@ -149,8 +149,8 @@ specification consists of only one option (i.e., the virtual DAG is a
 path).
 %
 On the other hand, we present an FPTAS for the case where the network
-is a DAG.  In addition, based on our FPTAS, we provide a randomized
-algorithm for instances in which the service chain passes through a
+is a DAG.  In addition, based on our FPTAS, we provide randomized
+algorithms for instances in which the service chain passes through a
 bounded number of vertices whose degree is larger than two.
 \end{abstract}
 
@@ -949,20 +949,29 @@ and therefore we focus on a special case.
 %
 A vertex $v \in V$ is called \emph{neighborly} if it has more than two
 neighbors.
-%In this section
-We assume that there exists an optimal placement whose physical path
-consists of at most $k$ neighborly vertices.  
-For example, this can be assumed if all simple paths from $s$ to $t$ contain at most $k$
-neighborly vertices.
 %
-We present a randomized algorithm that consists of $k!$ iterations of
-the following two phases: an orientation phase that applies a random
+First, we assume that there exists an optimal placement whose physical
+path consists of at most $k$ neighborly vertices.  For example, this
+can be assumed if all simple paths from $s$ to $t$ contain at most $k$
+neighborly vertices.  In this case we present a randomized algorithm
+that computes an $(1+\eps)$-approximate placement with high
+probability whose running time is $O(k! \cdot \text{poly}(n))$.
+%
+Our second algorithm works under the stronger assumption that there
+are $k$ neighborly vertices in the network.  In this case, we present
+a deterministic algorithm whose running time is $O(k! \cdot
+\text{poly}(n))$.
+
+%%%%%
+
+Our randomized algorithm consists of $k!$ iterations of the
+following two phases: an orientation phase that applies a random
 orientation to the physical network, and an execution of the FPTAS for
-DAGs given in Theorem~\ref{thm:fptas}.  
-The algorithm finds a $(1-\eps)$-approximate placement with probability $(1-1/e)$, 
-and its running time of the algorithm is $O(t(n)k!)$, 
-where $t(n)$ is the time it takes to compute a placement when 
-the physical network is a DAG.
+DAGs given in Theorem~\ref{thm:fptas}.  The algorithm finds a
+$(1-\eps)$-approximate placement with probability $(1-1/e)$, and the
+running time of the algorithm is $O((n+t(n))k!)$, where $t(n)$ is the
+time it takes to compute a placement when the physical network is a
+DAG.
 %
 As usual, one may amplify the probability of success using repetition.
 
@@ -984,7 +993,7 @@ A na\"ive implementation of this phase would run in $O(|V||E|)$ time.
 
 \begin{figure}[t]
 \centering
-\scalebox{0.8}{
+\scalebox{0.9}{
   \input{fig-orientation}
 }
 \caption{Orientation phase: on the left is the physical network, where
@@ -1001,8 +1010,10 @@ a placement.  We repeat this process $k!$ times, each time with a new
 independent random permutation, and keep the best embedding so far.
 
 \begin{theorem}
-With probability at least $1 - e^{-1}$ the algorithm finds a
-$(1+\eps)$-approximate placement after $k!$ iterations.
+There exists an algorithm, that given an \scp instance with an optimal
+solution that contains at most $k$ neighborly vertices, finds a
+$(1+\eps)$-approximate placement with high probability, whose
+running time is $O(k! \cdot \text{\rm poly}(n))$.
 \end{theorem}
 \begin{proof}
 Consider an optimal placement with at most $k$ neighborly vertices,
@@ -1016,12 +1027,30 @@ FPTAS will find a $(1+\eps)$-approximate placement in $G_\pi$.  This
 placement is feasible, and therefore $(1+\eps)$-approximate placement,
 with respect to $G$.
 %
-$\pi$ agrees with $\pi'$ with probability $1/k!$, and the probability
-that $\pi$ does not agree with $\pi'$ in $k!$ iterations is $1 - (1 -
-1/k!)^{k!} \leq 1 - e^{-1}$.
+The permutation $\pi$ agrees with $\pi'$ with probability $1/k!$, and
+the probability that $\pi$ agrees with $\pi'$ in $k!$ iterations is $1
+- (1 - 1/k!)^{k!} \geq 1 - e^{-1}$.  One may amplify the success
+probability to $1 - \inv{n}$ using $\log n$ repetitions.
 %
 \qed
 \end{proof}
+
+In the case where $\abs{N} = k$ we can simply examine the $k!$
+permutations of the neighborly vertices.  For each possible
+permutation the algorithm applies the graph orientation procedure as
+described above, and then executes the FPTAS for DAGs given in
+Section~\ref{sub:fptas}.  
+Thus the running time of the algorithm is $O(k! \cdot \text{\rm poly}(n))$.
+%
+We note that permutation enumeration for $k$ numbers takes $O(k!)$
+time (see e.g.,~\cite{Even73,Sedgewick77})
+
+\begin{theorem}
+There exists an $O(k! \cdot \text{\rm poly}(n))$-time algorithm, that
+given an \scp instance with $k$ neighborly vertices, finds a
+$(1+\eps)$-approximate placement.
+\end{theorem}
+
 
 \subsection*{Discussion About the Orientation Phase}
 We now discuss the orientation phase and propose a different method to apply 
