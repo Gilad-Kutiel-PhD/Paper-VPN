@@ -1169,9 +1169,12 @@ We find the optimal 2-robust placement for every
 combination of two physical vertices from the same layer, 
 and every combination of two virtual functions.
 Formally, given the input $(G = (V, E), \calG = (\calV, \calE), p, b, s, t, c)$
-We define $ft(v_1, v_2, \alpha_1, \alpha_2)$ to be the optimal 2-robust placement of 2 chains
+We define $ft(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2)$ 
+to be the minimum cost of a 2-robust placement of 2 chains
 that start at $\sigma$ and end at $\alpha_1, \alpha_2$ respectively into 
 (internal vertex disjoint) physical paths that start at $s$ and end at $v_1,v_2$ respectively.
+the placement is restricted to place a path of virtual functions from $\beta_1$ to
+$\alpha_1$ and from $\beta_2$ to $\alpha_2$ into a single physical node respectively.
 One can verified that the following recursive formula holds:
 $$
 ft(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) = \min
@@ -1188,12 +1191,16 @@ $$
 
 where
 $$
-\begin{array}{l}
+\begin{array}{ll}
 nn(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) = 
-\displaystyle\smashoperator{\min_{\substack{\\ u_1, u_2: \\ b(u_1, v_1) \geq b(\gamma_1, \beta_1) \\ b(u_2, v_2) \geq b(\gamma_2, \beta_2)}}}
+\\ &
+\displaystyle\smashoperator{\min_{\substack{\\ u_1, u_2: \\ b(u_1, v_1) \geq 
+b(\gamma_1, \beta_1) \\ b(u_2, v_2) \geq b(\gamma_2, \beta_2)}}}
 ft(u_1, u_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2)
+%
 \\
 ny(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) = 
+\\ &
 \displaystyle\smashoperator{\min_{
 	\substack{
 	u_1, u_2: 
@@ -1206,9 +1213,13 @@ ny(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) =
 	\\
 	\beta'_2 \prec \gamma_2 
 	}}}
-ft(u_1, u_2, \alpha_1, \gamma_2, \gamma_1\beta_1, \gamma'_2\beta'_2)
+ft(u_1, u_2, \alpha_1, \gamma_2, \gamma_1\beta_1, \gamma'_2\beta'_2) +
+\\ & 
+\cost_{v_2}(\beta_2 \leadsto \alpha_2) 
+%
 \\
-yn(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) = 
+yn(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) =
+\\ & 
 \displaystyle\smashoperator{\min_{
 	\substack{
 	u_1, u_2: 
@@ -1221,9 +1232,13 @@ yn(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) =
 	\\
 	\beta'_1 \prec \gamma_1 
 	}}}
-ft(u_1, u_2, \gamma_1, \alpha_2, \gamma'_1\beta'_1, \gamma_2\beta_2)
+ft(u_1, u_2, \gamma_1, \alpha_2, \gamma'_1\beta'_1, \gamma_2\beta_2) + 
+\\ & 
+\cost_{v_1}(\beta_1 \leadsto \alpha_1) 
+%
 \\
-yy(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) = 
+yy(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) =
+\\ & 
 \displaystyle\smashoperator{\min_{
 	\substack{
 	u_1, u_2: 
@@ -1236,7 +1251,9 @@ yy(v_1, v_2, \alpha_1, \alpha_2, \gamma_1\beta_1, \gamma_2\beta_2) =
 	\\
 	\beta'_1 \prec \gamma_1, \beta'_2 \prec \gamma_2 
 	}}}
-ft(u_1, u_2, \gamma_1, \gamma_2, \gamma'_1\beta'_1, \gamma'_2\beta'_2)
+ft(u_1, u_2, \gamma_1, \gamma_2, \gamma'_1\beta'_1, \gamma'_2\beta'_2) + 
+\\
+& \cost_{v_1}(\beta_1 \leadsto \alpha_1) + \cost_{v_2}(\beta_2 \leadsto \alpha_2) 
 \end{array}
 $$
 
