@@ -122,8 +122,8 @@ We study the allocation problem of a compound request for a
 network function virtualization.
 %
 Given a network that contains servers with limited processing power
-and of links with limited bandwidth, a service chain is a sequence of
-virtual network functions (VNFs) that service a certain flow request
+and links with limited bandwidth, a service chain is a sequence of
+virtual network functions (VNFs) that serve a certain flow request
 in the network.
 %
 The allocation of a service chain consists of routing and VNF
@@ -214,8 +214,8 @@ NVF~\cite{SDN-NFV15}.  Such networks attracted a lot of attention in
 the networking community, especially from a systems point of view
 (see, e.g.,~\cite{GVPGKDA14,HVSBFTF15}).  Several papers also consider
 the algorithmic aspects of such networks but mainly present heuristics
-(see, e.g,~\cite{SBMPKSF14}).  For more details see~\cite{ERS16} and
-references therein.
+(see, e.g,~\cite{soule2014merlin}).  
+For more details see~\cite{ERS16} and references therein.
 
 Cohen et al.~\cite{CLNR15} considered VNF placement.  In their model
 the input is an undirected graph with a metric distance function on
@@ -304,7 +304,7 @@ ISP).
 More specifically, we consider the case where the network already
 contains previous resource allocations.  Therefore, we are given a
 (physical) network that contains servers with limited (residual)
-processing power and of links with limited (residual) bandwidth.
+processing power and links with limited (residual) bandwidth.
 %
 A request for service is composed of a source and a destination in the
 network, an upper bound on the total latency, and a specification of
@@ -1052,6 +1052,24 @@ $(1+\eps)$-approximate placement.
 \end{theorem}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{FPT Algorithms for General Networks}
+We now propose an FPT algorithm for general networks that is similar to the randomized 
+algorithm from Section~\ref{sec:general}.
+Our FPT algorithm runs in $O(k! \cdot (A + O))$ where $k$ is the number of neighborly
+vertices in the graph, $A$ is the time required to find a solution on a DAG,
+and $O$ is the time required to orient the graph given a permutation on the neighborly
+vertices, as discussed above.
+The algorithm executes the FPTAS for DAGs given in Theorem~\ref{thm:fptas}
+once for any orientation results from any of the $k!$ possible permutations and
+returns the best solution.
+The following theorem follows immediately.
+
+\begin{theorem}
+There is an FPT algorithm that finds a $(1+\eps)$-approximate placement after $k!$ iterations 
+\end{theorem} 
+
 \subsection*{Discussion About the Orientation Phase}
 We now discuss the orientation phase and propose a different method to apply 
 an orientation to an undirected graph.
@@ -1098,23 +1116,6 @@ while using the second approach we only need 3! iterations.
 \label{fig:or2}
 }
 \end{figure}   
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{FPT Algorithm for General Networks}
-We now propose an FPT algorithm for general networks that is similar to the randomized 
-algorithm from Section~\ref{sec:general}.
-Our FPT algorithm runs in $O(k! \cdot (A + O))$ where $k$ is the number of neighborly
-vertices in the graph, $A$ is the time required to find a solution on a DAG,
-and $O$ is the time required to orient the graph given a permutation on the neighborly
-vertices, as discussed above.
-The algorithm executes the FPTAS for DAGs given in Theorem~\ref{thm:fptas}
-once for any orientation results from any of the $k!$ possible permutations and
-returns the best solution.
-The following theorem follows immediately.
-
-\begin{theorem}
-There is an FPT algorithm that finds a $(1+\eps)$-approximate placement after $k!$ iterations 
-\end{theorem} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
