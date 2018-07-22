@@ -1233,7 +1233,7 @@ $G$ into a layered DAG $G'$ by replacing every edge $(v,u) \in E$ with
 a directed path of length (number of edges) $\pi(u) - \pi(v)$ from $u$
 to $v$.
 %
-Figure~\ref{fig:layer-transform}.  depicts this process.  It is
+Figure~\ref{fig:layer-transform} depicts this process.  It is
 straightforward to see that the resulting graph $G'$ is indeed a
 layered DAG.
 
@@ -1278,16 +1278,19 @@ $\sigma$ to $\alpha_1$ and $\alpha_2$ are placed into internal vertex
 disjoint physical paths that start at $s$ and end at $v_1$ and $v_2$,
 respectively.
 %
-We remaind that $\cost^i_{v_i}(\gamma_i,\beta_i)$ is the cost, with respect to
-$c_i$, of a minimum cost path from $\gamma_i$ to $\beta_i$ whose total
-processing requirement can be handled by $v_i$.  
-Consider the following recursive definition:
+Recall that $\cost^i_{v_i}(\gamma_i,\beta_i)$ is the cost, with
+respect to $c_i$, of a minimum cost path from $\gamma_i$ to $\beta_i$
+whose total processing requirement can be handled by $v_i$.
+%
+Consider the following recursive definition.  First,
 \[
 \ft((\alpha_1,\zeta_1),(\alpha_2,\zeta_2),s,s)
-= \cost^1_{s}(\sigma \leadsto \alpha_1) + \cost^2_{s}(\sigma \leadsto \alpha_2) 
+= \cost^1_{s}(\sigma \leadsto \alpha_1) +
+  \cost^2_{s}(\sigma \leadsto \alpha_2)
+~.
 \]
-otherwise, for $v_1 \neq v_2$, where $v_1$ and
-$v_2$ in the same layer, we have
+Otherwise, for $v_1 \neq v_2$, such that $v_1, v_2 \in L_i$, for some
+$i$, we have
 \[
 \ft((\alpha_1,\zeta_1),(\alpha_2,\zeta_2),v_1,v_2)
 =
@@ -1295,21 +1298,20 @@ $v_2$ in the same layer, we have
 %
 \begin{array}{l}
 \ft((\gamma_1,\beta_1),(\gamma_2,\beta_2),u_1,u_2) \\ 
-+ \cost^1_{v_1}(\beta_1 \leadsto \alpha_1) \\
-+ \cost^2_{v_2}(\beta_2 \leadsto \alpha_2)
++~ \cost^1_{v_1}(\beta_1 \leadsto \alpha_1) 
++~ \cost^2_{v_2}(\beta_2 \leadsto \alpha_2)
 \end{array}
 }
 \]
-
-Where we take the minimum over all the possible virtual functions and
-physical nodes such that:
-
+where we take the minimum over all the possible virtual functions
+$\gamma_1, \beta_1, \gamma_2, \beta_2$ and physical nodes $u_1, u_2$,
+such that:
 \begin{itemize}
-  \item $\gamma_i \preceq \alpha_i$
-  \item $\beta_i \preceq \alpha_i \lor \beta_i = \zeta_i$ 
-  \item $(\gamma_i,\beta_i) \in \calE$
-  \item $u_1 \neq u_2 \lor u_1 = u_2 = s$
-  \item $(u_i,v_i) \in E$
+  \item $\gamma_i \preceq \alpha_i$,
+  \item $\beta_i \preceq \alpha_i$ or $\beta_i = \zeta_i$,
+  \item $(\gamma_i,\beta_i) \in \calE$,
+  \item $u_1 \neq u_2$ or $u_1 = u_2 = s$,
+  \item $(u_i,v_i) \in E$, and
   \item $b(\gamma_i,\beta_i) \leq b(u_i,v_i)$
 \end{itemize}
  
@@ -1321,7 +1323,7 @@ states and the computation of $\cost^i_{v_i}(\gamma_i,\beta_i)$ can be
 done in polynomial time, as shown in
 Section~\ref{sec:chain-placement}.  The above algorithm computes the
 cost of an optimal $2$-robust placement, and as usual, one may compute
-an optimal $2$-robust placement using stanard techniques.
+an optimal $2$-robust placement using standard techniques.
 
 sing the same approach as was used in Section~\ref{sub:fptas} we
 obtain the following result.
@@ -1352,10 +1354,7 @@ that is at most $2L$.
 
 We thank Reuven Bar-Yehuda for helpful discussions.
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\clearpage
 
 \bibliographystyle{abbrv}
 \bibliography{chain}
