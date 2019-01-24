@@ -80,14 +80,19 @@
 
 %%% E %%%
 
-@inproceedings{EMP16,
-  author    = {Guy Even and Moti Medina and Boaz Patt-Shamir},
-  title     = {On-Line Path Computation and Function Placement in {SDN}s},
-  booktitle = SSS16,
-  pages     = {131--147},
-  series    = LNCS,
-  volume    = {10083},
-  year      = {2016},
+@Article{EMP16,
+author="Even, Guy
+and Medina, Moti
+and Patt-Shamir, Boaz",
+title="On-Line Path Computation and Function Placement in SDNs",
+journal="Theory of Computing Systems",
+year="2018",
+month="Apr",
+day="23",
+abstract="We consider service requests that arrive in an online fashion in Software-Defined Networks (SDNs) with network function virtualization (NFV). Each request is a flow with a high-level specification of routing and processing (by network functions) requirements. Each network function can be performed by a specified subset of servers in the system. The algorithm needs to decide whether to reject the request, or accept it and with a specific routing and processing assignment, under given capacity constraints (solving the path computation and function placement problems). Each served request is assumed to ``pay'' a pre-specified benefit and the goal is to maximize the total benefit accrued. In this paper we first formalize the problem, and propose a new service model that allows us to cope with requests with unknown duration without preemption. The new service model augments the traditional accept/reject schemes with a new possible response of ``stand by.'' We also present a new expressive model to describe requests abstractly using a ``plan'' represented by a directed graph. Our algorithmic result is an online algorithm for path computation and function placement that guarantees, in each time step, throughput of at least a logarithmic fraction of a (very permissive) upper bound on the maximal possible benefit.",
+issn="1433-0490",
+doi="10.1007/s00224-018-9863-4",
+url="https://doi.org/10.1007/s00224-018-9863-4"
 }
 
 @inproceedings{ERS16,
@@ -157,11 +162,21 @@
   year      = {2015},
 }
 
-@article{Stefan,
-  author    = {Klaus-Tycho Foerster, Mahmoud Parham and Stefan Schmid},
-  title     = {A Walk in the Clouds: Routing through VNFs on Bidirected Networks},
-  journal   = {Proceedings of ALGOCLOUD},
-  year      = {2017},
+@InProceedings{FPS17,
+author="Akhoondian Amiri, Saeed
+and Foerster, Klaus-Tycho
+and Schmid, Stefan",
+editor="Bender, Michael A.
+and Farach-Colton, Mart{\'i}n
+and Mosteiro, Miguel A.",
+title="Walking Through Waypoints",
+booktitle="LATIN 2018: Theoretical Informatics",
+year="2018",
+publisher="Springer International Publishing",
+address="Cham",
+pages="37--51",
+abstract="We initiate the study of a fundamental combinatorial problem: Given a capacitated graph {\$}{\$}G=(V,E){\$}{\$}G=(V,E), find a shortest walk (``route'') from a source {\$}{\$}s{\backslash}in V{\$}{\$}s∈Vto a destination {\$}{\$}t{\backslash}in V{\$}{\$}t∈Vthat includes all vertices specified by a set {\$}{\$}{\backslash}mathscr {\{}W{\}}{\backslash}subseteq V{\$}{\$}W⊆V: the waypoints. This waypoint routing problem finds immediate applications in the context of modern networked distributed systems. Our main contribution is an exact polynomial-time algorithm for graphs of bounded treewidth. We also show that if the number of waypoints is logarithmically bounded, exact polynomial-time algorithms exist even for general graphs. Our two algorithms provide an almost complete characterization of what can be solved exactly in polynomial-time: we show that more general problems (e.g., on grid graphs of maximum degree 3, with slightly more waypoints) are computationally intractable.",
+isbn="978-3-319-77404-6"
 }
 
 %%% L %%%
@@ -178,13 +193,12 @@
 
 %%% R %%%
 
-@TechReport{RostSchmid16,
+@inproceedings{RostSchmid16,
   author = 	 {Matthias Rost and Stefan Schmid},
-  title = 	 {Service Chain and Virtual Network Embeddings:
-                  Approximations using Randomized Rounding},
-  institution =  {CoRR},
-  year = 	 {2016},
-  number = 	 {abs/1604.02180},
+  title = 	 {Virtual Network Embedding Approximations: Leveraging Randomized Rounding},
+  booktitle = {IFIP NETWORKING},
+  year = 	 {2018},
+  pages={388--396}
 }
 
 %%% S %%%
@@ -206,4 +220,25 @@
   pages={213--226},
   year={2014},
   organization={ACM}
+}
+
+@article{HopcroftTarjan73,
+  title={Efficient Algorithms for Graph Manipulation [H] (Algorithm 447)},
+  author={Hopcroft, John E. and Tarjan, Robert Endre},
+  journal={Commun. ACM},
+  volume={16},
+  number={6},
+  pages={372--378},
+  year={1973}
+}
+
+@article{lawler1979fast,
+  title={Fast approximation algorithms for knapsack problems},
+  author={Lawler, Eugene L},
+  journal={Mathematics of Operations Research},
+  volume={4},
+  number={4},
+  pages={339--356},
+  year={1979},
+  publisher={INFORMS}
 }

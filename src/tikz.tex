@@ -12,13 +12,8 @@
 	quotes,
 }
 
-\usetikzlibrary{graphs, graphdrawing}
-\usegdlibrary{trees,force,layered}
-
 \tikzset{every picture/.style={
 	>=Latex, 
-	on grid, 
-	auto, 
 	very thick,
 	->,
 }}
@@ -33,21 +28,26 @@
 	very thick,
 	font=\small,
 	black!70,
-}}
-
+	}}
+	
 \tikzset{clear node/.style={
 	draw=none, 
 	inner sep=0mm,
 	minimum size=0mm,
-}}
-
+	}}
+	
 % LABELS
-\tikzset{label/.style={
-	shape=rectangle,
-	draw=none,
-	sloped,
-	midway,
-}}
+\tikzset{
+	label/.style={
+		shape=rectangle
+		,draw=none
+		,sloped
+		,inner sep=0mm
+		,font=\small
+		,midway
+		,fill=white
+	}
+}
 
 \tikzset{label above/.style={
 	label,
@@ -88,9 +88,20 @@
 }}
 
 % MISC
-\tikzset{group/.style={
-	dotted, 
-	semithick, 
-	orange, 
-	-
-}}
+\tikzset{
+	group/.style={
+		dotted, 
+		semithick, 
+		orange, 
+		-
+	}
+	,outline/.style={
+		dotted
+		,purple
+		,very thick	
+	}
+	,packing/.style={
+		outline
+		,-
+	}
+}
