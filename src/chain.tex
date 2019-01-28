@@ -17,6 +17,8 @@
 \usepackage{subfig}
 %\usepackage{subcaption}
 
+% FIX
+\newcommand{\fix}[1]{{\color{purple}\textbf{#1}}}
 % DEBUG
 %\usepackage{lipsum}
 %\usepackage{todonotes}
@@ -235,7 +237,7 @@ several sequences of VNFs.
 %\paragraph*{\bf Related work.}
 
 In this paper we consider an SDN network that employs
-NVF~\cite{SDN-NFV15}.  Such networks attracted a lot of attention in
+NFV~\cite{SDN-NFV15}.  Such networks attracted a lot of attention in
 the networking community, especially from a systems point of view
 (see, e.g.,~\cite{GVPGKDA14,HVSBFTF15}).  Several papers also
 considered the algorithmic aspects of such networks but mainly
@@ -422,7 +424,7 @@ costs:
   has a non-negative processing capacity $p(v)$, and each directed
   edge $e \in E$ has a non-negative bandwidth capacity $b(e)$.
 %
-  Without loss of generality, we assume that $p(s) = p(t) = 0$.  
+  % Without loss of generality, we assume that $p(s) = p(t) = 0$.  
 
 \medskip
   
@@ -432,13 +434,11 @@ costs:
   physical source $s \in V$, a physical destination $t \in V$, and a
   directed acyclic graph (DAG) $\calG = (\calV,\calE)$.
 %
-  Without loss of generality, we assume that $p(s) = p(t) = 0$.  
-%
   The DAG $\calG$ has a source node $\sigma \in \calV$ and a
   destination $\tau \in \calV$. Each node $\alpha \in \calV$ represent
   a VNF that has a processing demand $p(\alpha)$.
 %
-  Without loss of generality, we assume that $p(\sigma) = p(\tau) =
+  Without loss of generality, we assume that $p(s) = p(t) = p(\sigma) = p(\tau) =
   0$.  Each edge $\eps \in \calE$ has a bandwidth demand $b(\eps)$.
 
 \medskip
@@ -498,7 +498,7 @@ Figure~\ref{fig:solution}.
 \scalebox{0.9}{
 \input{fig-embedding}
 }
-\caption{
+\caption{\fix{
   An example of an \scp instance and a solution.
   The left DAG represents the collection of alternative service chains as requested by the client.
   Each node of this graph represent a single service and the number written inside the node is the processing demand of this service.
@@ -508,7 +508,7 @@ Figure~\ref{fig:solution}.
   The numbers on the nodes represent processing capacities and the number on the arcs represent the available bandwidth.
   \\
   The blue, dashed, arcs represent the chosen service chain and a physical route respectively, and the dotted, purple, arrows show a placement of this service chain into the physical route.
-}
+}}
 \label{fig:solution}
 \end{figure}
 
@@ -636,8 +636,10 @@ $c(\alpha_i,v) = 0$ and $c(\beta_i,v) = a_i$, for every $i$.
 
 The \scp instance can be computed in polynomial time.
 %
+\fix{
 Note that any service chain is of the form $\sigma, \gamma_1, \dots, \gamma_n, \tau$ where $\gamma_i \in \{\alpha_i, \beta_i\}$. 
 This implies that given a service chain, the sum of its cost and its total processing demand equals to $\sum_i a_i$ and thus (as forced by the processing capacity of $v$), $\set{a_1, \ldots, a_n} \in \textsc{Partition}$ if and only if there exists a solution whose cost is $\half \sum_i a_i$.
+}
 \end{proof}
 
 \begin{figure}[t]
@@ -930,8 +932,11 @@ using standard techniques.
 
 In this section we present an FPTAS for \scp in DAGs for general
 costs, namely without the assumption that costs are polynomially
-bounded.  Our algorithm is similar to the FPTAS for the
-\textsc{Minimum Knapsack} problem~\cite{lawler1979fast}.
+bounded.  
+\fix{
+We use similar techniques as in the  FPTAS for the
+\textsc{Minimum Knapsack} problem~\cite{islam2009approximation}.
+}
 
 Let $f$ be an optimal placement, and let $c_{\max}$ be the maximum
 cost of a VNF placement by $f$, i.e., $c_{\max} = \max_{f(\alpha) =
@@ -982,9 +987,8 @@ There exists an FPTAS for \scp in DAGs.
 Given $\eps>0$, run the dynamic programming algorithm from
 Section~\ref{sub:DPL} $\abs{\calV} \cdot \abs{V}$ times, once for each
 possible value of $c_{\max}$, and choose the best placement.
-According to Lemma~\ref{lemma:guess} the best placement is
-$(1+\eps)$-approximate.  The running time is polynomial in the input
-size and in $1/\eps$.
+\fix{Since we check all the possible values of $c_max$ and for each such value we compute an optimal solution with respect to $c'$, then} according to Lemma~\ref{lemma:guess} the best placement is $(1+\eps)$-approximate.  
+The running time is polynomial in the input size and in $1/\eps$.
 \end{proof}
 
 
@@ -1016,8 +1020,7 @@ a deterministic algorithm whose running time is $O(k! \cdot
 
 \subsection{Randomized Algorithm}
 
-We assume w.l.o.g that the physical network does not contain any leafs (beside, maybe, $s$ and $t$), otherwise, these nodes, for the purpose of our computation, can be safely removed from the network.
-
+\fix{We assume w.l.o.g that the physical network does not contain any leafs (beside, maybe, $s$ and $t$), otherwise, these nodes, for the purpose of our computation, can be safely removed from the network.}
 Our randomized algorithm consists of $k!$ iterations of the following
 two phases: an orientation phase that applies a random orientation to
 the physical network, and an execution of the FPTAS for DAGs given in
@@ -1085,7 +1088,8 @@ with respect to $G$.
 The permutation $\pi$ agrees with $\pi'$ with probability $1/k!$, and
 the probability that $\pi$ agrees with $\pi'$ in $k!$ iterations is $1
 - (1 - 1/k!)^{k!} \geq 1 - e^{-1}$.  
-This means that the probability to fail in a single attempt is less than $e^{-1}$. If one makes $i$ attempts then the probability to fail in all those attempts is less than $e^{-i}$ so using $\ln n$ repetitions reduces the probability to fail to less than $\frac{1}{n}$ and increases the probability to succeed to at least $1 - \inv{n}$.
+This means that the probability to fail in a single attempt is less than $e^{-1}$. \fix{If one makes $i$ attempts then the probability to fail in all those attempts is less than $e^{-i}$ so using $\ln n$ repetitions reduces the probability to fail to less than $\frac{1}{n}$ and increases the probability to succeed to at least $1 - \inv{n}$.
+}
 \end{proof}
 
 %%%%%
@@ -1117,9 +1121,11 @@ an orientation to an undirected graph.  While the proposed method does
 not surpass the above mentioned orientation in the worse case, in
 certain cases, the new method yields an exponential improvement.
 
+\fix{
 A biconnected component (block) of an undirected graph is a maximal biconnected subgraph.
 Any connected graph decomposes into a tree of biconnected components called the block-cut tree of the graph. The blocks are attached to each other at shared vertices called cut vertices.
 Computing such a tree can be done in linear time~\cite{HopcroftTarjan73}.
+}
 The orientation works as follow.  
 Given an undirected graph $G = (V,E)$, we first compute its block-cut tree.
 %
@@ -1171,7 +1177,7 @@ In this section we consider the problem of a \textsc{Service Chain
   Placement} when there is also a demand for fault tolerance.  Note
 that we consider the problem without latency.
 
-We say that two (physical) paths are \emph{internal vertex disjoint} if they do not have any internal (all vertices beside the first and last one) vertex in common.
+\fix{We say that two (physical) paths are \emph{internal vertex disjoint} if they do not have any internal (all vertices beside the first and last one) vertex in common.}
 Formally, given a physical network, a virtual specification, and a
 parameter $r \in \naturals$, an \emph{$r$-robust} placement is a
 collection of $r$ placements, $f_1,\ldots,f_r$, that correspond to $r$
@@ -1302,7 +1308,7 @@ Consider the following recursive definition.  First,
   \cost^2_{s}(\sigma \leadsto \alpha_2)
 ~.
 \]
-Otherwise, for $v_1 \neq v_2$, such that $v_1, v_2 \in L_i$, for some
+Otherwise, for $v_1 \neq v_2$ or $v_1 = v_2 = t$, such that $v_1, v_2 \in L_i$, for some
 $i$, we have
 \[
 \ft((\alpha_1,\zeta_1),(\alpha_2,\zeta_2),v_1,v_2)

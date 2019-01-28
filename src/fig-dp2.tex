@@ -42,6 +42,6 @@
 ($(gamma.south east) + (.3, -.3)$) [ref=r3]
 ;
 
-\draw[blue, dashed, ->] (r1 south) to[bend right] (r2 north);
-\draw[packing, ->] (r3 south) to[bend left] (v.north);
+\draw[blue, dashed, ->] (r1 south) to[bend right]node[midway, rectangle, draw=none, left=5mm]{COST($\alpha, u$)} (r2 north);
+\draw[packing, ->] (r3 south) to[bend left]node[midway, rectangle, draw=none, right=6mm]{COST$_w(\beta \leadsto \gamma)$} (v.north);
 \end{tikzpicture}
