@@ -287,6 +287,12 @@ feasible solution the total demand for each pair is bounded by the
 capacity.  They considered two goals: maximum profit and minimum
 resource cost and gave bicriteria approximation algorithms which are
 based on LP-rounding for several special cases.
+%
+\fix{Sahhaf et al.~\cite{SAHHAF2015492} studied a generalization of the Virtual Network Embedding
+Problem where each network function can be decomposed into multiple network function graphs.
+They proposed two novel approaches to use service
+decompositions at the time of service embedding (i) an
+ILP-based algorithm that finds an optimal embedding and (ii) a heuristic-based algorithm to cop with the scalability issues of the first algorithm.}
 
 Even, Medina, and Patt-Shamir~\cite{EMP16} studied online path
 computation and VNF placement.  They considered compound requests that
@@ -1351,6 +1357,10 @@ obtain the following result.
 There exists an FPTAS for $2$-robust \scp (without latency) in DAGs.
 \end{theorem}
 
+\begin{proof}
+  \fix{From the above discussions it follows that the algorithm finds an optimal robust embedding with respect to c', using Lemma~\ref{lemma:guess} we know that its cost is at most $(1 + \varepsilon)$ times the cost of the optimal robust embedding, for every $\varepsilon > 0$.}
+\end{proof}
+
 Finally, we note that the above algorithm does not take into account
 the latency constraint.  It is possible, however, given a latency
 constraint, $L$, to modify the algorithm to return an optimal solution
@@ -1361,6 +1371,25 @@ placements has lower latency than $L$ and the other one has latency
 that is at most $2L$.
 
 
+\section{Conclusion}
+\fix{%
+Network service chaining is a service concept which has gained much interest from both practitioners and researchers, it promises increased flexibility and cost-efficiency for future carrier networks. 
+In this model clients request high level services from the network provider which translate into a service chain that need to be embedded into the physical network.
+To ensure efficient utilization of the underline physical network relaible algorithms are needed.
+}
+
+\fix{%
+In this paper we propose an efficient algorithm that finds an optimal embedding for a single request.
+This algorithm works, however, only when the underline network is acyclic.
+For general networks we propose an algorithm that finds an optimal embedding with a running time that depends on the topology of the network, more specifically on the number of nodes in the network with more than two connections.
+We also propose a heuristic that improves the running time of the last algorithm, for cactus networks, for example, this heuristic is guaranteed to run in polynomial time.
+}
+
+\fix{%
+Some questions regarding service chain placement remain open. 
+Some of these questions are (i) how should we handle multiple (concurrent) requests? (ii) can we find better solutions if we allow embedding a service chain on a walk instead of a path? (iii) is there an efficient (approximation) algorithm that works on real world networks?\footnote{As even the feasibilty problem for general networks is NP-hard some further assumptions need to be made in order to answer this question affirmatively.}
+We believe that our results and techniques can serve as a starting point for future work dealing with those questions.
+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\section{Extensions}
