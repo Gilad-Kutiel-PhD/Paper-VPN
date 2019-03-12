@@ -77,10 +77,9 @@
   year      = {2015},
 }
 
-
 %%% E %%%
 
-@Article{EMP16,
+@inproceedings{EMP16,
 author="Even, Guy
 and Medina, Moti
 and Patt-Shamir, Boaz",
@@ -111,6 +110,45 @@ url="https://doi.org/10.1007/s00224-018-9863-4"
   title = 	 {Algorithmic Combinatorics},
   publisher = 	 {Macmillan, Inc., N.Y.},
   year = 	 {1973},
+}
+
+%%% F %%%
+
+@inproceedings{FPS17,
+author="Akhoondian Amiri, Saeed
+and Foerster, Klaus-Tycho
+and Schmid, Stefan",
+editor="Bender, Michael A.
+and Farach-Colton, Mart{\'i}n
+and Mosteiro, Miguel A.",
+title="Walking Through Waypoints",
+booktitle="LATIN 2018: Theoretical Informatics",
+year="2018",
+publisher="Springer International Publishing",
+address="Cham",
+pages="37--51",
+abstract="We initiate the study of a fundamental combinatorial problem: Given a capacitated graph {\$}{\$}G=(V,E){\$}{\$}G=(V,E), find a shortest walk (``route'') from a source {\$}{\$}s{\backslash}in V{\$}{\$}s∈Vto a destination {\$}{\$}t{\backslash}in V{\$}{\$}t∈Vthat includes all vertices specified by a set {\$}{\$}{\backslash}mathscr {\{}W{\}}{\backslash}subseteq V{\$}{\$}W⊆V: the waypoints. This waypoint routing problem finds immediate applications in the context of modern networked distributed systems. Our main contribution is an exact polynomial-time algorithm for graphs of bounded treewidth. We also show that if the number of waypoints is logarithmically bounded, exact polynomial-time algorithms exist even for general graphs. Our two algorithms provide an almost complete characterization of what can be solved exactly in polynomial-time: we show that more general problems (e.g., on grid graphs of maximum degree 3, with slightly more waypoints) are computationally intractable.",
+isbn="978-3-319-77404-6"
+}
+
+@article{Amiri2018,
+ author = {Amiri, Saeed Akhoondian and Foerster, Klaus-Tycho and Jacob, Riko and Schmid, Stefan},
+ title = {Charting the Algorithmic Complexity of Waypoint Routing},
+ journal = {SIGCOMM Comput. Commun. Rev.},
+ issue_date = {January 2018},
+ volume = {48},
+ number = {1},
+ month = apr,
+ year = {2018},
+ issn = {0146-4833},
+ pages = {42--48},
+ numpages = {7},
+ url = {http://doi.acm.org/10.1145/3211852.3211859},
+ doi = {10.1145/3211852.3211859},
+ acmid = {3211859},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {Algorithms, Complexity, VNFs, Waypoints},
 }
 
 %%% G %%%
@@ -147,6 +185,16 @@ url="https://doi.org/10.1007/s00224-018-9863-4"
   year      = {2015},
 }
 
+@article{HopcroftTarjan73,
+  author    = {John E. Hopcroft and Robert Endre Tarjan},
+  title     = {Algorithm 447: Efficient Algorithms for Graph Manipulation},
+  journal   = {Commun. {ACM}},
+  volume    = {16},
+  number    = {6},
+  pages     = {372--378},
+  year      = {1973},
+}
+
 %%% K %%%
 
 @article{KRVRAU15,
@@ -160,23 +208,6 @@ url="https://doi.org/10.1007/s00224-018-9863-4"
   number    = {1},
   pages     = {14--76},
   year      = {2015},
-}
-
-@InProceedings{FPS17,
-author="Akhoondian Amiri, Saeed
-and Foerster, Klaus-Tycho
-and Schmid, Stefan",
-editor="Bender, Michael A.
-and Farach-Colton, Mart{\'i}n
-and Mosteiro, Miguel A.",
-title="Walking Through Waypoints",
-booktitle="LATIN 2018: Theoretical Informatics",
-year="2018",
-publisher="Springer International Publishing",
-address="Cham",
-pages="37--51",
-abstract="We initiate the study of a fundamental combinatorial problem: Given a capacitated graph {\$}{\$}G=(V,E){\$}{\$}G=(V,E), find a shortest walk (``route'') from a source {\$}{\$}s{\backslash}in V{\$}{\$}s∈Vto a destination {\$}{\$}t{\backslash}in V{\$}{\$}t∈Vthat includes all vertices specified by a set {\$}{\$}{\backslash}mathscr {\{}W{\}}{\backslash}subseteq V{\$}{\$}W⊆V: the waypoints. This waypoint routing problem finds immediate applications in the context of modern networked distributed systems. Our main contribution is an exact polynomial-time algorithm for graphs of bounded treewidth. We also show that if the number of waypoints is logarithmically bounded, exact polynomial-time algorithms exist even for general graphs. Our two algorithms provide an almost complete characterization of what can be solved exactly in polynomial-time: we show that more general problems (e.g., on grid graphs of maximum degree 3, with slightly more waypoints) are computationally intractable.",
-isbn="978-3-319-77404-6"
 }
 
 %%% L %%%
@@ -193,12 +224,12 @@ isbn="978-3-319-77404-6"
 
 %%% R %%%
 
-@inproceedings{RostSchmid16,
+@article{RostSchmid16,
   author = 	 {Matthias Rost and Stefan Schmid},
   title = 	 {Virtual Network Embedding Approximations: Leveraging Randomized Rounding},
-  booktitle = {IFIP NETWORKING},
+    journal   = {IFIP Networking},
   year = 	 {2018},
-  pages={388--396}
+  pages     = {388--396},
 }
 
 %%% S %%%
@@ -216,49 +247,22 @@ isbn="978-3-319-77404-6"
 @inproceedings{soule2014merlin,
   title={Merlin: A language for provisioning network resources},
   author={Soul{\'e}, Robert and Basu, Shrutarshi and Marandi, Parisa Jalili and Pedone, Fernando and Kleinberg, Robert and Sirer, Emin Gun and Foster, Nate},
-  booktitle={Proceedings of the 10th ACM International on Conference on emerging Networking Experiments and Technologies},
+  booktitle={10th ACM International on Conference on emerging Networking Experiments and Technologies},
   pages={213--226},
   year={2014},
-  organization={ACM}
-}
-
-@article{HopcroftTarjan73,
-  title={Efficient Algorithms for Graph Manipulation [H] (Algorithm 447)},
-  author={Hopcroft, John E. and Tarjan, Robert Endre},
-  journal={Commun. ACM},
-  volume={16},
-  number={6},
-  pages={372--378},
-  year={1973}
-}
-
-@article{lawler1979fast,
-  title={Fast approximation algorithms for knapsack problems},
-  author={Lawler, Eugene L},
-  journal={Mathematics of Operations Research},
-  volume={4},
-  number={4},
-  pages={339--356},
-  year={1979},
-  publisher={INFORMS}
-}
-
-@phdthesis{islam2009approximation,
-  title={Approximation algorithms for minimum knapsack problem},
-  author={Islam, Mohammad Tauhidul and others},
-  year={2009},
-  school={Lethbridge, Alta.: University of Lethbridge, Dept. of Mathematics and~…}
 }
 
 @article{SAHHAF2015492,
-  title = "Network service chaining with optimized network function embedding supporting service decompositions",
-  journal = "Computer Networks",
-  volume = "93",
-  pages = "492 - 505",
-  year = "2015",
-  note = "Cloud Networking and Communications II",
-  issn = "1389-1286",
-  doi = "https://doi.org/10.1016/j.comnet.2015.09.035",
-  url = "http://www.sciencedirect.com/science/article/pii/S138912861500359X",
-  author = "Sahel Sahhaf and Wouter Tavernier and Matthias Rost and Stefan Schmid and Didier Colle and Mario Pickavet and Piet Demeester",
+title = "Network service chaining with optimized network function embedding supporting service decompositions",
+journal = "Computer Networks",
+volume = "93",
+pages = "492 - 505",
+year = "2015",
+note = "Cloud Networking and Communications II",
+issn = "1389-1286",
+doi = "https://doi.org/10.1016/j.comnet.2015.09.035",
+url = "http://www.sciencedirect.com/science/article/pii/S138912861500359X",
+author = "Sahel Sahhaf and Wouter Tavernier and Matthias Rost and Stefan Schmid and Didier Colle and Mario Pickavet and Piet Demeester",
+keywords = "Network service chaining (NSC), Network Function Virtualization (NFV), Software-Defined Networking (SDN), Network function decomposition, Embedding",
+abstract = "The rise of Software-Defined Networking (SDN) and Network Function Virtualization (NFV) introduce opportunities for service providers to reduce CAPEX/OPEX and to offer and quickly deploy novel network services. In particular, SDN and NFV enable the flexible composition of network functions, a generic service concept known as network service chaining (NSC). However, the control of resources, management and configuration of network service chains is challenging. In particular, there typically exist multiple options on how an abstract network service can be decomposed into more refined, inter-connected network functions. Moreover, efficient algorithms have to be devised to allocate the network functions. The underlying algorithmic problem can be seen as a novel generalization of the Virtual Network Embedding Problem (VNEP), where there exist multiple realization options. The joint optimization of decomposition and embedding has not been studied in the literature before. This paper studies the problem of how to optimally decompose and embed network services. In particular, we propose two novel algorithms to map NSCs to the network infrastructure while allowing possible decompositions of network functions. The first algorithm is based on Integer Linear Programming (ILP) which minimizes the cost of the mapping based on the NSCs requirements and infrastructure capabilities. The second one is a heuristic algorithm to solve the scalability issue of the ILP formulation. It targets to minimize the mapping cost by making a reasonable selection of the network function decompositions. The experimental results indicate that considering network function decompositions at the time of the embedding significantly improves the embedding performance in terms of acceptance ratio while decreasing the mapping cost in the long run in both optimal and heuristic solutions."
 }
