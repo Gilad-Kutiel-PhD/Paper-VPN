@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "Amiri",
         "FPTAS",
         "Foerster",
         "ISPs",
@@ -18,6 +19,10 @@
         "Yehuda",
         "acyclic",
         "biconnected",
-        "polynomially"
+        "consistents",
+        "logarithmically",
+        "polynomially",
+        "treewidth",
+        "waypoints"
     ]
 }

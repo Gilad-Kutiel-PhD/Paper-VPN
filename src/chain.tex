@@ -274,19 +274,27 @@ $(1-\eps)$-approximate placements if the demand of any processing
 request in any possible service chain is never more than an
 $O(\eps^2/\log n)$ fraction of the capacity of any network component.
 
-Foerster, Parham and Schmid~\cite{FPS17} considered the
-\textsc{Bidirectional Waypoint Routing} problem, where the input
-consists of a graph $G = (V,E)$ with edge weights and capacities, a
-source $s$, a destination $t$, and a subset of the vertices $W$.  A
-feasible solution is a route from $s$ to $t$ that visits the vertices
-in $W$.  If $W$ is ordered, the route should visit the vertices of $W$
-according to the given order.  The goal is to find a minimum weight
-solution.
-%
-Foerster et al.~\cite{FPS17} showed that the unordered
-problem has no PTAS, assuming P$\neq$NP and gave a
-$1.53$-approximation algorithm.  They also presented polynomial time
-algorithms for special cases.
+\fix{Amiri1 et al.~\cite{AmiriLatin2018, AmiriCCR2018, AmiriIFIP2018} considered the \textsc{Waypoint Routing} problem.
+In this problem we are given an edge weighted graph $G=(V, E)$, a source $s \in V$, destination $t \in V$ and a set of waypoints $W \subseteq V$.
+The goal is to find a shortest walk from $s$ to $t$ that traverses all the waypoints.
+Two variants of this problem exists, namely when the waypoints need to be traversed in a particular or in an arbitrary order.
+It is also possible that we have additional capacity consistents, i.e. a limitation on the number of times a walk can go through each edge.
+Amiri1 et al. show that (i) There exists a polynomial algorithm for bounded treewidth graph for arbitrary number of waypoints and for general graphs for logarithmically bounded number of waypoints. (ii) This problem is NP-hard in general. (iii) This problem is NP-hard for directed graphs even when there is a single waypoint. (iv) There is a polynomial algorithm for cactus topologies.
+}
+
+% Foerster, Parham and Schmid~\cite{FPS17} considered the
+% \textsc{Bidirectional Waypoint Routing} problem, where the input
+% consists of a graph $G = (V,E)$ with edge weights and capacities, a
+% source $s$, a destination $t$, and a subset of the vertices $W$.  A
+% feasible solution is a route from $s$ to $t$ that visits the vertices
+% in $W$.  If $W$ is ordered, the route should visit the vertices of $W$
+% according to the given order.  The goal is to find a minimum weight
+% solution.
+% %
+% Foerster et al.~\cite{FPS17} showed that the unordered
+% problem has no PTAS, assuming P$\neq$NP and gave a
+% $1.53$-approximation algorithm.  They also presented polynomial time
+% algorithms for special cases.
 %
 As for the ordered variant, they showed that feasible routes can be
 computed efficiently if $\abs{W} = O(1)$.  In addition, they showed

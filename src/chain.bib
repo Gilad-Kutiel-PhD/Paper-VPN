@@ -271,3 +271,49 @@ author = "Sahel Sahhaf and Wouter Tavernier and Matthias Rost and Stefan Schmid 
 keywords = "Network service chaining (NSC), Network Function Virtualization (NFV), Software-Defined Networking (SDN), Network function decomposition, Embedding",
 abstract = "The rise of Software-Defined Networking (SDN) and Network Function Virtualization (NFV) introduce opportunities for service providers to reduce CAPEX/OPEX and to offer and quickly deploy novel network services. In particular, SDN and NFV enable the flexible composition of network functions, a generic service concept known as network service chaining (NSC). However, the control of resources, management and configuration of network service chains is challenging. In particular, there typically exist multiple options on how an abstract network service can be decomposed into more refined, inter-connected network functions. Moreover, efficient algorithms have to be devised to allocate the network functions. The underlying algorithmic problem can be seen as a novel generalization of the Virtual Network Embedding Problem (VNEP), where there exist multiple realization options. The joint optimization of decomposition and embedding has not been studied in the literature before. This paper studies the problem of how to optimally decompose and embed network services. In particular, we propose two novel algorithms to map NSCs to the network infrastructure while allowing possible decompositions of network functions. The first algorithm is based on Integer Linear Programming (ILP) which minimizes the cost of the mapping based on the NSCs requirements and infrastructure capabilities. The second one is a heuristic algorithm to solve the scalability issue of the ILP formulation. It targets to minimize the mapping cost by making a reasonable selection of the network function decompositions. The experimental results indicate that considering network function decompositions at the time of the embedding significantly improves the embedding performance in terms of acceptance ratio while decreasing the mapping cost in the long run in both optimal and heuristic solutions."
 }
+
+@InProceedings{AmiriLatin2018,
+author="Akhoondian Amiri, Saeed
+and Foerster, Klaus-Tycho
+and Schmid, Stefan",
+editor="Bender, Michael A.
+and Farach-Colton, Mart{\'i}n
+and Mosteiro, Miguel A.",
+title="Walking Through Waypoints",
+booktitle="LATIN 2018: Theoretical Informatics",
+year="2018",
+publisher="Springer International Publishing",
+address="Cham",
+pages="37--51",
+abstract="We initiate the study of a fundamental combinatorial problem: Given a capacitated graph {\$}{\$}G=(V,E){\$}{\$}G=(V,E), find a shortest walk (``route'') from a source {\$}{\$}s{\backslash}in V{\$}{\$}s∈Vto a destination {\$}{\$}t{\backslash}in V{\$}{\$}t∈Vthat includes all vertices specified by a set {\$}{\$}{\backslash}mathscr {\{}W{\}}{\backslash}subseteq V{\$}{\$}W⊆V: the waypoints. This waypoint routing problem finds immediate applications in the context of modern networked distributed systems. Our main contribution is an exact polynomial-time algorithm for graphs of bounded treewidth. We also show that if the number of waypoints is logarithmically bounded, exact polynomial-time algorithms exist even for general graphs. Our two algorithms provide an almost complete characterization of what can be solved exactly in polynomial-time: we show that more general problems (e.g., on grid graphs of maximum degree 3, with slightly more waypoints) are computationally intractable.",
+isbn="978-3-319-77404-6"
+}
+
+
+@article{AmiriCCR2018,
+ author = {Amiri, Saeed Akhoondian and Foerster, Klaus-Tycho and Jacob, Riko and Schmid, Stefan},
+ title = {Charting the Algorithmic Complexity of Waypoint Routing},
+ journal = {SIGCOMM Comput. Commun. Rev.},
+ issue_date = {January 2018},
+ volume = {48},
+ number = {1},
+ month = apr,
+ year = {2018},
+ issn = {0146-4833},
+ pages = {42--48},
+ numpages = {7},
+ url = {http://doi.acm.org/10.1145/3211852.3211859},
+ doi = {10.1145/3211852.3211859},
+ acmid = {3211859},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {Algorithms, Complexity, VNFs, Waypoints},
+}
+
+@article{AmiriIFIP2018,
+author={Amiri1, Saeed Akhoondian and Foerster, Klaus-Tycho and Jacob, Riko and Parham, Mahmoud and Schmid, Stefan},
+title={Waypoint Routing in Special Networks},
+journal={IFIP Networking},
+year={2018},
+pages={523--531}
+}
