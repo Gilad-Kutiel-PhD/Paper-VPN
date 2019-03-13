@@ -1,54 +1,20 @@
-%\nonstopmode
-\documentclass[11pt]{article}
-%\documentclass[runningheads]{llncs}
+\nonstopmode
+\documentclass[preprint,12pt]{elsarticle}
 
-\usepackage{amsmath,amssymb,mathtools}
-\usepackage{amsthm}
-\usepackage{fullpage}
+\usepackage{amsmath,amssymb,mathtools,amsthm}
+% \usepackage{fullpage}
 \usepackage{xspace}
-\usepackage{color,soul}
+\usepackage{xcolor}
 \usepackage{paralist}
 \usepackage{stmaryrd}
 
-% \usepackage[linesnumbered, ruled]{algorithm2e}
-
-%\usepackage[final]{microtype}
 \usepackage[final]{hyperref}
 \usepackage{subfig}
-%\usepackage{subcaption}
-
-% FIX
-\newcommand{\fix}[1]{{\color{purple}\textbf{#1}}}
-% DEBUG
-%\usepackage{lipsum}
-%\usepackage{todonotes}
-%\usepackage{lineno}
-%\linenumbers
-
-% EXTRA
-%\usepackage{authblk}
 
 \input{tikz}
 
-\renewcommand{\floatpagefraction}{0.6}
 
-\parskip = \smallskipamount
-
-\sloppy
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% handy theorems
-
-\newtheorem{lemma}{Lemma}
-\newtheorem{observation}[lemma]{Observation}
-\newtheorem{theorem}{Theorem}
-\newtheorem{definition}{Definition}
-\newtheorem{property}{Property}
-\newtheorem{corollary}{Corollary}
-\newtheorem{proposition}{Proposition}
-
-%\spnewtheorem{observation}{Observation}{\bfseries}{\itshape}
+\journal{Discrete Applied Mathematics}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -89,109 +55,94 @@
 \newcommand{\latency}{\textsc{lat}\xspace}
 \newcommand{\ft}{\textsc{ft}\xspace}
 
-\newcommand{\dror}[1]{\sethlcolor{yellow}\hl{Dror: #1}}
+% \newcommand{\dror}[1]{\sethlcolor{yellow}\hl{Dror: #1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{document}
+% handy theorems
 
-\title{\bf Service Chain Placement in SDNs%
-\thanks{%
-%
+\newtheorem{lemma}{Lemma}
+\newtheorem{observation}[lemma]{Observation}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{property}{Property}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+
+
+% FIX
+\newcommand{\fix}[1]{{\color{violet}\textbf{#1}}}
+
+\begin{document}
+\begin{frontmatter}
+
+\title{Service Chain Placement in SDNs\tnoteref{t1}}
+\tnotetext[t1]{
 A preliminary version appeared in the 3rd International Workshop on
 Algorithmic Aspects of Cloud Computing (ALGOCLOUD), 2017.
 %
 Research supported in part by Network Programming (Neptune)
-Consortium, Israel.}
-%
+Consortium, Israel.
 }
 
-%\titlerunning{Service Chain Placement in SDNs}
+\author{Gilad Kutiel}
+\ead{gkutiel@cs.technion.ac.il}
+\address{Department of Computer Science, Technion, Haifa 32000, Israel.}
 
-%\author[1]{Gilad Kutiel%
-%\thanks{E-mail: \texttt{gkutiel@cs.technion.ac.il}}}
+\author{Dror Rawitz\fnref{f1}}
+\ead{dror.rawitz@biu.ac.il}
+\address{Faculty of Engineering, Bar Ilan University, Ramt-Gan 52900, Israel.}
+\fntext[f1]{Partially supported by the Israel Science Foundation (grant no.~497/14).}
 
-%\author[2]{Dror Rawitz%
-%\thanks{Partially supported by the Israel Science Foundation
-%  (grant no.~497/14).  E-mail: \texttt{dror.rawitz@biu.ac.il}}}
-
-%\affil[1]{Department of Computer Science, Technion, Haifa, Israel}
-%\affil[2]{Faculty of Engineering, Bar Ilan University, Ramt-Gan, Israel}
-
-\author{%
-Gilad Kutiel%
-\thanks{Department of Computer Science, Technion, Haifa 32000, Israel.} \\
-{\tt\small gkutiel@cs.technion.ac.il}
-\and
-Dror Rawitz%
-\thanks{Faculty of Engineering, Bar Ilan University, Ramt-Gan 52900, Israel. Partially supported by the Israel Science Foundation
-  (grant no.~497/14). } \\
-{\tt\small dror.rawitz@biu.ac.il}
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{titlepage}
-  
-\maketitle
 
 \begin{abstract}
-We study the allocation problem of a compound request for a
-\emph{service chain} in a software defined network that supports
-network function virtualization.
-%
-Given a network that contains servers with limited processing power
-and links with limited bandwidth, a service chain is a sequence of
-virtual network functions (VNFs) that serve a certain flow request
-in the network.
-%
-The allocation of a service chain consists of routing and VNF
-placement, namely each VNF from the sequence is placed in a server
-along a path.  It is feasible if each server can handle the VNFs that
-are assigned to it, and if each link on the path can carry the flow
-that is assigned to it.
-%
-A request for service is composed of a source and a destination in the
-network, an upper bound on the total latency, and a specification in
-the form of a directed acyclic graph (DAG) of VNFs that provides all
-service chains that are considered valid for this request.
-%
-In addition, each pair of server and VNF is associated with a cost for
-placing the VNF in the server.  Given a request, the goal is to find a
-valid service chain of minimum total cost that respects the latency
-constraint or to identify that such a service chain does not exist.
-
-We show that even the feasibility problem is NP-hard in general
-graphs.  Hence we focus on DAGs.  We show that the problem is still
-NP-hard in DAGs even for a very simple network, and even if the VNF
-specification consists of only one option (i.e., the virtual DAG is a
-path).
-%
-On the other hand, we present an FPTAS for the case where the network
-is a DAG.  In addition, based on our FPTAS, we provide algorithms for
-general instances in which the service chain passes through a bounded
-number of vertices whose degree is larger than two.
-%
-Finally, we provide an FPTAS for a fault-tolerant version of the
-problem.
+    We study the allocation problem of a compound request for a
+    \emph{service chain} in a software defined network that supports
+    network function virtualization.
+    %
+    Given a network that contains servers with limited processing power
+    and links with limited bandwidth, a service chain is a sequence of
+    virtual network functions (VNFs) that serve a certain flow request
+    in the network.
+    %
+    The allocation of a service chain consists of routing and VNF
+    placement, namely each VNF from the sequence is placed in a server
+    along a path.  It is feasible if each server can handle the VNFs that
+    are assigned to it, and if each link on the path can carry the flow
+    that is assigned to it.
+    %
+    A request for service is composed of a source and a destination in the
+    network, an upper bound on the total latency, and a specification in
+    the form of a directed acyclic graph (DAG) of VNFs that provides all
+    service chains that are considered valid for this request.
+    %
+    In addition, each pair of server and VNF is associated with a cost for
+    placing the VNF in the server.  Given a request, the goal is to find a
+    valid service chain of minimum total cost that respects the latency
+    constraint or to identify that such a service chain does not exist.
+    
+    We show that even the feasibility problem is NP-hard in general
+    graphs.  Hence we focus on DAGs.  We show that the problem is still
+    NP-hard in DAGs even for a very simple network, and even if the VNF
+    specification consists of only one option (i.e., the virtual DAG is a
+    path).
+    %
+    On the other hand, we present an FPTAS for the case where the network
+    is a DAG.  In addition, based on our FPTAS, we provide algorithms for
+    general instances in which the service chain passes through a bounded
+    number of vertices whose degree is larger than two.
+    %
+    Finally, we provide an FPTAS for a fault-tolerant version of the
+    problem.
 \end{abstract}
 
-\bigskip
+\begin{keyword}
+approximation algorithms \sep randomized algorithms \sep network function virtualization \sep resource allocation \sep service chaining \sep software defined network.
 
-\noindent
-\textbf{Keyworks}:
-approximation algorithms,
-randomized algorithms,
-network function virtualization,
-resource allocation,
-service chaining,
-software defined network.
 
-\renewcommand{\thepage}{}
-\end{titlepage}
-\pagenumbering{arabic}
+\end{keyword}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{frontmatter}
 
 \section{Introduction}
 
@@ -342,9 +293,6 @@ computed efficiently if $\abs{W} = O(1)$.  In addition, they showed
 that the problem is NP-hard and gave a polynomial time algorithm for
 cactus graphs with constant link capacities.
 
-
-%%%%%
-
 \subsection{Our Results}
 %\paragraph*{\bf Our results.}
 
@@ -409,8 +357,6 @@ the running time of the algorithm becomes polynomial.
 Finally, we provide an FPTAS for a fault-tolerant version of the
 service chain placement problem (without latency) in which two
 virtual paths are placed in two vertex joint paths.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Preliminaries}
 
@@ -499,7 +445,7 @@ A solution consists of the following:
 An example of an \scp instance and a solution is given in
 Figure~\ref{fig:solution}.
 
-\begin{figure}[t]
+\begin{figure}[]
 \centering
 \scalebox{0.9}{
 \input{fig-embedding}
@@ -648,7 +594,7 @@ This implies that given a service chain, the sum of its cost and its total proce
 }
 \end{proof}
 
-\begin{figure}[t]
+\begin{figure}[]
   \centering
 \scalebox{1}{
   \input{fig-reduction}
@@ -687,7 +633,7 @@ only if there is a placement with cost $\half \sum_i^n a_i$.
 \end{proof}
 
 
-\begin{figure}[t]
+\begin{figure}[]
 \centering
 \scalebox{.75}{
 \input{fig-reduction2}
@@ -993,7 +939,7 @@ There exists an FPTAS for \scp in DAGs.
 Given $\eps>0$, run the dynamic programming algorithm from
 Section~\ref{sub:DPL} $\abs{\calV} \cdot \abs{V}$ times, once for each
 possible value of $c_{\max}$, and choose the best placement.
-\fix{Since we check all the possible values of $c_max$ and for each such value we compute an optimal solution with respect to $c'$, then} according to Lemma~\ref{lemma:guess} the best placement is $(1+\eps)$-approximate.  
+\fix{Since we check all the possible values of $c_{max}$ and for each such value we compute an optimal solution with respect to $c'$, then} according to Lemma~\ref{lemma:guess} the best placement is $(1+\eps)$-approximate.  
 The running time is polynomial in the input size and in $1/\eps$.
 \end{proof}
 
@@ -1404,7 +1350,6 @@ We thank Reuven Bar-Yehuda for helpful discussions.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bibliographystyle{abbrv}
+\bibliographystyle{elsarticle-num} 
 \bibliography{chain}
-
 \end{document}
