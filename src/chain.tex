@@ -390,8 +390,8 @@ costs:
   destination $\tau \in \calV$. Each node $\alpha \in \calV$ represent
   a VNF that has a processing demand $p(\alpha)$.
 %
-  Without loss of generality, we assume that $p(s) = p(t) = p(\sigma) = p(\tau) =
-  0$.  Each edge $\eps \in \calE$ has a bandwidth demand $b(\eps)$.
+\fix{Without loss of generality, we assume that $p(s) = p(t) = p(\sigma) = p(\tau) =
+  0$}.  Each edge $\eps \in \calE$ has a bandwidth demand $b(\eps)$.
 
 \medskip
   
@@ -640,7 +640,7 @@ only if there is a placement with cost $\half \sum_i^n a_i$.
 }
 \caption{A reduction from a partition instance $a_1, \ldots, a_n$.
   The cost function enforces each $\alpha_i$ to be placed either in
-  $v_i^-$ or in $v_i^+$.  In the former case this placement incure no
+  $v_i^-$ or in $v_i^+$.  In the former case this placement incurs no
   cost but additional latency of $a_i$, in the later case there will
   be additional $a_i$ cost with zero latency.}
 \label{fig:reduction2}
@@ -925,7 +925,7 @@ c(f')
 & \leq (1+\eps) c(f)
 ~,
 \end{align*}
-where the second inequality is due to the optimality of $f'$ with
+where the second inequality is due to the optimally of $f'$ with
 respect to $c'$.
 \end{proof}
 
@@ -1294,7 +1294,7 @@ states and the computation of $\cost^i_{v_i}(\gamma_i,\beta_i)$ can be
 done in polynomial time, as shown in
 Section~\ref{sec:chain-placement}.  The above algorithm computes the
 cost of an optimal $2$-robust placement, and as usual, one may compute
-an optimal $2$-robust placement using stanard techniques.
+an optimal $2$-robust placement using standard techniques.
 
 Using the same approach as was used in Section~\ref{sub:fptas} we
 obtain the following result.
@@ -1320,7 +1320,7 @@ that is at most $2L$.
 \section{Conclusion}
 \fix{%
 Network service chaining is a service concept which has gained much interest from both practitioners and researchers, it promises increased flexibility and cost-efficiency for future carrier networks. 
-In this model clients request high level services from the network provider which translate into a service chain that need to be embedded into the physical network.
+In this model clients request compound services from the network provider which translate into a service chain that need to be embedded into the physical network.
 To ensure efficient utilization of the underline physical network relaible algorithms are needed.
 }
 
