@@ -1,20 +1,52 @@
-\nonstopmode
-\documentclass[preprint,12pt]{elsarticle}
+%\nonstopmode
+\documentclass[11pt]{article}
+%\documentclass[runningheads]{llncs}
 
-\usepackage{amsmath,amssymb,mathtools,amsthm}
-% \usepackage{fullpage}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{amsthm}
+\usepackage{fullpage}
 \usepackage{xspace}
-\usepackage{xcolor}
+\usepackage{color,soul}
 \usepackage{paralist}
 \usepackage{stmaryrd}
 
+% \usepackage[linesnumbered, ruled]{algorithm2e}
+
+%\usepackage[final]{microtype}
 \usepackage[final]{hyperref}
 \usepackage{subfig}
+%\usepackage{subcaption}
+
+% DEBUG
+%\usepackage{lipsum}
+%\usepackage{todonotes}
+%\usepackage{lineno}
+%\linenumbers
+
+% EXTRA
+%\usepackage{authblk}
 
 \input{tikz}
 
+\renewcommand{\floatpagefraction}{0.6}
 
-\journal{Discrete Applied Mathematics}
+\parskip = \smallskipamount
+
+\sloppy
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% handy theorems
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{observation}[lemma]{Observation}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{property}{Property}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+
+%\spnewtheorem{observation}{Observation}{\bfseries}{\itshape}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -55,94 +87,109 @@
 \newcommand{\latency}{\textsc{lat}\xspace}
 \newcommand{\ft}{\textsc{ft}\xspace}
 
-% \newcommand{\dror}[1]{\sethlcolor{yellow}\hl{Dror: #1}}
+\newcommand{\dror}[1]{\sethlcolor{yellow}\hl{Dror: #1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% handy theorems
-
-\newtheorem{lemma}{Lemma}
-\newtheorem{observation}[lemma]{Observation}
-\newtheorem{theorem}{Theorem}
-\newtheorem{definition}{Definition}
-\newtheorem{property}{Property}
-\newtheorem{corollary}{Corollary}
-\newtheorem{proposition}{Proposition}
-
-
-% FIX
-\newcommand{\fix}[1]{{\color{violet}\textbf{#1}}}
-
 \begin{document}
-\begin{frontmatter}
 
-\title{Service Chain Placement in SDNs\tnoteref{t1}}
-\tnotetext[t1]{
+\title{\bf Service Chain Placement in SDNs%
+\thanks{%
+%
 A preliminary version appeared in the 3rd International Workshop on
 Algorithmic Aspects of Cloud Computing (ALGOCLOUD), 2017.
 %
 Research supported in part by Network Programming (Neptune)
-Consortium, Israel.
+Consortium, Israel.}
+%
 }
 
-\author{Gilad Kutiel}
-\ead{gkutiel@cs.technion.ac.il}
-\address{Department of Computer Science, Technion, Haifa 32000, Israel.}
+%\titlerunning{Service Chain Placement in SDNs}
 
-\author{Dror Rawitz\fnref{f1}}
-\ead{dror.rawitz@biu.ac.il}
-\address{Faculty of Engineering, Bar Ilan University, Ramt-Gan 52900, Israel.}
-\fntext[f1]{Partially supported by the Israel Science Foundation (grant no.~497/14).}
+%\author[1]{Gilad Kutiel%
+%\thanks{E-mail: \texttt{gkutiel@cs.technion.ac.il}}}
 
+%\author[2]{Dror Rawitz%
+%\thanks{Partially supported by the Israel Science Foundation
+%  (grant no.~497/14).  E-mail: \texttt{dror.rawitz@biu.ac.il}}}
+
+%\affil[1]{Department of Computer Science, Technion, Haifa, Israel}
+%\affil[2]{Faculty of Engineering, Bar Ilan University, Ramt-Gan, Israel}
+
+\author{%
+Gilad Kutiel%
+\thanks{Department of Computer Science, Technion, Haifa 32000, Israel.} \\
+{\tt\small gkutiel@cs.technion.ac.il}
+\and
+Dror Rawitz%
+\thanks{Faculty of Engineering, Bar Ilan University, Ramt-Gan 52900, Israel. Partially supported by the Israel Science Foundation
+  (grant no.~497/14). } \\
+{\tt\small dror.rawitz@biu.ac.il}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+  
+\maketitle
 
 \begin{abstract}
-    We study the allocation problem of a compound request for a
-    \emph{service chain} in a software defined network that supports
-    network function virtualization.
-    %
-    Given a network that contains servers with limited processing power
-    and links with limited bandwidth, a service chain is a sequence of
-    virtual network functions (VNFs) that serve a certain flow request
-    in the network.
-    %
-    The allocation of a service chain consists of routing and VNF
-    placement, namely each VNF from the sequence is placed in a server
-    along a path.  It is feasible if each server can handle the VNFs that
-    are assigned to it, and if each link on the path can carry the flow
-    that is assigned to it.
-    %
-    A request for service is composed of a source and a destination in the
-    network, an upper bound on the total latency, and a specification in
-    the form of a directed acyclic graph (DAG) of VNFs that provides all
-    service chains that are considered valid for this request.
-    %
-    In addition, each pair of server and VNF is associated with a cost for
-    placing the VNF in the server.  Given a request, the goal is to find a
-    valid service chain of minimum total cost that respects the latency
-    constraint or to identify that such a service chain does not exist.
-    
-    We show that even the feasibility problem is NP-hard in general
-    graphs.  Hence we focus on DAGs.  We show that the problem is still
-    NP-hard in DAGs even for a very simple network, and even if the VNF
-    specification consists of only one option (i.e., the virtual DAG is a
-    path).
-    %
-    On the other hand, we present an FPTAS for the case where the network
-    is a DAG.  In addition, based on our FPTAS, we provide algorithms for
-    general instances in which the service chain passes through a bounded
-    number of vertices whose degree is larger than two.
-    %
-    Finally, we provide an FPTAS for a fault-tolerant version of the
-    problem.
+We study the allocation problem of a compound request for a
+\emph{service chain} in a software defined network that supports
+network function virtualization.
+%
+Given a network that contains servers with limited processing power
+and links with limited bandwidth, a service chain is a sequence of
+virtual network functions (VNFs) that serve a certain flow request
+in the network.
+%
+The allocation of a service chain consists of routing and VNF
+placement, namely each VNF from the sequence is placed in a server
+along a path.  It is feasible if each server can handle the VNFs that
+are assigned to it, and if each link on the path can carry the flow
+that is assigned to it.
+%
+A request for service is composed of a source and a destination in the
+network, an upper bound on the total latency, and a specification in
+the form of a directed acyclic graph (DAG) of VNFs that provides all
+service chains that are considered valid for this request.
+%
+In addition, each pair of server and VNF is associated with a cost for
+placing the VNF in the server.  Given a request, the goal is to find a
+valid service chain of minimum total cost that respects the latency
+constraint or to identify that such a service chain does not exist.
+
+We show that even the feasibility problem is NP-hard in general
+graphs.  Hence we focus on DAGs.  We show that the problem is still
+NP-hard in DAGs even for a very simple network, and even if the VNF
+specification consists of only one option (i.e., the virtual DAG is a
+path).
+%
+On the other hand, we present an FPTAS for the case where the network
+is a DAG.  In addition, based on our FPTAS, we provide algorithms for
+general instances in which the service chain passes through a bounded
+number of vertices whose degree is larger than two.
+%
+Finally, we provide an FPTAS for a fault-tolerant version of the
+problem.
 \end{abstract}
 
-\begin{keyword}
-approximation algorithms \sep randomized algorithms \sep network function virtualization \sep resource allocation \sep service chaining \sep software defined network.
+\bigskip
 
+\noindent
+\textbf{Keyworks}:
+approximation algorithms,
+randomized algorithms,
+network function virtualization,
+resource allocation,
+service chaining,
+software defined network.
 
-\end{keyword}
+\renewcommand{\thepage}{}
+\end{titlepage}
+\pagenumbering{arabic}
 
-\end{frontmatter}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Introduction}
 
@@ -231,7 +278,13 @@ It is also shown that this ratio is asymptotically optimal even for
 randomized online algorithms.  APX-hardness results for the offline
 version of the problem were also presented.
 %
-Rost and Schmid~\cite{RostSchmid18} considered variant of this
+Sahhaf et al.~\cite{STRSCPD15} also studied placement of network
+service chains.  They presented an algorithm which minimizes the cost
+of the placement and is based on integer linear programming.  They
+also present a heuristic in order to cope with the non-practical
+running time of the first algorithm.
+%
+Rost and Schmid~\cite{RostSchmid16} considered variant of this
 problem, where each node can host a subset of the VNFs.  In addition,
 each VNF has a demand and each VNF-node pair has a capacity, and in a
 feasible solution the total demand for each pair is bounded by the
@@ -239,23 +292,23 @@ capacity.  They considered two goals: maximum profit and minimum
 resource cost and gave bicriteria approximation algorithms which are
 based on LP-rounding for several special cases.
 %
-\fix{Sahhaf et al.~\cite{SAHHAF2015492} studied a generalization of the Virtual Network Embedding
-Problem where each network function can be decomposed into multiple network function graphs.
-They proposed two novel approaches to use service
-decompositions at the time of service embedding (i) an
-ILP-based algorithm that finds an optimal embedding and (ii) a heuristic-based algorithm to cop with the scalability issues of the first algorithm.}
+Rost and Schmid~\cite{RostSchmid18} considered a more general version
+of the problem in which requests are graphs that should be placed
+within the physical graph.  They provided hardness of approximation
+results for this problem.
 
-Even, Medina, and Patt-Shamir~\cite{EMP16} studied online path
-computation and VNF placement.  They considered compound requests that
-arrive in an online manner.  Each request is a flow with a
-specification of routing and VNF requirements which is represented by
-a directed acyclic graph (DAG) whose vertices are VNFs.  Each VNF can
-be performed by a specified subset of servers in the system.  Upon
-arrival of a request, the algorithm either rejects the request or
-accepts it with a specific routing and VNF assignment, under given
-server capacity constraints.  Each request has a benefit that is
-gained if it is accepted, and the goal is to maximize the total
-benefit gained by accepted requests.
+
+Even, Medina, and Patt-Shamir~\cite{EMP16} (see, also~\cite{EMP18})
+studied online path computation and VNF placement.  They considered
+compound requests that arrive in an online manner.  Each request is a
+flow with a specification of routing and VNF requirements which is
+represented by a directed acyclic graph (DAG) whose vertices are VNFs.
+Each VNF can be performed by a specified subset of servers in the
+system.  Upon arrival of a request, the algorithm either rejects the
+request or accepts it with a specific routing and VNF assignment,
+under given server capacity constraints.  Each request has a benefit
+that is gained if it is accepted, and the goal is to maximize the
+total benefit gained by accepted requests.
 %
 Even, Medina, and Patt-Shamir~\cite{EMP16} proposed an algorithm that
 copes with requests with unknown duration without preemption by using
@@ -274,32 +327,34 @@ $(1-\eps)$-approximate placements if the demand of any processing
 request in any possible service chain is never more than an
 $O(\eps^2/\log n)$ fraction of the capacity of any network component.
 
-\fix{Amiri1 et al.~\cite{AmiriLatin2018, AmiriCCR2018, AmiriIFIP2018} considered the \textsc{Waypoint Routing} problem.
-In this problem we are given an edge weighted graph $G=(V, E)$, a source $s \in V$, destination $t \in V$ and a set of waypoints $W \subseteq V$.
-The goal is to find a shortest walk from $s$ to $t$ that traverses all the waypoints.
-Two variants of this problem exists, namely when the waypoints need to be traversed in a particular or in an arbitrary order.
-It is also possible that we have additional capacity consistents, i.e. a limitation on the number of times a walk can go through each edge.
-Amiri1 et al. show that (i) There exists a polynomial algorithm for bounded treewidth graph for arbitrary number of waypoints and for general graphs for logarithmically bounded number of waypoints. (ii) This problem is NP-hard in general. (iii) This problem is NP-hard for directed graphs even when there is a single waypoint. (iv) There is a polynomial algorithm for cactus topologies.
-}
-
-% Foerster, Parham and Schmid~\cite{FPS17} considered the
-% \textsc{Bidirectional Waypoint Routing} problem, where the input
-% consists of a graph $G = (V,E)$ with edge weights and capacities, a
-% source $s$, a destination $t$, and a subset of the vertices $W$.  A
-% feasible solution is a route from $s$ to $t$ that visits the vertices
-% in $W$.  If $W$ is ordered, the route should visit the vertices of $W$
-% according to the given order.  The goal is to find a minimum weight
-% solution.
-% %
-% Foerster et al.~\cite{FPS17} showed that the unordered
-% problem has no PTAS, assuming P$\neq$NP and gave a
-% $1.53$-approximation algorithm.  They also presented polynomial time
-% algorithms for special cases.
+Foerster, Parham and Schmid~\cite{FPS17} considered the
+\textsc{Bidirectional Waypoint Routing} problem, where the input
+consists of a graph $G = (V,E)$ with edge weights and capacities, a
+source $s$, a destination $t$, and a subset of the vertices $W$.  A
+feasible solution is a route from $s$ to $t$ that visits the vertices
+in $W$.  If $W$ is ordered, the route should visit the vertices of $W$
+according to the given order.  The goal is to find a minimum weight
+solution.
+%
+Foerster et al.~\cite{FPS17} showed that the unordered
+problem has no PTAS, assuming P$\neq$NP and gave a
+$1.53$-approximation algorithm.  They also presented polynomial time
+algorithms for special cases.
 %
 As for the ordered variant, they showed that feasible routes can be
 computed efficiently if $\abs{W} = O(1)$.  In addition, they showed
 that the problem is NP-hard and gave a polynomial time algorithm for
 cactus graphs with constant link capacities.
+%
+Amiri et al.~\cite{AFS18} considered the unordered case, and they
+presneted a polynomial-time algorithm for graphs of bounded treewidth.
+%
+Amiri et al.~\cite{AFJPS18} studied the ordered case, and they
+gave algorithms for special networks.
+%
+An overview of waypoint routing is given in ~\cite{AFJS18}.
+
+%%%%%
 
 \subsection{Our Results}
 %\paragraph*{\bf Our results.}
@@ -366,6 +421,8 @@ Finally, we provide an FPTAS for a fault-tolerant version of the
 service chain placement problem (without latency) in which two
 virtual paths are placed in two vertex joint paths.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Preliminaries}
 
 We formally define the problem in this section.
@@ -384,7 +441,7 @@ costs:
   has a non-negative processing capacity $p(v)$, and each directed
   edge $e \in E$ has a non-negative bandwidth capacity $b(e)$.
 %
-  % Without loss of generality, we assume that $p(s) = p(t) = 0$.  
+  Without loss of generality, we assume that $p(s) = p(t) = 0$.  
 
 \medskip
   
@@ -394,12 +451,14 @@ costs:
   physical source $s \in V$, a physical destination $t \in V$, and a
   directed acyclic graph (DAG) $\calG = (\calV,\calE)$.
 %
+%   Without loss of generality, we assume that $p(s) = p(t) = 0$.  
+%
   The DAG $\calG$ has a source node $\sigma \in \calV$ and a
   destination $\tau \in \calV$. Each node $\alpha \in \calV$ represent
   a VNF that has a processing demand $p(\alpha)$.
 %
-\fix{Without loss of generality, we assume that $p(s) = p(t) = p(\sigma) = p(\tau) =
-  0$}.  Each edge $\eps \in \calE$ has a bandwidth demand $b(\eps)$.
+  Without loss of generality, we assume that $p(\sigma) = p(\tau) =
+  0$.  Each edge $\eps \in \calE$ has a bandwidth demand $b(\eps)$.
 
 \medskip
   
@@ -453,22 +512,25 @@ A solution consists of the following:
 An example of an \scp instance and a solution is given in
 Figure~\ref{fig:solution}.
 
-\begin{figure}[]
+\begin{figure}[t]
 \centering
 \scalebox{0.9}{
 \input{fig-embedding}
 }
-\caption{\fix{
-  An example of an \scp instance and a solution.
-  The left DAG represents the collection of alternative service chains as requested by the client.
-  Each node of this graph represent a single service and the number written inside the node is the processing demand of this service.
-  The value on the arcs are the minimum bandwidth required to transmit the output of one service to the next service.
-  \\
-  The right DAG represents a physical network. 
-  The numbers on the nodes represent processing capacities and the number on the arcs represent the available bandwidth.
-  \\
-  The blue, dashed, arcs represent the chosen service chain and a physical route respectively, and the dotted, purple, arrows show a placement of this service chain into the physical route.
-}}
+\caption{An example of an \scp instance and a solution.
+%
+The DAG on the left is the virtual DAG, and the numbers on its
+vertices and edges are their demands.
+%
+The DAG on the right is the physical DAG, and the numbers of its
+vertices and edges are their capacities.
+%
+The dashed blue line on the left is the chosen the chosen virtual
+path, while the dashed blue line on the right is the chosen physical
+path.  Dotted lines are used to represent the allocation of each set
+of virtual vertices to each physical vertex along the path.
+%
+}
 \label{fig:solution}
 \end{figure}
 
@@ -596,13 +658,17 @@ $c(\alpha_i,v) = 0$ and $c(\beta_i,v) = a_i$, for every $i$.
 
 The \scp instance can be computed in polynomial time.
 %
-\fix{
-Note that any service chain is of the form $\sigma, \gamma_1, \dots, \gamma_n, \tau$ where $\gamma_i \in \{\alpha_i, \beta_i\}$. 
-This implies that given a service chain, the sum of its cost and its total processing demand equals to $\sum_i a_i$ and thus (as forced by the processing capacity of $v$), $\set{a_1, \ldots, a_n} \in \textsc{Partition}$ if and only if there exists a solution whose cost is $\half \sum_i a_i$.
-}
+Furthermore, observe that any service chain must be of the form
+$\sigma, \gamma_1, \ldots, \gamma_n, \tau$, where $\gamma_i \in
+\set{\alpha_i,\beta_i}$.  By the construction, we have that the total
+processing demands plus the total cost is $\sum_i a_i$.  Since $p(v) =
+\half \sum_i a_i$, we have that the total cost is at least $\sum_i
+a_i$.  Hence, it is not hard to verify that $\set{a_1, \ldots, a_n}
+\in \textsc{Partition}$ if and only if there exists a solution whose
+cost is $\half \sum_i a_i$.
 \end{proof}
 
-\begin{figure}[]
+\begin{figure}[t]
   \centering
 \scalebox{1}{
   \input{fig-reduction}
@@ -641,14 +707,14 @@ only if there is a placement with cost $\half \sum_i^n a_i$.
 \end{proof}
 
 
-\begin{figure}[]
+\begin{figure}[t]
 \centering
 \scalebox{.75}{
 \input{fig-reduction2}
 }
 \caption{A reduction from a partition instance $a_1, \ldots, a_n$.
   The cost function enforces each $\alpha_i$ to be placed either in
-  $v_i^-$ or in $v_i^+$.  In the former case this placement incurs no
+  $v_i^-$ or in $v_i^+$.  In the former case this placement incure no
   cost but additional latency of $a_i$, in the later case there will
   be additional $a_i$ cost with zero latency.}
 \label{fig:reduction2}
@@ -892,11 +958,9 @@ using standard techniques.
 
 In this section we present an FPTAS for \scp in DAGs for general
 costs, namely without the assumption that costs are polynomially
-bounded.  
-\fix{
-We use similar techniques as in the  FPTAS for the
-\textsc{Minimum Knapsack} problem~\cite{islam2009approximation}.
-}
+bounded.  Our algorithm is similar to the FPTAS for the
+\textsc{Minimum Knapsack} problem (see \cite{KPP04}[Chapter 13] and
+references therein).
 
 Let $f$ be an optimal placement, and let $c_{\max}$ be the maximum
 cost of a VNF placement by $f$, i.e., $c_{\max} = \max_{f(\alpha) =
@@ -927,13 +991,13 @@ c(f')
 & \leq \frac{\eps c_{\max}}{n} \cdot \sum_{\alpha} c'(\alpha,f(\alpha)) \\
 & \leq \frac{\eps c_{\max}}{n} \cdot
      \sum_{\alpha}
-       \paren{ c(\alpha,f(\alpha)) \cdot \frac{n}{\eps c_{\max}} + 1} \\
+       \paren{ \frac{c(\alpha,f(\alpha))}{c_{\max}} \cdot \frac{n}{\eps} + 1} \\
 %& =    c(f) + \frac{\eps c_{\max}}{n} \cdot n \\
 & =    c(f) + \eps c_{\max} \\
 & \leq (1+\eps) c(f)
 ~,
 \end{align*}
-where the second inequality is due to the optimally of $f'$ with
+where the second inequality is due to the optimality of $f'$ with
 respect to $c'$.
 \end{proof}
 
@@ -944,10 +1008,19 @@ This leads to the following result:
 There exists an FPTAS for \scp in DAGs.
 \end{theorem}
 \begin{proof}
-Given $\eps>0$, run the dynamic programming algorithm from
+First, observe that there are $\abs{\calV} \cdot \abs{V}$ candidates
+for the value of $c_{\max}$, one for each pair of virtual function and
+physical vertex.  
+%
+Hence, given $\eps>0$, we run the dynamic programming algorithm from
 Section~\ref{sub:DPL} $\abs{\calV} \cdot \abs{V}$ times, once for each
 possible value of $c_{\max}$, and choose the best placement.
-\fix{Since we check all the possible values of $c_{max}$ and for each such value we compute an optimal solution with respect to $c'$, then} according to Lemma~\ref{lemma:guess} the best placement is $(1+\eps)$-approximate.  
+%
+According to Lemma~\ref{lemma:guess} the placement that was computed
+for the value of $c_{\max}$ that corresponds to an optimal solution is
+$(1+\eps)$-approximate.  Hence, the best placement is also
+$(1+\eps)$-approximate.
+%
 The running time is polynomial in the input size and in $1/\eps$.
 \end{proof}
 
@@ -976,11 +1049,16 @@ are $k$ neighborly vertices in the network.  In this case, we present
 a deterministic algorithm whose running time is $O(k! \cdot
 \text{poly}(n))$.
 
+Before presenting our algorithms we assume without loss of generality
+that each vertex in the network is found on a path from $s$ to $t$,
+since otherwise it can be eliminated.  In particular, it follows that
+the degree of any vertex, besides maybe $s$ and $t$, is at least $2$.
+In addition this implies that the network is connected.
+
 %%%%%
 
 \subsection{Randomized Algorithm}
 
-\fix{We assume w.l.o.g that the physical network does not contain any leafs (beside, maybe, $s$ and $t$), otherwise, these nodes, for the purpose of our computation, can be safely removed from the network.}
 Our randomized algorithm consists of $k!$ iterations of the following
 two phases: an orientation phase that applies a random orientation to
 the physical network, and an execution of the FPTAS for DAGs given in
@@ -995,11 +1073,13 @@ The orientation phase is done as follows.  Let $N$ be the set of
 neighborly vertices.  We assume without loss of generality that $N =
 \set{1,\ldots,\abs{N}}$.
 %
-Let $\pi:N \to N$ be a random permutation.  We direct the edges
-according to $\pi$.  
-Observe that each edge $e \in E$ is found on a
-simple path between two neighborly nodes $v_e$ and $v'_e$, in which
-all internal vertices are in $V \setminus N$.  The edge $e$ is
+Let $\pi:N \to N$ be a random permutation.  Define $\pi(s) = 0$, and
+$\pi(t) = N+1$.  We direct the edges according to $\pi$.
+%
+Observe that each edge $e \in E$ is found on a simple path between two
+neighborly nodes $v_e$ and $v'_e$, between $v_e = s$ and a neighborly
+node $v'_e$, or between neighborly node $v_e$ and $v_e = t$.  In this
+path all internal vertices are in $V \setminus N$.  The edge $e$ is
 directed towards $v_e$, if $\pi(v_e) > \pi(v'_e)$, and otherwise it is
 directed towards $v'_e$.
 %
@@ -1017,7 +1097,7 @@ A na\"ive implementation of this phase would run in $O(|V||E|)$ time.
 \caption{Orientation phase: on the left is the physical network, where
   only the neighborly nodes are drawn.  The numbers represent the
   permutation and the dashed path represents a path of an optimal
-  placement.  The orientated physical network is on the right.  It is
+  placement.  The oriented physical network is on the right.  It is
   enough that the internal ordering of the nodes on the dashed path is
   "correct" to ensure the survival of an optimal placement. }
 \label{fig:orientation}
@@ -1034,22 +1114,23 @@ $(1+\eps)$-approximate placement with high probability, whose
 running time is $O(k! \cdot \text{\rm poly}(n))$.
 \end{theorem}
 \begin{proof}
-Consider an optimal placement with at most $k$ neighborly vertices,
-and let $\pi'$ be the permutation it induces on the neighborly
-vertices in the physical path.
+Consider an optimal placement with at most $k$ neighborly vertices
+whose set is denoted by $N'$, and let $\pi'$ be the permutation it
+induces on the neighborly vertices in the physical path.
 %
-If the random permutation $\pi$ orders the neighborly vertices
-correctly, i.e., if $\pi(v) = \pi'(v)$, for every $v \in N$, then the
+If the random permutation $\pi$ orders the neighborly vertices in $N'$
+correctly, i.e., if $\pi(v) = \pi'(v)$, for every $v \in N'$, then the
 optimal placement is feasible with respect to $G_\pi$.  Hence, the
 FPTAS will find a $(1+\eps)$-approximate placement in $G_\pi$.  This
 placement is feasible, and therefore $(1+\eps)$-approximate placement,
 with respect to $G$.
-%
-The permutation $\pi$ agrees with $\pi'$ with probability $1/k!$, and
-the probability that $\pi$ agrees with $\pi'$ in $k!$ iterations is $1
-- (1 - 1/k!)^{k!} \geq 1 - e^{-1}$.  
-This means that the probability to fail in a single attempt is less than $e^{-1}$. \fix{If one makes $i$ attempts then the probability to fail in all those attempts is less than $e^{-i}$ so using $\ln n$ repetitions reduces the probability to fail to less than $\frac{1}{n}$ and increases the probability to succeed to at least $1 - \inv{n}$.
-}
+
+The permutation $\pi$ agrees with $\pi'$ with probability $1/\abs{N'}!
+\geq 1/k!$, and thus the probability that $\pi$ agrees with $\pi'$ in
+$k!$ independent iterations is at least $1 - (1 - 1/k!)^{k!} \geq 1 -
+e^{-1}$.  One may amplify the success probability to $1 - \inv{n}$
+using $O(\log n)$ repetitions: $1 - (1 - 1/k!)^{\ln n \cdot k!} \geq 1
+- e^{-\ln n} = 1 - 1/n$.
 \end{proof}
 
 %%%%%
@@ -1060,8 +1141,8 @@ In the case where $\abs{N} = k$ we can simply examine the $k!$
 permutations of the neighborly vertices.  For each possible
 permutation the algorithm applies the graph orientation procedure as
 described above, and then executes the FPTAS for DAGs given in
-Section~\ref{sub:fptas}.  
-Thus the running time of the algorithm is $O(k! \cdot \text{\rm poly}(n))$.
+Section~\ref{sub:fptas}.  Thus the running time of the algorithm is
+$O(k! \cdot \text{\rm poly}(n))$.
 %
 We note that permutation enumeration for $k$ numbers takes $O(k!)$
 time (see e.g.,~\cite{Even73,Sedgewick77}).
@@ -1081,21 +1162,26 @@ an orientation to an undirected graph.  While the proposed method does
 not surpass the above mentioned orientation in the worse case, in
 certain cases, the new method yields an exponential improvement.
 
-\fix{
-A biconnected component (block) of an undirected graph is a maximal biconnected subgraph.
-Any connected graph decomposes into a tree of biconnected components called the block-cut tree of the graph. The blocks are attached to each other at shared vertices called cut vertices.
-Computing such a tree can be done in linear time~\cite{HopcroftTarjan73}.
-}
-The orientation works as follow.  
-Given an undirected graph $G = (V,E)$, we first compute its block-cut tree.
+Given a connected graph $G$, a \emph{bi-connected component} (or a
+\emph{block}) in $G$ is a maximal bi-connected subgraph of $G$.  Any
+connected graph can be decomposed into bi-connected subgraphs that
+form a tree called a \emph{block-cut tree}.  In this tree every vertex
+is a block of $G$ and two blocks are attached if they share a vertex,
+which is called a \emph{cut-vertex}.
 %
-Then on the unique path from $s$ to $t$ in the block-cut tree we
-internally orient each block arbitrarily to produce a DAG.  Note that
-if $B_1, \ldots, B_\ell$ are the blocks of $G$ on the path from $s$ to
-$t$ then the first and last vertices with respect to each block are
-known and only the order of the internal neighborly vertices in each
-block is needed to be determined, thus, we can find all relevant
-orientations by repeating the process above $\Pi_{i = 1}^\ell
+Computing such a tree can be done in linear
+time~\cite{HopcroftTarjan73}.
+
+The orientation works as follow.  Given an undirected graph $G =
+(V,E)$, we first compute its \emph{block-cut} tree.  Then on the
+unique path from $s$ to $t$ in the block-cut tree we internally orient
+each block arbitrarily to produce a DAG.
+%
+Note that if $B_1, \ldots, B_\ell$ are the blocks of $G$ on the path
+from $s$ to $t$ then the first and last vertices with respect to each
+block are known and only the order of the internal neighborly vertices
+in each block is needed to be determined, thus, we can find all
+relevant orientations by repeating the process above $\Pi_{i = 1}^\ell
 \abs{N_i}$ times, where $N_i$ is the set of internal neighborly
 vertices in $B_i$.  See Figure~\ref{fig:or2} for an example.
 
@@ -1127,7 +1213,7 @@ where the network is a cactus graph, computes a $(1+\eps)$-approximate
 placement.
 \end{theorem}
 
-We note that cactus graphs were also considered in~\cite{RostSchmid18}.
+We note that cactus graphs were also considered in~\cite{FPS17}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1137,11 +1223,15 @@ In this section we consider the problem of a \textsc{Service Chain
   Placement} when there is also a demand for fault tolerance.  Note
 that we consider the problem without latency.
 
-\fix{We say that two (physical) paths are \emph{internal vertex disjoint} if they do not have any internal (all vertices beside the first and last one) vertex in common.}
 Formally, given a physical network, a virtual specification, and a
 parameter $r \in \naturals$, an \emph{$r$-robust} placement is a
 collection of $r$ placements, $f_1,\ldots,f_r$, that correspond to $r$
-internal vertex disjoint physical paths.  In the fault tolerant
+internal vertex disjoint physical paths.%
+\footnote{Two paths are internal vertex disjoint is they do not share
+  a vertex apart from, maybe, the first and last vertices on the
+  paths.}
+%
+In the fault tolerant
 version of \scp we are given $r$ costs functions $c_1,\ldots,c_r$, and
 we are looking for an $r$-robust placement that minimize the total
 cost:
@@ -1257,9 +1347,10 @@ $\sigma$ to $\alpha_1$ and $\alpha_2$ are placed into internal vertex
 disjoint physical paths that start at $s$ and end at $v_1$ and $v_2$,
 respectively.
 %
-Recall that $\cost^i_{v_i}(\gamma_i,\beta_i)$ is the cost, with
-respect to $c_i$, of a minimum cost path from $\gamma_i$ to $\beta_i$
-whose total processing requirement can be handled by $v_i$.
+Recall that $\cost^j_{v_j}(\gamma_j,\beta_j)$ is the cost, with
+respect to $c_j$, of a minimum cost path from $\gamma_j$ to $\beta_j$
+whose total processing requirement can be handled by $v_j$, where $j
+\in \set{1,2}$.
 %
 Consider the following recursive definition.  First,
 \[
@@ -1268,8 +1359,8 @@ Consider the following recursive definition.  First,
   \cost^2_{s}(\sigma \leadsto \alpha_2)
 ~.
 \]
-Otherwise, for $v_1 \neq v_2$ or $v_1 = v_2 = t$, such that $v_1, v_2 \in L_i$, for some
-$i$, we have
+Otherwise, for $v_1 \neq v_2$ of $v_1 = v_2 = t$, such that $v_1, v_2
+\in L_i$, for some $i$, we have
 \[
 \ft((\alpha_1,\zeta_1),(\alpha_2,\zeta_2),v_1,v_2)
 =
@@ -1286,23 +1377,30 @@ where we take the minimum over all the possible virtual functions
 $\gamma_1, \beta_1, \gamma_2, \beta_2$ and physical nodes $u_1, u_2$,
 such that:
 \begin{itemize}
-  \item $\gamma_i \preceq \alpha_i$,
-  \item $\beta_i \preceq \alpha_i$ or $\beta_i = \zeta_i$,
-  \item $(\gamma_i,\beta_i) \in \calE$,
+  \item $\gamma_j \preceq \alpha_j$,
+  \item $\beta_j \preceq \alpha_j$ or $\beta_j = \zeta_j$,%
+\footnote{Note that if $\beta_j = \zeta_j$, then
+  $\cost^j_{v_j}(\zeta_j \to \alpha_j) = 0$.}
+  \item $(\gamma_j,\beta_j) \in \calE$,
   \item $u_1 \neq u_2$ or $u_1 = u_2 = s$,
-  \item $(u_i,v_i) \in E$, and
-  \item $b(\gamma_i,\beta_i) \leq b(u_i,v_i)$
+  \item $(u_j,v_j) \in E$, and
+  \item $b(\gamma_j,\beta_j) \leq b(u_j,v_j)$
 \end{itemize}
  
 The optimal $2$-robust placement is obtained by the call
 $\ft((\tau,\tau'),(\tau,\tau'),t,t)$
 
-The running time is polynomial, since there is a polynomial number of
-states and the computation of $\cost^i_{v_i}(\gamma_i,\beta_i)$ can be
-done in polynomial time, as shown in
-Section~\ref{sec:chain-placement}.  The above algorithm computes the
-cost of an optimal $2$-robust placement, and as usual, one may compute
-an optimal $2$-robust placement using standard techniques.
+If all costs are polynomially bounded, then computation of
+$\ft((\alpha_1,\zeta_1),(\alpha_2,\zeta_2),v_1,v_2)$ can be done in
+polynomial time, since the minimum is taken over a polynomial number
+of candidates and the computation of $\cost^j_{v_j}(\gamma_j,\beta_j)$
+can be done in polynomial time, as shown in
+Section~\ref{sec:chain-placement}.  Hence, the overall running time is
+polynomial.
+%
+The above algorithm computes the cost of an optimal $2$-robust
+placement, and as usual, one may compute an optimal $2$-robust
+placement using standard techniques.
 
 Using the same approach as was used in Section~\ref{sub:fptas} we
 obtain the following result.
@@ -1311,44 +1409,54 @@ obtain the following result.
 There exists an FPTAS for $2$-robust \scp (without latency) in DAGs.
 \end{theorem}
 
-\begin{proof}
-  \fix{From the above discussions it follows that the algorithm finds an optimal robust embedding with respect to c', using Lemma~\ref{lemma:guess} we know that its cost is at most $(1 + \varepsilon)$ times the cost of the optimal robust embedding, for every $\varepsilon > 0$.}
-\end{proof}
-
 Finally, we note that the above algorithm does not take into account
 the latency constraint.  It is possible, however, given a latency
 constraint, $L$, to modify the algorithm to return an optimal solution
 such that the total latency of the two placements is no more than
-$2L$.  Such a solution is guaranteed to be optimal in terms of costs.
-It is also easy to see that in such solution at least one of the
+$2L$.  This is done in a manner which is similar to what was done in
+Section~\ref{sub:DPL}, but with an upper bound on the total latency of
+both paths.  Such a solution is guaranteed to be optimal in terms of
+costs.  Also, if the total latency is $2L$, then at least one of the
 placements has lower latency than $L$ and the other one has latency
 that is at most $2L$.
 
 
-\section{Conclusion}
-\fix{%
-Network service chaining is a service concept which has gained much interest from both practitioners and researchers, it promises increased flexibility and cost-efficiency for future carrier networks. 
-In this model clients request compound services from the network provider which translate into a service chain that need to be embedded into the physical network.
-To ensure efficient utilization of the underline physical network relaible algorithms are needed.
-}
-
-\fix{%
-In this paper we propose an efficient algorithm that finds an optimal embedding for a single request.
-This algorithm works, however, only when the underline network is acyclic.
-For general networks we propose an algorithm that finds an optimal embedding with a running time that depends on the topology of the network, more specifically on the number of nodes in the network with more than two connections.
-We also propose a heuristic that improves the running time of the last algorithm, for cactus networks, for example, this heuristic is guaranteed to run in polynomial time.
-}
-
-\fix{%
-Some questions regarding service chain placement remain open. 
-Some of these questions are (i) how should we handle multiple (concurrent) requests? (ii) can we find better solutions if we allow embedding a service chain on a walk instead of a path? (iii) is there an efficient (approximation) algorithm that works on real world networks?\footnote{As even the feasibilty problem for general networks is NP-hard some further assumptions need to be made in order to answer this question affirmatively.}
-We believe that our results and techniques can serve as a starting point for future work dealing with those questions.
-}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\section{Extensions}
+\section{Conclusion}
 
-%Costs by sets of VNFS
+Chaining of virtual network functions is a service concept which has
+gained much attention from both practitioners and researchers, since
+it promises increased flexibility and cost-efficiency for future
+carrier networks.
+%
+In this setting a client requests a compound service from the network
+provider which translates into a service chain that needs to be
+embedded into the physical network.  To ensure efficient utilization
+of the underline physical network, the placement of the service chain
+should be done carefully and efficiently.
+%
+In this paper we define a model for service chain placement in SDNs.
+We show that the placement problem is computationally hard even in
+very simple cases.  Given these hardness results, we propose an FPTAS
+for the placement problem in acyclic physical networks.  For general
+networks we propose a randomized algorithm and an fixed parameter
+algorithm whose running time depends on the topology of the network,
+more specifically on the number of nodes in the network with more than
+two neighbors.  Finally, we extend our results to a fault tolerant
+setting.
+
+Several questions regarding service chain placement remain open:
+\begin{inparaenum}[(i)]
+\item Are there (practical) networks (other than DAGs) that are
+  computationaly easy?
+\item Can our results be extended to the case where the service chain
+  is placed within a walk instead of a path?
+\item Can multiple requests be treated within our model?
+\end{inparaenum}
+We believe that our results and techniques can serve as a starting
+point for future work dealing with those questions.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1358,6 +1466,7 @@ We thank Reuven Bar-Yehuda for helpful discussions.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bibliographystyle{elsarticle-num} 
+\bibliographystyle{abbrv}
 \bibliography{chain}
+
 \end{document}

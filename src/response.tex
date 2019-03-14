@@ -1,0 +1,201 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,latexsym,amssymb} 
+\usepackage{fullpage,ifthen}
+\usepackage{color,soul,colordvi}
+\usepackage{mdwlist,paralist}
+
+%\renewcommand{\baselinestretch}{1.02}
+
+%\parskip=\smallskipamount
+
+\sloppy
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\ceil}[1]{\left\lceil {#1} \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor {#1} \right\rfloor}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+
+\newcommand{\eps}{\varepsilon}
+
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\sigmad}{\sigma_{\$}}
+
+\newcommand{\ans}[1]{\begin{quotation}{\noindent \sl {#1}}\end{quotation}}
+
+
+\newcommand{\dror}[1]{\sethlcolor{yellow}\hl{Dror: #1}}
+\newcommand{\ben}[1]{\sethlcolor{green}\hl{Ben: #1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\title{\textbf{Service Chain Placement in SDN} \\
+  {\Large Response to Reviewers: Submission DA10028}}
+
+\author{Gilad Kutiel \and Dror Rawitz}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We thank the referee for the time that was spent on reviewing our
+paper and for their thoughtful comments.  The paper was revised
+according to these comments.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\medskip
+
+\section*{Response to Review \#1}
+
+\begin{enumerate}
+
+\item \textbf{Comment}: In Sec.~5.1 for the randomized algorithm it is
+  claimed in p.11 row 29, that ``... each edge $e$ in $E$ is found on
+  a simple path between two neighborly nodes $v_e$ and $v_{e'}$, in
+  which all internal vertices are in $V \ N$''.  $N$ denotes the set
+  of neighborly nodes. Here it is not clear for me, how this is ensured
+  if, e.g, $G$ is a tree and $N$ is the set of internal nodes with
+  degree greater than two.  It needs more explanation. The approach
+  described in Sec 5.2 eliminates this problem.
+
+\item[] \textbf{Response}: Before Section 5.1 we observe, that
+  w.l.o.g., we may focus on vertices that are located on a path from
+  $s$ to $t$.  It follows that each such vertex has degree at least
+  $2$.
+%
+  In Section~5.1 we now consider edges that are located between $s$ or
+  $t$ and a neighborly vertex.
+  
+\item \textbf{Comment}: In proof of Lemma 1, p.10 row 16: $\leq \eps
+  c_{\max} / n \cdot \sum_\alpha (c(\alpha,f(\alpha))\cdot \eps
+  c_{max} / n + 1)$ $\longrightarrow$ $\leq \eps c_{\max} / n \cdot
+  \sum_\alpha (c(\alpha,f(\alpha))\cdot n / (\eps c_{max}) + 1)$
+
+\item[] \textbf{Response}: Corrected.
+
+\item \textbf{Comment}: In p.~15 row 24: ``... for $v_1 \neq v_2$
+  ...'' I suppose, it must be ``... for $v_1 \neq v_2$ or $v_1 = v_2 =
+  t$ ...''
+
+\item[] \textbf{Response}: Corrected.
+
+\item \textbf{Comment}: In p.~15 row 34: ``$\beta_i \preceq \alpha_i$
+  or $\beta_i = \zeta_i$''.  What does then $\text{COST}^i(\zeta_i \to
+  \alpha_i)$ mean in row 26?
+
+\item[] \textbf{Response}: First, we changed $i$ to $j$, since $i$ is
+  used for the layer number.
+
+  If $\beta_j = \zeta_j$, then $\textsc{cost}^j_{v_j}(\zeta_j \to
+  \alpha_j) = 0$.  We added a footnote about this issue.
+
+\item \textbf{Comment}: In p.~15 after row 37, to my opinion, an
+  additional item should be inserted: $v_1 \neq v_2$ or $v_1 = v_2 =
+  t$.
+
+\item[] \textbf{Response}: First, this is handled by the response to
+  comment 3.  Also, $v_1$ and $v_2$ are not variables over which the
+  minimum is taken.
+
+\end{enumerate}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+\section*{Response to Review \#2}
+
+
+We corrected all typos in the list.
+
+
+\subsection*{Additional references/explanations}
+
+\begin{enumerate}
+  
+\item \textbf{Comment}: Please expand the explanations for Figure 1,
+  the introductory example. For a first-time reader, it is not
+  intuitive.
+
+\item[] \textbf{Response}: Done.
+
+\item \textbf{Comment}: Please expand the explanation at the end of
+  Theorem 2 a bit.
+
+\item[] \textbf{Response}: Done.
+  
+\item \textbf{Comment}: Please provide a reference to the FPTAS for
+  the MINIMUM KNAPSACK problem.
+
+\item[] \textbf{Response}: Done.
+
+\item \textbf{Comment}: Please expand the explanation at the end of
+  Theorem 5 a bit and/or provide a citation.
+
+\item[] \textbf{Response}: The proof was extended.
+
+\item \textbf{Comment}: Please provide a reference for the block-cut
+  tree and expand the explanation a bit.
+
+\item[] \textbf{Response}: Done.
+  
+\item \textbf{Comment}: Please expand the proof of Theorem 4, it is a
+  bit short at the moment (maybe it is obvious and I don't see it?)
+
+\item[] \textbf{Response}: Done.
+  
+\item \textbf{Comment}: Please define internal vertex disjoint on page
+  12.
+
+\item[] \textbf{Response}: The definition was added in a footnote.
+
+\item \textbf{Comment}: Please expand the explanation at the end of
+  Theorem 9, I don't see it right now.
+
+\item[] \textbf{Response}: The explanations before and after Theorem 9
+  were extended.
+  
+\item \textbf{Comment}: reference 5 has been extended at TOCS 2018
+  (On-Line Path Computation and Function Placement in SDNs)
+  https://link.springer.com/article/10.1007/s00224-018-9863-4
+
+\item[] \textbf{Response}: A citation was added.
+
+\item \textbf{Comment}: reference 8 has been extended for the
+  unordered case (LATIN 2018 (Walking Through Waypoints):
+  https://link.springer.com/chapter/10.1007\%2F978-3-319-77404-6\_4),
+  and the ordered case (CCR 2018 (Charting the Algorithmic Complexity
+  of Waypoint Routing):
+  https://dl.acm.org/citation.cfm?doid=3211852.3211859, and IFIP
+  Networking 2018 (Waypoint Routing in Special Networks):
+  https://files.ifi.uzh.ch/stiller/IFIP\%20Networking\%202018-Proceedings.pdf).
+  
+\item[] \textsc{Response}: The paper are mentioned in the intro.
+
+\item \textbf{Comment}: Lastly, reference 15 has been extended at IFIP
+  Networking 2018 as well (see
+  https://files.ifi.uzh.ch/stiller/IFIP\%20Networking\%202018-Proceedings.pdf). The
+  same authors also presented some prior work in Computer Networks
+  (https://www.sciencedirect.com/science/article/abs/pii/S138912861500359X?via\%3Dihub)
+  which should be briefly discussed
+
+\item[] \textsc{Response}: The paper are mentioned in the intro.
+
+\item \textbf{Comment}: Please include a small conclusion with open
+  questions at the end. For example, how about walks instead of paths?
+  How about multiple concurrent requests?
+
+\item[] \text{Response}: Added.
+
+\end{enumerate}
+
+\end{document}
+
