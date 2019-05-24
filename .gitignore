@@ -22,3 +22,6 @@
 *.fdb_latexmk
 *.fls
 *.spl
+*.dvi
+diff.tex
+org.tex
