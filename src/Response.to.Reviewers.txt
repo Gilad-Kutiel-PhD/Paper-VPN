@@ -1,0 +1,4 @@
+- end of page 2, is there are an additional space before [2]?
+    - Removed the extra space.
+- footnote page 14: "is" -> "if" ?
+    - fixed.
